@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./app/shared/styles/_variables.scss";
+
+* {
+  font-family: $default-font !important;
+}
+
+body {
+  background-color: $primary-color;
+  margin: 0 !important;
+}
+
+h1 {
+  font-size: 34px;
+}
+
+h2 {
+  font-size: 22px;
+}
+
+p {
+  font-size: 16px;
+}
+
+a {
+  font-size: 16px;
+}

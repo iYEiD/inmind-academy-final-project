@@ -1,0 +1,55 @@
+<nav>
+  <div class="container">
+    <!-- Left Side -->
+    <div class="nav-links">
+      <ng-container *ngFor="let item of navItems">
+        <ng-container *ngIf="!item.categories">
+          <a routerLink="{{ item.link }}">{{ item.name }}</a>
+        </ng-container>
+        <ng-container *ngIf="item.categories">
+          <div class="dropdown">
+            <a routerLink="{{ item.link }}"
+              >{{ item.name }}
+              <img src="assets/images/dropdown-icon.png" alt="arrow-down"
+            /></a>
+            <div class="dropdown-content">
+              <a
+                *ngFor="let category of item.categories"
+                routerLink="{{ category.link }}"
+              >
+                {{ category.name }}
+              </a>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <!-- Middle Side -->
+    <div class="nav-logo">
+      <a routerLink="/">
+        <h1><em>OwO.</em></h1>
+      </a>
+    </div>
+
+    <!-- Right Side -->
+    <div class="nav-actions">
+      <div class="search-bar">
+        <input type="text" placeholder="Search" />
+        <img src="./assets/images/search-icon.png" alt="search-icon" />
+      </div>
+      <a routerLink="/cart">
+        <img
+          src="./assets/images/shopping-cart-icon.png"
+          alt="shopping-cart-icon"
+        />
+      </a>
+      <a routerLink="/profile">
+        <img
+          src="./assets/images/user-profile-icon.png"
+          alt="user-profile-icon"
+        />
+      </a>
+    </div>
+  </div>
+</nav>
