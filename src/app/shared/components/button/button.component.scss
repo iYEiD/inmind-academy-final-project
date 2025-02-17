@@ -14,3 +14,16 @@
     border: 1px solid $secondary-color;
   }
 }
+
+.subscribe-button {
+  background-color: $primary-color;
+  color: $secondary-color;
+  padding: 0;
+  width: 108px;
+  height: 42px;
+  &:hover {
+    background-color: $secondary-color;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+  }
+}

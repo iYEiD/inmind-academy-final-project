@@ -1,1 +1,3 @@
-<button class="custom-button"><ng-content></ng-content></button>
+<button class="custom-button" [ngClass]="modifiedButton">
+  <ng-content></ng-content>
+</button>
