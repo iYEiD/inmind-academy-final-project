@@ -1,0 +1,21 @@
+@import "../../styles/variables";
+
+.form-group {
+  margin-bottom: 15px;
+
+  input {
+    background-color: $primary-color;
+    border: none;
+    border-bottom: 1px solid $tertiary-color;
+    padding: 0px 0px 6px 0px;
+    width: 370px;
+    height: 32px;
+    font-size: 14px;
+    color: $tertiary-color;
+
+    &:focus {
+      outline: none;
+      border-bottom: 2px solid $secondary-color;
+    }
+  }
+}
