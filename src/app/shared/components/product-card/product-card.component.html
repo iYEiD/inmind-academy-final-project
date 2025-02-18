@@ -1,0 +1,12 @@
+<div class="product-card">
+  <div class="product-card-image">
+    <img [src]="product.image" alt="Product Image" />
+  </div>
+  <div class="product-card-content">
+    <h3 class="product-card-title">{{ product.title }}</h3>
+    <p class="product-card-price">${{ product.price }}</p>
+    <p class="product-card-rating">
+      {{ product.rating.rate }} ({{ product.rating.count }})
+    </p>
+  </div>
+</div>
