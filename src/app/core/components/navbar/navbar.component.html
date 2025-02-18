@@ -35,7 +35,12 @@
     <!-- Right Side -->
     <div class="nav-actions">
       <div class="search-bar">
-        <input type="text" placeholder="Search" />
+        <input
+          type="text"
+          placeholder="Search"
+          (input)="search($event)"
+          (keyup.enter)="submitSearch()"
+        />
         <img src="./assets/images/search-icon.png" alt="search-icon" />
       </div>
       <a routerLink="/cart">

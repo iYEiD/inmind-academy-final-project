@@ -15,5 +15,9 @@ export class ProductsComponent {
       this.products = data;
       console.log(this.products);
     });
+
+    this.productService.products$.subscribe((filteredProducts) => {
+      this.products = filteredProducts;
+    });
   }
 }
