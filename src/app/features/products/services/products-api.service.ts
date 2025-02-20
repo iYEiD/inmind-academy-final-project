@@ -16,8 +16,8 @@ export class ProductsApiService {
     return this.http.get<{ products: ProductDTO[] }>(this.apiUrl);
   }
 
-  searchProductsByCategory(category: string): Observable<ProductDTO[]> {
-    const url = `${this.apiUrl}/category/${category}`;
-    return this.http.get<ProductDTO[]>(url);
+  getProductsByName(name: string): Observable<{ products: ProductDTO[] }> {
+    const url = `${this.apiUrl}/search?q=${name}`;
+    return this.http.get<{ products: ProductDTO[] }>(url);
   }
 }

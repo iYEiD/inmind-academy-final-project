@@ -19,9 +19,11 @@ export class ProductsService {
       .pipe(map((response) => response.products));
   }
 
-  searchProductsByCategory(category: string): Observable<ProductDTO[]> {
-    if (category === '') return this.getProducts();
-    return this.productsApiService.searchProductsByCategory(category);
+  searchProductsByName(name: string): Observable<ProductDTO[]> {
+    if (name === '') return this.getProducts();
+    return this.productsApiService
+      .getProductsByName(name)
+      .pipe(map((response) => response.products));
   }
 
   updateProducts(products: ProductDTO[]): void {

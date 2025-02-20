@@ -16,10 +16,10 @@ export class NavbarComponent {
       name: 'Our Products',
       link: '#',
       categories: [
-        { name: "Men's Section", link: '/products/men' },
-        { name: "Women's Section", link: '/products/women' },
-        { name: 'Electronics', link: '/products/electronics' },
-        { name: 'Jewelry', link: '/products/jewelry' },
+        { name: 'Beauty', link: '/products/beauty' },
+        { name: 'Fragrances', link: '/products/fragrances' },
+        { name: 'Furniture', link: '/products/furniture' },
+        { name: 'Groceries', link: '/products/groceries' },
       ],
     },
     { name: 'Contact', link: '/contact' },
@@ -51,7 +51,7 @@ export class NavbarComponent {
         debounceTime(300),
         distinctUntilChanged(),
         switchMap((term: string) =>
-          this.productsService.searchProductsByCategory(term)
+          this.productsService.searchProductsByName(term)
         )
       )
       .subscribe((results) => {
