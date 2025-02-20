@@ -1,12 +1,14 @@
 <div class="product-card">
   <div class="product-card-image">
     <img [src]="product.thumbnail" alt="Product Image" />
-  </div>
-  <div class="product-card-content">
     <h3 class="product-card-title">{{ product.title }}</h3>
+  </div>
+
+  <div class="product-card-content">
     <p class="product-card-price">${{ product.price }}</p>
-    <p class="product-card-rating">
-      {{ product.rating }} ({{ product.reviews.length }})
-    </p>
+    <div class="product-card-rating">
+      <app-star-rating [rating]="product.rating"></app-star-rating>
+      <p class="product-card-rating-count">({{ product.reviews.length }})</p>
+    </div>
   </div>
 </div>

@@ -48,7 +48,6 @@ export class NavbarComponent {
   ngOnInit(): void {
     this.searchTerms
       .pipe(
-        debounceTime(300),
         distinctUntilChanged(),
         switchMap((term: string) =>
           this.productsService.searchProductsByName(term)

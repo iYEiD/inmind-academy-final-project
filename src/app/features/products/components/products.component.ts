@@ -15,6 +15,7 @@ export class ProductsComponent {
       this.products = data;
     });
 
+    // To check how to fix (Slowing down products page)
     this.productService.products$.subscribe((filteredProducts) => {
       this.products = filteredProducts;
     });
