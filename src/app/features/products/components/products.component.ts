@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Product } from '../../../models/product.model';
+import { ProductDTO } from '../../../models/product.model';
 import { ProductsService } from '../services/products.service';
 @Component({
   selector: 'app-products',
@@ -7,13 +7,12 @@ import { ProductsService } from '../services/products.service';
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent {
-  products: Product[] = [];
+  products: ProductDTO[] = [];
   constructor(private productService: ProductsService) {}
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe((data) => {
       this.products = data;
-      console.log(this.products);
     });
 
     this.productService.products$.subscribe((filteredProducts) => {

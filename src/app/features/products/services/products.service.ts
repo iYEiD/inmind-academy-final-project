@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { env } from '../../../environments/env';
-import { Product } from '../../../models/product.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ProductDTO } from '../../../models/product.model';
+import { ProductsApiService } from './products-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private apiUrl = env.apiUrl;
-  private productsSubject = new BehaviorSubject<Product[]>([]);
+  private productsSubject = new BehaviorSubject<ProductDTO[]>([]);
   products$ = this.productsSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private productsApiService: ProductsApiService) {}
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+  getProducts(): Observable<ProductDTO[]> {
+    return this.productsApiService
+      .getProducts()
+      .pipe(map((response) => response.products));
   }
 
-  searchProductsByCategory(category: string): Observable<Product[]> {
+  searchProductsByCategory(category: string): Observable<ProductDTO[]> {
     if (category === '') return this.getProducts();
-    const url = `${this.apiUrl}/category/${category}`;
-    return this.http.get<Product[]>(url);
+    return this.productsApiService.searchProductsByCategory(category);
   }
 
-  updateProducts(products: Product[]): void {
+  updateProducts(products: ProductDTO[]): void {
     this.productsSubject.next(products);
   }
 }
