@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IUserLogin } from '../../models/user.model';
+import { IUserLogin, UserDTO } from '../../../models/user.model';
 import { AuthApiService } from './auth-api.service';
 import { CookieService } from 'ngx-cookie-service';
-import { LoginDTOModel } from '../../models/auth.model';
+import { LoginDTOModel } from '../../../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,6 @@ export class AuthService {
         this.cookieService.set('accessToken', response.accessToken);
         this.cookieService.set('refreshToken', response.refreshToken);
         localStorage.setItem('user', JSON.stringify(response.user));
-        console.log(response.user);
       })
     );
   }

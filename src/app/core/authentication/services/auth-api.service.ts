@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IUserLogin } from '../../models/user.model';
-import { env } from '../../environments/env';
-import { LoginDTOModel } from '../../models/auth.model';
+import { IUserLogin } from '../../../models/user.model';
+import { env } from '../../../environments/env';
+import { LoginDTOModel } from '../../../models/auth.model';
 import { map } from 'rxjs/operators';
-import { UserDTO } from '../../models/user.model';
+import { UserDTO } from '../../../models/user.model';
 
 @Injectable({
   providedIn: 'root',

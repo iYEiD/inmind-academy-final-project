@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../core/authentication/auth.service';
-import { IUserLogin } from '../../../models/user.model';
+import { AuthService } from '../../services/auth.service';
+import { IUserLogin } from '../../../../models/user.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,9 +14,10 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(): void {
+    console.log(this.userLogin);
     this.authService.login(this.userLogin).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
+      next: () => {
+        // maybe can add snackbar here later
         this.router.navigate(['/products']);
       },
       error: (error) => {
