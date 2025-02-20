@@ -3,19 +3,23 @@
   <div class="login-form">
     <h1>Log In</h1>
     <p>Enter your details below</p>
-    <form action="">
+    <form (ngSubmit)="onLogin()">
       <app-input
         type="text"
-        id="email"
-        name="email"
-        placeholder="Email or Phone Number"
-      />
+        id="username"
+        name="username"
+        [value]="userLogin.username"
+        (valueChange)="userLogin.username = $event"
+        placeholder="Username"
+      ></app-input>
       <app-input
         type="password"
         id="password"
         name="password"
+        [value]="userLogin.password"
+        (valueChange)="userLogin.password = $event"
         placeholder="Password"
-      />
+      ></app-input>
       <div class="login-form-actions">
         <app-button type="submit">Log In</app-button>
         <app-button type="gmail">Login with Gmail</app-button>
