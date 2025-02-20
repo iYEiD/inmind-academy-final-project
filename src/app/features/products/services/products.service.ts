@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { ProductDTO } from '../../../models/product.model';
 import { ProductsApiService } from './products-api.service';
 
@@ -14,9 +14,10 @@ export class ProductsService {
   constructor(private productsApiService: ProductsApiService) {}
 
   getProducts(): Observable<ProductDTO[]> {
-    return this.productsApiService
-      .getProducts()
-      .pipe(map((response) => response.products));
+    return this.productsApiService.getProducts().pipe(
+      map((response) => response.products),
+      tap((products) => this.updateProducts(products))
+    );
   }
 
   searchProductsByName(name: string): Observable<ProductDTO[]> {

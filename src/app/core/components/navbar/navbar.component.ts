@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  takeUntil,
+} from 'rxjs/operators';
 import { ProductsService } from '../../../features/products/services/products.service';
 import { Router } from '@angular/router';
 
@@ -9,7 +14,7 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
   navItems = [
     { name: 'Home', link: '/' },
     {
@@ -28,6 +33,7 @@ export class NavbarComponent {
 
   searchTerms = new Subject<string>();
   searchTerm: string = '';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private productsService: ProductsService,
@@ -48,14 +54,20 @@ export class NavbarComponent {
   ngOnInit(): void {
     this.searchTerms
       .pipe(
+        debounceTime(300),
         distinctUntilChanged(),
         switchMap((term: string) =>
           this.productsService.searchProductsByName(term)
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe((results) => {
         this.productsService.updateProducts(results);
-        console.log(results);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
