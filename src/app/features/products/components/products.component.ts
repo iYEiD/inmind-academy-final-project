@@ -1,23 +1,94 @@
-import { Component } from '@angular/core';
-import { Product } from '../../../models/product.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ProductDTO } from '../../../models/product.model';
 import { ProductsService } from '../services/products.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
-export class ProductsComponent {
-  products: Product[] = [];
-  constructor(private productService: ProductsService) {}
+export class ProductsComponent implements OnInit, OnDestroy {
+  products: ProductDTO[] = [];
+  currentPage = 1;
+  itemsPerPage = 15;
+  totalProducts = 0;
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private productService: ProductsService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((data) => {
-      this.products = data;
-      console.log(this.products);
-    });
+    this.loadProducts();
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params) => {
+        this.currentPage = +params['page'] || 1;
+        this.loadProducts();
+      });
+  }
 
-    this.productService.products$.subscribe((filteredProducts) => {
-      this.products = filteredProducts;
+  loadProducts(): void {
+    const skip = (this.currentPage - 1) * this.itemsPerPage;
+    const category = this.route.snapshot.queryParams['category'];
+    const search = this.route.snapshot.queryParams['search'];
+
+    let request$;
+
+    if (category) {
+      request$ = this.productService.searchProductsByCategory(
+        category,
+        this.itemsPerPage,
+        skip
+      );
+    } else if (search) {
+      request$ = this.productService.searchProductsByName(
+        search,
+        this.itemsPerPage,
+        skip
+      );
+    } else {
+      request$ = this.productService.getProducts(this.itemsPerPage, skip);
+    }
+
+    request$.subscribe((response) => {
+      this.products = response.products;
+      this.totalProducts = response.total;
     });
+  }
+
+  nextPage(): void {
+    if (this.currentPage * this.itemsPerPage < this.totalProducts) {
+      this.currentPage++;
+      this.updateRouteWithPagination();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateRouteWithPagination();
+    }
+  }
+
+  private updateRouteWithPagination(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page: this.currentPage },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalProducts / this.itemsPerPage);
   }
 }

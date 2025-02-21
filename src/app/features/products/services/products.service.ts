@@ -1,30 +1,57 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { env } from '../../../environments/env';
-import { Product } from '../../../models/product.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { ProductDTO } from '../../../models/product.model';
+import { ProductsApiService } from './products-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private apiUrl = env.apiUrl;
-  private productsSubject = new BehaviorSubject<Product[]>([]);
+  private productsSubject = new BehaviorSubject<ProductDTO[]>([]);
+  private totalSubject = new BehaviorSubject<number>(0);
   products$ = this.productsSubject.asObservable();
+  total$ = this.totalSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private productsApiService: ProductsApiService) {}
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+  getProducts(
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    return this.productsApiService.getProducts(limit, skip).pipe(
+      tap((response) => {
+        this.productsSubject.next(response.products);
+        this.totalSubject.next(response.total);
+      })
+    );
   }
 
-  searchProductsByCategory(category: string): Observable<Product[]> {
-    if (category === '') return this.getProducts();
-    const url = `${this.apiUrl}/category/${category}`;
-    return this.http.get<Product[]>(url);
+  searchProductsByName(
+    name: string,
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    return this.productsApiService.getProductsByName(name, limit, skip).pipe(
+      tap((response) => {
+        this.productsSubject.next(response.products);
+        this.totalSubject.next(response.total);
+      })
+    );
   }
 
-  updateProducts(products: Product[]): void {
-    this.productsSubject.next(products);
+  searchProductsByCategory(
+    category: string,
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    return this.productsApiService
+      .getProductsByCategory(category, limit, skip)
+      .pipe(
+        tap((response) => {
+          this.productsSubject.next(response.products);
+          this.totalSubject.next(response.total);
+        })
+      );
   }
 }

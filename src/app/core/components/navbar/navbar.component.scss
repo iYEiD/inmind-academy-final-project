@@ -7,8 +7,9 @@ nav {
   .container {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     margin: 0px 100px;
+    padding: 15px 0;
   }
 
   .logo {
@@ -19,14 +20,30 @@ nav {
   .nav-links {
     display: flex;
     gap: 60px;
+    height: 100%;
+    align-items: center;
   }
 
   .dropdown {
     position: relative;
     display: inline-block;
 
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 100%;
+      z-index: 10;
+      background-color: $primary-color;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      width: 1000px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 25px;
+    }
+
     &:hover .dropdown-content {
-      display: block;
+      display: grid;
     }
 
     a {
@@ -35,26 +52,6 @@ nav {
 
       img {
         margin-left: 5px;
-      }
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: $primary-color;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-      z-index: 1;
-
-      a {
-        color: $secondary-color;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-
-        &:hover {
-          background-color: #ffffff;
-        }
       }
     }
   }
@@ -73,6 +70,7 @@ nav {
     padding: 5px 10px;
 
     input {
+      width: 100%;
       border: none;
       background: none;
       outline: none;
@@ -93,4 +91,70 @@ nav {
 a {
   text-decoration: none;
   color: $secondary-color;
+}
+
+.dropdown-section {
+  min-width: 250px;
+  padding: 0 15px;
+
+  .section-title {
+    white-space: nowrap;
+  }
+}
+
+.category-item {
+  color: $secondary-color;
+  margin-bottom: 2px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: darken($secondary-color, 20%);
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(2px);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    margin: 0 20px !important;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 15px !important;
+  }
+
+  .dropdown-content {
+    grid-template-columns: repeat(2, 1fr) !important;
+    width: 240% !important;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .dropdown-section {
+    min-width: 100%;
+    padding: 0;
+  }
+
+  .nav-actions {
+    margin-top: 15px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    margin: 0 50px !important;
+  }
+
+  .dropdown-content {
+    width: 700px;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
