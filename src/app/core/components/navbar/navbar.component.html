@@ -3,22 +3,30 @@
     <!-- Left Side -->
     <div class="nav-links">
       <ng-container *ngFor="let item of navItems">
-        <ng-container *ngIf="!item.categories">
+        <ng-container *ngIf="!item.sections">
           <a routerLink="{{ item.link }}">{{ item.name }}</a>
         </ng-container>
-        <ng-container *ngIf="item.categories">
+        <ng-container *ngIf="item.sections">
           <div class="dropdown">
             <a routerLink="{{ item.link }}"
               >{{ item.name }}
               <img src="assets/images/dropdown-icon.png" alt="arrow-down"
             /></a>
             <div class="dropdown-content">
-              <a
-                *ngFor="let category of item.categories"
-                routerLink="{{ category.link }}"
+              <div
+                class="dropdown-section"
+                *ngFor="let section of item.sections"
               >
-                {{ category.name }}
-              </a>
+                <h4 class="section-title">{{ section.title }}</h4>
+                <a
+                  *ngFor="let category of section.categories"
+                  routerLink="{{ category.link }}"
+                  class="category-item"
+                  (click)="onCategoryClick(category.link)"
+                >
+                  {{ category.name }}
+                </a>
+              </div>
             </div>
           </div>
         </ng-container>
@@ -41,7 +49,11 @@
           (input)="search($event)"
           (keyup.enter)="submitSearch()"
         />
-        <img src="./assets/images/search-icon.png" alt="search-icon" />
+        <img
+          src="./assets/images/search-icon.png"
+          alt="search-icon"
+          (click)="submitSearch()"
+        />
       </div>
       <a routerLink="/cart">
         <img

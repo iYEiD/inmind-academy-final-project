@@ -27,6 +27,13 @@ export class ProductsService {
       .pipe(map((response) => response.products));
   }
 
+  searchProductsByCategory(category: string): Observable<ProductDTO[]> {
+    return this.productsApiService.getProductsByCategory(category).pipe(
+      map((response) => response.products),
+      tap((products) => this.updateProducts(products))
+    );
+  }
+
   updateProducts(products: ProductDTO[]): void {
     this.productsSubject.next(products);
   }
