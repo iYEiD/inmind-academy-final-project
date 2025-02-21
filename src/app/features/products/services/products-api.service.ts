@@ -12,19 +12,29 @@ export class ProductsApiService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(): Observable<{ products: ProductDTO[] }> {
-    return this.http.get<{ products: ProductDTO[] }>(this.apiUrl);
+  getProducts(
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    const url = `${this.apiUrl}?limit=${limit}&skip=${skip}`;
+    return this.http.get<{ products: ProductDTO[]; total: number }>(url);
   }
 
-  getProductsByName(name: string): Observable<{ products: ProductDTO[] }> {
-    const url = `${this.apiUrl}/search?q=${name}`;
-    return this.http.get<{ products: ProductDTO[] }>(url);
+  getProductsByName(
+    name: string,
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    const url = `${this.apiUrl}/search?q=${name}&limit=${limit}&skip=${skip}`;
+    return this.http.get<{ products: ProductDTO[]; total: number }>(url);
   }
 
   getProductsByCategory(
-    category: string
-  ): Observable<{ products: ProductDTO[] }> {
-    const url = `${this.apiUrl}/category/${category}`;
-    return this.http.get<{ products: ProductDTO[] }>(url);
+    category: string,
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    const url = `${this.apiUrl}/category/${category}?limit=${limit}&skip=${skip}`;
+    return this.http.get<{ products: ProductDTO[]; total: number }>(url);
   }
 }

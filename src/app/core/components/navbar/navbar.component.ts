@@ -83,7 +83,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { name: 'Contact', link: '/contact' },
   ];
 
-  searchTerms = new Subject<string>();
   searchTerm: string = '';
   private destroy$ = new Subject<void>();
 
@@ -97,36 +96,30 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   submitSearch(): void {
-    this.searchTerms.next(this.searchTerm);
-    if (this.router.url !== '/products') {
-      this.router.navigate(['/products']);
-    }
+    this.router.navigate(['/products'], {
+      queryParams: {
+        search: this.searchTerm,
+        page: 1,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onCategoryClick(categoryLink: string): void {
     const category = categoryLink.split('/').pop();
     if (category) {
-      this.productsService.searchProductsByCategory(category).subscribe();
-      if (this.router.url !== '/products') {
-        this.router.navigate(['/products']);
-      }
+      this.router.navigate(['/products'], {
+        queryParams: {
+          search: null,
+          category,
+          page: 1,
+        },
+        queryParamsHandling: 'merge',
+      });
     }
   }
 
-  ngOnInit(): void {
-    this.searchTerms
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((term: string) =>
-          this.productsService.searchProductsByName(term)
-        ),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((results) => {
-        this.productsService.updateProducts(results);
-      });
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

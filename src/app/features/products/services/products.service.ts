@@ -9,32 +9,49 @@ import { ProductsApiService } from './products-api.service';
 })
 export class ProductsService {
   private productsSubject = new BehaviorSubject<ProductDTO[]>([]);
+  private totalSubject = new BehaviorSubject<number>(0);
   products$ = this.productsSubject.asObservable();
+  total$ = this.totalSubject.asObservable();
 
   constructor(private productsApiService: ProductsApiService) {}
 
-  getProducts(): Observable<ProductDTO[]> {
-    return this.productsApiService.getProducts().pipe(
-      map((response) => response.products),
-      tap((products) => this.updateProducts(products))
+  getProducts(
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    return this.productsApiService.getProducts(limit, skip).pipe(
+      tap((response) => {
+        this.productsSubject.next(response.products);
+        this.totalSubject.next(response.total);
+      })
     );
   }
 
-  searchProductsByName(name: string): Observable<ProductDTO[]> {
-    if (name === '') return this.getProducts();
+  searchProductsByName(
+    name: string,
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    return this.productsApiService.getProductsByName(name, limit, skip).pipe(
+      tap((response) => {
+        this.productsSubject.next(response.products);
+        this.totalSubject.next(response.total);
+      })
+    );
+  }
+
+  searchProductsByCategory(
+    category: string,
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
     return this.productsApiService
-      .getProductsByName(name)
-      .pipe(map((response) => response.products));
-  }
-
-  searchProductsByCategory(category: string): Observable<ProductDTO[]> {
-    return this.productsApiService.getProductsByCategory(category).pipe(
-      map((response) => response.products),
-      tap((products) => this.updateProducts(products))
-    );
-  }
-
-  updateProducts(products: ProductDTO[]): void {
-    this.productsSubject.next(products);
+      .getProductsByCategory(category, limit, skip)
+      .pipe(
+        tap((response) => {
+          this.productsSubject.next(response.products);
+          this.totalSubject.next(response.total);
+        })
+      );
   }
 }
