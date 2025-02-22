@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { IUserLogin } from '../../../../models/user.model';
 import { Router } from '@angular/router';
+import { ILoginRequest } from '../../../../models/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -9,12 +10,11 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  userLogin: IUserLogin = { username: '', password: '' };
+  userLogin: ILoginRequest = { username: '', password: '' };
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(): void {
-    console.log(this.userLogin);
     this.authService.login(this.userLogin).subscribe({
       next: () => {
         // maybe can add snackbar here later

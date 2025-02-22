@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IUserLogin, UserDTO } from '../../../models/user.model';
 import { AuthApiService } from './auth-api.service';
 import { CookieService } from 'ngx-cookie-service';
-import { LoginDTOModel } from '../../../models/auth.model';
+import { ILoginRequest, IAuthResponse } from '../../../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +14,7 @@ export class AuthService {
     private cookieService: CookieService
   ) {}
 
-  login(credentials: IUserLogin): Observable<LoginDTOModel> {
+  login(credentials: ILoginRequest): Observable<IAuthResponse> {
     return this.authApiService.login(credentials).pipe(
       tap((response) => {
         this.cookieService.set('accessToken', response.accessToken);
