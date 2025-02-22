@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '../services/products.service';
-import { ColDef } from 'ag-grid-community';
+import { CellApiModule, ColDef } from 'ag-grid-community';
 import { AdminDashboardDTO, ICategory } from '../../../models/product.model';
 import { StatusRendererComponent } from './components/status-renderer/status-renderer.component';
 import { ProfileRendererComponent } from './components/profile-renderer/profile-renderer.component';
@@ -32,16 +32,6 @@ export class AdminProductsComponent implements OnInit {
       comparator: (valueA, valueB, nodeA, nodeB) => valueA - valueB,
     },
     {
-      headerName: 'Reviews',
-      field: 'reviews',
-      cellRenderer: (params: any) => `
-        <button class="btn btn-sm btn-outline-primary"
-          (click)="handleCheckReviews(${params.data.id})">
-          Check (${params.data.reviews.length})
-        </button>
-      `,
-    },
-    {
       headerName: 'Price',
       field: 'price',
       sortable: true,
@@ -61,6 +51,12 @@ export class AdminProductsComponent implements OnInit {
     minWidth: 150,
     filter: true,
     resizable: true,
+    cellStyle: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      width: '100%',
+    },
   };
 
   constructor(private productService: ProductsService) {}

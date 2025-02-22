@@ -1,7 +1,7 @@
+@import "../../../../../shared/styles/variables";
 .product-cell {
   height: 100%;
   display: flex;
-  align-items: center;
   img {
     width: 50px !important;
     height: 50px !important;
@@ -18,8 +18,7 @@
     }
     .product-category {
       font-size: 14px;
-      color: #6c757d;
-      margin-bottom: 16px;
+      color: $tertiary-color;
     }
   }
 }
