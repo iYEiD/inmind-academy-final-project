@@ -28,6 +28,16 @@ export interface ProductDTO {
   thumbnail: string;
 }
 
+export interface AdminDashboardDTO {
+  thumbnail: string;
+  title: string;
+  category: ICategory;
+  inventory: number;
+  price: number;
+  reviews: IReview[];
+  rating: number;
+}
+
 export enum ICategory {
   Beauty = 'beauty',
   Fragrances = 'fragrances',

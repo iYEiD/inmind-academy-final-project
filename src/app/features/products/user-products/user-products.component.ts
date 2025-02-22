@@ -5,11 +5,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrl: './products.component.scss',
+  selector: 'app-user-products',
+  templateUrl: './user-products.component.html',
+  styleUrl: './user-products.component.scss',
 })
-export class ProductsComponent implements OnInit, OnDestroy {
+export class UserProductsComponent implements OnInit, OnDestroy {
   products: ProductDTO[] = [];
   currentPage = 1;
   itemsPerPage = 15;
