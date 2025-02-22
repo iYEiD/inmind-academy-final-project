@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductsService } from '../products/services/products.service';
+import { ProductsService } from '../services/products.service';
 import { ColDef } from 'ag-grid-community';
-import { AdminDashboardDTO, ICategory } from '../../models/product.model';
+import { AdminDashboardDTO, ICategory } from '../../../models/product.model';
 import { StatusRendererComponent } from './components/status-renderer/status-renderer.component';
 import { ProfileRendererComponent } from './components/profile-renderer/profile-renderer.component';
 
