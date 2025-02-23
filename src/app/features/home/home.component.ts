@@ -61,13 +61,18 @@ export class HomeComponent {
   topRatedProducts: ProductDTO[] = [];
   topExploreProducts: ProductDTO[] = [];
   bottomExploreProducts: ProductDTO[] = [];
+  isLoading = true;
   constructor(private productService: ProductsService) {}
 
   ngOnInit() {
-    this.productService.getProducts(12, 0).subscribe((products) => {
-      this.topRatedProducts = products.products.slice(0, 4);
-      this.topExploreProducts = products.products.slice(4, 8);
-      this.bottomExploreProducts = products.products.slice(8, 12);
+    this.productService.getProducts(12, 0).subscribe({
+      next: (products) => {
+        this.topRatedProducts = products.products.slice(0, 4);
+        this.topExploreProducts = products.products.slice(4, 8);
+        this.bottomExploreProducts = products.products.slice(8, 12);
+        this.isLoading = false;
+      },
+      error: () => (this.isLoading = false),
     });
   }
 }

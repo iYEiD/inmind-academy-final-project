@@ -46,10 +46,15 @@
     </button>
   </div>
   <div class="cards-container">
-    <app-product-card
-      *ngFor="let product of topRatedProducts"
-      [product]="product"
-    ></app-product-card>
+    <ng-container *ngIf="!isLoading; else loadingSkeleton">
+      <app-product-card
+        *ngFor="let product of topRatedProducts"
+        [product]="product"
+      ></app-product-card>
+    </ng-container>
+    <ng-template #loadingSkeleton>
+      <div class="product-skeleton" *ngFor="let item of [1, 2, 3, 4]"></div>
+    </ng-template>
   </div>
 </section>
 
@@ -75,16 +80,26 @@
     <h1 class="section-title">Explore Our Products</h1>
 
     <div class="cards-container">
-      <app-product-card
-        *ngFor="let product of topExploreProducts"
-        [product]="product"
-      ></app-product-card>
+      <ng-container *ngIf="!isLoading; else loadingSkeleton">
+        <app-product-card
+          *ngFor="let product of topExploreProducts"
+          [product]="product"
+        ></app-product-card>
+      </ng-container>
+      <ng-template #loadingSkeleton>
+        <div class="product-skeleton" *ngFor="let item of [1, 2, 3, 4]"></div>
+      </ng-template>
     </div>
     <div class="cards-container">
-      <app-product-card
-        *ngFor="let product of bottomExploreProducts"
-        [product]="product"
-      ></app-product-card>
+      <ng-container *ngIf="!isLoading; else loadingSkeleton">
+        <app-product-card
+          *ngFor="let product of bottomExploreProducts"
+          [product]="product"
+        ></app-product-card>
+      </ng-container>
+      <ng-template #loadingSkeleton>
+        <div class="product-skeleton" *ngFor="let item of [1, 2, 3, 4]"></div>
+      </ng-template>
     </div>
     <div class="view-all-button-container">
       <button class="view-all-button" (click)="navigateToProducts()">
