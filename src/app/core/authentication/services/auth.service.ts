@@ -33,4 +33,8 @@ export class AuthService {
   isAuthenticated(): boolean {
     return this.cookieService.check('accessToken');
   }
+
+  isAdmin(): Observable<boolean> {
+    return this.authApiService.getAdmin();
+  }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { env } from '../../../environments/env';
+import { env } from '../../../../environments/env';
 import {
   ILoginRequest,
   LoginDTO,
@@ -33,5 +33,11 @@ export class AuthApiService {
         },
       }))
     );
+  }
+
+  getAdmin(): Observable<boolean> {
+    return this.http
+      .get<{ role: string }>(`${this.authUrl}/me`)
+      .pipe(map((user) => user.role === 'admin'));
   }
 }
