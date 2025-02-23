@@ -1,0 +1,120 @@
+<section class="hero-section">
+  <div class="container">
+    <img
+      src="../../../assets/images/main-background-image.jpg"
+      alt="home"
+      class="main-background-image"
+    />
+
+    <div class="main-background-image-overlay">
+      <h1 class="title">Big c:</h1>
+      <h2 class="subtitle">
+        Timeless Fashion, Electronics, <br />Jewelery, in one place
+      </h2>
+      <button class="shop-button" (click)="navigateToProducts()">
+        Shop Now
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="categories-section">
+  <div class="container">
+    <h1 class="section-title">Shop Our Top Categories</h1>
+    <div class="categories-container">
+      <div
+        class="category-card"
+        *ngFor="let category of categories"
+        (click)="navigateToCategory(category.category)"
+      >
+        <img
+          [src]="category.image"
+          alt="Category Image"
+          class="category-image"
+        />
+        <h2 class="category-title">{{ category.name }}</h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="best-sellers-section">
+  <div class="container">
+    <h1 class="section-title">Best Sellers</h1>
+    <button class="view-all-button" (click)="navigateToProducts()">
+      View All
+    </button>
+  </div>
+  <div class="cards-container">
+    <ng-container *ngIf="!isLoading; else loadingSkeleton">
+      <app-product-card
+        *ngFor="let product of topRatedProducts"
+        [product]="product"
+      ></app-product-card>
+    </ng-container>
+    <ng-template #loadingSkeleton>
+      <div class="product-skeleton" *ngFor="let item of [1, 2, 3, 4]"></div>
+    </ng-template>
+  </div>
+</section>
+
+<section class="sales-section">
+  <div class="container">
+    <img
+      src="../../../assets/images/home-sale-image.png"
+      alt="sales"
+      class="sales-image"
+    />
+    <div class="text-container">
+      <h1 class="title">Get 20% Off</h1>
+      <h3 class="subtitle">On your first online order over 50$</h3>
+      <button class="shop-button" (click)="navigateToProducts()">
+        Shop Now
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="explore-section">
+  <div class="container">
+    <h1 class="section-title">Explore Our Products</h1>
+
+    <div class="cards-container">
+      <ng-container *ngIf="!isLoading; else loadingSkeleton">
+        <app-product-card
+          *ngFor="let product of topExploreProducts"
+          [product]="product"
+        ></app-product-card>
+      </ng-container>
+      <ng-template #loadingSkeleton>
+        <div class="product-skeleton" *ngFor="let item of [1, 2, 3, 4]"></div>
+      </ng-template>
+    </div>
+    <div class="cards-container">
+      <ng-container *ngIf="!isLoading; else loadingSkeleton">
+        <app-product-card
+          *ngFor="let product of bottomExploreProducts"
+          [product]="product"
+        ></app-product-card>
+      </ng-container>
+      <ng-template #loadingSkeleton>
+        <div class="product-skeleton" *ngFor="let item of [1, 2, 3, 4]"></div>
+      </ng-template>
+    </div>
+    <div class="view-all-button-container">
+      <button class="view-all-button" (click)="navigateToProducts()">
+        View All Products
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="services-section">
+  <div class="container">
+    <div class="service-card" *ngFor="let service of services">
+      <img [src]="service.image" alt="Service Image" class="service-image" />
+      <h2 class="service-title">{{ service.name }}</h2>
+      <p class="service-description">{{ service.description }}</p>
+    </div>
+  </div>
+</section>

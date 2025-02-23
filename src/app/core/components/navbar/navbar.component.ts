@@ -1,11 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  takeUntil,
-} from 'rxjs/operators';
 import { ProductsService } from '../../../features/products/services/products.service';
 import { Router } from '@angular/router';
 
@@ -19,7 +13,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { name: 'Home', link: '/' },
     {
       name: 'Our Products',
-      link: '#',
+      link: '/products',
       sections: [
         {
           title: 'Electronics',
@@ -86,10 +80,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private productsService: ProductsService,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
   search(event: Event): void {
     this.searchTerm = (event.target as HTMLInputElement).value;
