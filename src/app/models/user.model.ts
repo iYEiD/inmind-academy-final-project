@@ -3,7 +3,7 @@ export interface IUserLogin {
   password: string;
 }
 
-export interface UserDTO {
+export interface IUser {
   id: number;
   username: string;
   email: string;

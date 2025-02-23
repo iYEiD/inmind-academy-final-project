@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { env } from '../../../environments/env';
+import { env } from '../../../../environments/env';
 import { ProductDTO } from '../../../models/product.model';
 import { AdminDashboardDTO } from '../../../models/product.model';
 import { map } from 'rxjs/operators';

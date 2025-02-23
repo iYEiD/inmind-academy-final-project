@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { IUserLogin } from '../../../models/user.model';
-import { env } from '../../../environments/env';
-import { LoginDTOModel } from '../../../models/auth.model';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserDTO } from '../../../models/user.model';
+import { env } from '../../../../environments/env';
+import {
+  ILoginRequest,
+  LoginDTO,
+  IAuthResponse,
+} from '../../../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,25 +17,27 @@ export class AuthApiService {
 
   constructor(private http: HttpClient) {}
 
-  login(credentials: IUserLogin): Observable<LoginDTOModel> {
-    return this.http.post<any>(`${this.authUrl}/login`, credentials).pipe(
-      map((response) => {
-        const user: UserDTO = {
-          id: response.id,
-          username: response.username,
-          email: response.email,
-          firstName: response.firstName,
-          lastName: response.lastName,
-          gender: response.gender,
-          image: response.image,
-        };
-
-        return {
-          accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
-          user: user,
-        };
-      })
+  login(credentials: ILoginRequest): Observable<IAuthResponse> {
+    return this.http.post<LoginDTO>(`${this.authUrl}/login`, credentials).pipe(
+      map((dto) => ({
+        accessToken: dto.accessToken,
+        refreshToken: dto.refreshToken,
+        user: {
+          id: dto.id,
+          username: dto.username,
+          email: dto.email,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          gender: dto.gender,
+          image: dto.image,
+        },
+      }))
     );
+  }
+
+  getAdmin(): Observable<boolean> {
+    return this.http
+      .get<{ role: string }>(`${this.authUrl}/me`)
+      .pipe(map((user) => user.role === 'admin'));
   }
 }
