@@ -1,0 +1,195 @@
+@import "../../shared/styles/variables";
+@import "../../shared/styles/materials";
+.hero-section {
+  .container {
+    position: relative;
+    .main-background-image {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .main-background-image-overlay {
+      padding-top: 10px;
+      padding-bottom: 60px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(0, 0, 0, 0.2);
+      flex-wrap: wrap;
+      align-content: flex-start;
+      align-items: flex-start;
+      .title {
+        margin-left: 100px;
+        color: $primary-color;
+        text-align: center;
+        margin-bottom: 8px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      .subtitle {
+        margin-left: 100px;
+        color: $primary-color;
+        text-align: flex-start;
+        font-size: 26px;
+        font-weight: 300;
+      }
+      .shop-button {
+        margin-left: 100px;
+        margin-top: 20px;
+        @include white-button;
+        width: auto;
+      }
+    }
+  }
+}
+
+.categories-section {
+  .container {
+    margin: 60px 100px;
+    padding: 0;
+    .section-title {
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .categories-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .category-card {
+        gap: 20px;
+        position: relative;
+        cursor: pointer;
+        &:hover {
+          transform: scale(1.05);
+          transition: transform 0.3s ease;
+        }
+        .category-image {
+          width: 300px;
+
+          object-fit: contain;
+        }
+        .category-title {
+          color: $primary-color;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+          margin-top: 10px;
+          top: 0;
+          position: absolute;
+          display: flex;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+.best-sellers-section {
+  margin: 0px 100px 60px 100px;
+  .container {
+    .section-title {
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .view-all-button {
+      @include brown-button;
+      margin-bottom: 10px;
+      width: auto;
+    }
+  }
+  .cards-container {
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+.sales-section {
+  display: flex;
+  position: relative;
+  margin-bottom: 60px;
+  .container {
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    .sales-image {
+      display: flex;
+      width: 100%;
+      object-fit: cover;
+    }
+    .text-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+      top: 0;
+      width: 100%;
+      .title {
+        margin-bottom: 10px;
+        font-size: 48px;
+      }
+      .subtitle {
+        font-size: 20px;
+        font-weight: 300;
+      }
+      .shop-button {
+        @include white-button;
+        margin-top: 20px;
+        width: auto;
+      }
+    }
+  }
+}
+
+.explore-section {
+  margin: 0 100px 60px 100px;
+  .container {
+    .section-title {
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    margin: 0;
+    width: 100%;
+    padding: 0;
+  }
+  .cards-container {
+    gap: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
+  }
+  .view-all-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .view-all-button {
+    @include brown-button;
+    width: auto;
+    height: 50px;
+  }
+}
+
+.services-section {
+  margin-bottom: 60px;
+  .container {
+    display: flex;
+    justify-content: space-evenly;
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@import "./variables";
+
+@mixin white-button {
+  background-color: $primary-color;
+  color: $secondary-color;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  &:hover {
+    background-color: $secondary-color;
+    color: $primary-color;
+  }
+}
+
+@mixin brown-button {
+  background-color: $secondary-color;
+  color: $primary-color;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  &:hover {
+    background-color: $primary-color;
+    color: $secondary-color;
+    border: 1px solid $secondary-color;
+    padding: 9px 19px;
+  }
+}
