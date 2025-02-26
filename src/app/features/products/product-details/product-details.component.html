@@ -1,0 +1,47 @@
+<section class="product-details">
+  <div class="current-product-path">
+    <p>Our Products</p>
+    <img
+      src="../../../../assets/images/path-arrow-icon.png"
+      alt="Path Arrow Icon"
+    />
+    <p>{{ product.category | capitalizeFirst }}</p>
+  </div>
+  <div class="product-details-container">
+    <div class="product-details-image">
+      <!-- To allow multiple images later -->
+      <img [src]="product.images[0]" alt="Product Image" />
+    </div>
+    <div class="product-details-info">
+      <div class="main-content">
+        <h1>{{ product.title }}</h1>
+        <app-star-rating [rating]="product.rating"></app-star-rating>
+        <h2>{{ product.price | currency }}</h2>
+      </div>
+      <div class="about-product">
+        <h3>About this product</h3>
+        <p>{{ product.description }}</p>
+      </div>
+
+      <div class="product-details-actions">
+        <h3>Add to cart</h3>
+        <div class="quantity-selector">
+          <button (click)="decrementQuantity()">-</button>
+          <input [(ngModel)]="quantity" min="1" (change)="onQuantityChange()" />
+          <button (click)="incrementQuantity()">+</button>
+          <button class="add-to-cart-button">Add to Cart</button>
+        </div>
+        <p>VAT & delivery fees are applied at checkout</p>
+      </div>
+    </div>
+  </div>
+  <div class="related-products">
+    <h1>Related products</h1>
+    <div class="related-products-container">
+      <app-product-card
+        *ngFor="let product of relatedProducts"
+        [product]="product"
+      ></app-product-card>
+    </div>
+  </div>
+</section>
