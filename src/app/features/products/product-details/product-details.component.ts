@@ -12,6 +12,7 @@ export class ProductDetailsComponent implements OnInit {
   product!: ProductDTO;
   quantity = 1;
   relatedProducts: ProductDTO[] = [];
+  selectedImageIndex = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +34,10 @@ export class ProductDetailsComponent implements OnInit {
             });
         });
     }
+  }
+
+  selectImage(index: number) {
+    this.selectedImageIndex = index;
   }
 
   incrementQuantity() {

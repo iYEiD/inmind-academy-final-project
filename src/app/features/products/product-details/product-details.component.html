@@ -9,8 +9,7 @@
   </div>
   <div class="product-details-container">
     <div class="product-details-image">
-      <!-- To allow multiple images later -->
-      <img [src]="product.images[0]" alt="Product Image" />
+      <img [src]="product.images[selectedImageIndex]" alt="Product Image" />
     </div>
     <div class="product-details-info">
       <div class="main-content">
@@ -31,8 +30,20 @@
           <button (click)="incrementQuantity()">+</button>
           <button class="add-to-cart-button">Add to Cart</button>
         </div>
-        <p>VAT & delivery fees are applied at checkout</p>
+        <p style="font-size: 14px; margin-block-start: 5px">
+          VAT & delivery fees are applied at checkout
+        </p>
       </div>
+    </div>
+  </div>
+  <div class="images-container">
+    <div
+      *ngFor="let img of product.images; let i = index"
+      class="thumbnail-item"
+      [class.active]="selectedImageIndex === i"
+      (click)="selectImage(i)"
+    >
+      <img [src]="img" alt="Thumbnail {{ i + 1 }}" />
     </div>
   </div>
   <div class="related-products">
