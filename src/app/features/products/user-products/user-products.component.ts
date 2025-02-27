@@ -102,4 +102,8 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   get totalPages(): number {
     return Math.ceil(this.totalProducts / this.itemsPerPage);
   }
+
+  trackByProductId(index: number, product: ProductDTO): number {
+    return product.id;
+  }
 }

@@ -60,7 +60,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   navigateToCategory(category: string) {
     this.router.navigate(['/products'], {
-      queryParams: { category },
+      queryParams: { category, page: 1 },
+      queryParamsHandling: 'merge',
     });
   }
   topRatedProducts: ProductDTO[] = [];

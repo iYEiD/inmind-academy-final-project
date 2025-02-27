@@ -38,7 +38,7 @@
   </div>
   <div class="images-container">
     <div
-      *ngFor="let img of product.images; let i = index"
+      *ngFor="let img of product.images; let i = index; trackBy: trackByImage"
       class="thumbnail-item"
       [class.active]="selectedImageIndex === i"
       (click)="selectImage(i)"

@@ -13,7 +13,10 @@ const routes: Routes = [
   { path: 'product-details/:productName', component: ProductDetailsComponent },
   {
     path: 'admin/products',
-    component: AdminProductsComponent,
+    loadChildren: () =>
+      import('./features/products/products.module').then(
+        (m) => m.ProductsModule
+      ),
     canActivate: [adminAuthGuard],
   },
   { path: '', redirectTo: '/products', pathMatch: 'full' }, // Default route

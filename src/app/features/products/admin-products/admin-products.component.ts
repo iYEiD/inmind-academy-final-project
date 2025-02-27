@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductsService } from '../services/products.service';
 import { CellApiModule, ColDef } from 'ag-grid-community';
 import { AdminDashboardDTO, ICategory } from '../../../models/product.model';
 import { StatusRendererComponent } from './components/status-renderer/status-renderer.component';
 import { ProfileRendererComponent } from './components/profile-renderer/profile-renderer.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-products',
   templateUrl: './admin-products.component.html',
   styleUrl: './admin-products.component.scss',
 })
-export class AdminProductsComponent implements OnInit {
+export class AdminProductsComponent implements OnInit, OnDestroy {
   rowData: AdminDashboardDTO[] = [];
   loading = true;
   error = false;
@@ -59,6 +61,8 @@ export class AdminProductsComponent implements OnInit {
     },
   };
 
+  private destroy$ = new Subject<void>();
+
   constructor(private productService: ProductsService) {}
 
   ngOnInit(): void {
@@ -66,11 +70,14 @@ export class AdminProductsComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getAdminProducts(50, 0).subscribe((response) => {
-      this.rowData = response.products;
-      console.log(this.rowData);
-      this.loading = false;
-    });
+    this.productService
+      .getAdminProducts(50, 0)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response) => {
+        this.rowData = response.products;
+        console.log(this.rowData);
+        this.loading = false;
+      });
   }
 
   // onGridReady(params: GridReadyEvent<AdminDashboardDTO>) {
@@ -88,5 +95,10 @@ export class AdminProductsComponent implements OnInit {
       .toString()
       .replace(/-/g, ' ')
       .replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
