@@ -35,6 +35,16 @@ export class UserProductsComponent implements OnInit, OnDestroy {
     const skip = (this.currentPage - 1) * this.itemsPerPage;
 
     const params = this.route.snapshot.queryParams;
+
+    // Handle conflicting parameters
+    if (params['search'] && params['category']) {
+      this.router.navigate([], {
+        queryParams: { category: null },
+        queryParamsHandling: 'merge',
+      });
+      return;
+    }
+
     const category = params['category'];
     const search = params['search'];
 
