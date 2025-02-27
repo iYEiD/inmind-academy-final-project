@@ -6,19 +6,23 @@ import { StatusRendererComponent } from './admin-products/components/status-rend
 import { ProfileRendererComponent } from './admin-products/components/profile-renderer/profile-renderer.component';
 import { AdminProductsComponent } from './admin-products/admin-products.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     UserProductsComponent,
     StatusRendererComponent,
     ProfileRendererComponent,
     AdminProductsComponent,
+    ProductDetailsComponent,
   ],
-  imports: [CommonModule, SharedModule, AgGridModule],
+  imports: [CommonModule, SharedModule, AgGridModule, FormsModule],
   exports: [
     UserProductsComponent,
     StatusRendererComponent,
     ProfileRendererComponent,
     AdminProductsComponent,
+    ProductDetailsComponent,
   ],
 })
 export class ProductsModule {}

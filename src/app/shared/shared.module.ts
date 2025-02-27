@@ -5,13 +5,14 @@ import { ButtonComponent } from './components/button/button.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
+import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 @NgModule({
   declarations: [
     InputComponent,
     ButtonComponent,
     ProductCardComponent,
     StarRatingComponent,
+    CapitalizeFirstPipe,
   ],
   imports: [CommonModule, FontAwesomeModule],
   exports: [
@@ -19,6 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ButtonComponent,
     ProductCardComponent,
     StarRatingComponent,
+    CapitalizeFirstPipe,
   ],
 })
 export class SharedModule {}
