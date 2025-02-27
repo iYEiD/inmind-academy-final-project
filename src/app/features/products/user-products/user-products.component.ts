@@ -23,7 +23,6 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
@@ -34,8 +33,10 @@ export class UserProductsComponent implements OnInit, OnDestroy {
 
   loadProducts(): void {
     const skip = (this.currentPage - 1) * this.itemsPerPage;
-    const category = this.route.snapshot.queryParams['category'];
-    const search = this.route.snapshot.queryParams['search'];
+
+    const params = this.route.snapshot.queryParams;
+    const category = params['category'];
+    const search = params['search'];
 
     let request$;
 
