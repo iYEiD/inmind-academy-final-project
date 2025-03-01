@@ -80,9 +80,9 @@
     <h1 class="section-title">Explore Our Products</h1>
 
     <div class="cards-container">
-      <ng-container *ngIf="!isLoading; else loadingSkeleton">
+      <ng-container *ngIf="products$ | async as products; else loadingSkeleton">
         <app-product-card
-          *ngFor="let product of topExploreProducts"
+          *ngFor="let product of products.topExplore"
           [product]="product"
         ></app-product-card>
       </ng-container>
@@ -91,9 +91,9 @@
       </ng-template>
     </div>
     <div class="cards-container">
-      <ng-container *ngIf="!isLoading; else loadingSkeleton">
+      <ng-container *ngIf="products$ | async as products; else loadingSkeleton">
         <app-product-card
-          *ngFor="let product of bottomExploreProducts"
+          *ngFor="let product of products.bottomExplore"
           [product]="product"
         ></app-product-card>
       </ng-container>

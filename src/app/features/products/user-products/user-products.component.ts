@@ -66,7 +66,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
       request$ = this.productService.getProducts(this.itemsPerPage, skip);
     }
 
-    request$.subscribe((response) => {
+    request$.pipe(takeUntil(this.destroy$)).subscribe((response) => {
       this.products = response.products;
       this.totalProducts = response.total;
     });

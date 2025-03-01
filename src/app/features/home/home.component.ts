@@ -4,6 +4,7 @@ import { ProductsService } from '../products/services/products.service';
 import { ProductDTO } from '../../models/product.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -69,6 +70,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   bottomExploreProducts: ProductDTO[] = [];
   isLoading = true;
   constructor(private productService: ProductsService) {}
+
+  products$ = this.productService.getProducts(12, 0).pipe(
+    map((response) => ({
+      topRated: response.products.slice(0, 4),
+      topExplore: response.products.slice(4, 8),
+      bottomExplore: response.products.slice(8, 12),
+    }))
+  );
 
   ngOnInit() {
     this.productService

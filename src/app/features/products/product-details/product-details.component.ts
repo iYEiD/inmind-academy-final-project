@@ -4,41 +4,46 @@ import { ProductsService } from '../services/products.service';
 import { ProductDTO } from '../../../models/product.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { switchMap, map, of, tap, shareReplay } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })
-export class ProductDetailsComponent implements OnInit, OnDestroy {
-  product!: ProductDTO;
+export class ProductDetailsComponent implements OnDestroy {
   quantity = 1;
-  relatedProducts: ProductDTO[] = [];
   selectedImageIndex = 0;
   private destroy$ = new Subject<void>();
+
+  product$ = this.route.paramMap.pipe(
+    takeUntil(this.destroy$),
+    switchMap((params) => {
+      const productName = params.get('productName');
+      return productName
+        ? this.productsService.searchProductsByName(productName, 1, 0)
+        : of(null);
+    }),
+    map((response) => response?.products[0]),
+    tap((product) => {
+      if (product) this.selectedImageIndex = 0; // Reset image index
+    }),
+    shareReplay(1)
+  );
+
+  relatedProducts$ = this.product$.pipe(
+    switchMap((product) =>
+      product
+        ? this.productsService.searchProductsByCategory(product.category, 4, 0)
+        : of(null)
+    ),
+    map((response) => response?.products || [])
+  );
 
   constructor(
     private route: ActivatedRoute,
     private productsService: ProductsService
   ) {}
-
-  ngOnInit() {
-    const productName = this.route.snapshot.paramMap.get('productName');
-    if (productName) {
-      this.productsService
-        .searchProductsByName(productName, 1, 0)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((response) => {
-          this.product = response.products[0];
-          this.productsService
-            .searchProductsByCategory(this.product.category, 4, 1)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-              this.relatedProducts = response.products;
-            });
-        });
-    }
-  }
 
   ngOnDestroy() {
     this.destroy$.next();
