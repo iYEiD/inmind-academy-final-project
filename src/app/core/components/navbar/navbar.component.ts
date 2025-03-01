@@ -1,7 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ProductsService } from '../../../features/products/services/products.service';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectCartItemsCount } from '../../../shared/states/shopping-cart/cart.selectors';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -79,9 +81,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   searchTerm: string = '';
   isMobileMenuOpen: boolean = false;
+  cartItemsCount: number = 0;
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router) {}
+  router = inject(Router);
+  store = inject(Store);
 
   search(event: Event): void {
     this.searchTerm = (event.target as HTMLInputElement).value;
@@ -132,7 +136,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Subscribe to cart items count
+    this.store
+      .select(selectCartItemsCount)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((count) => {
+        this.cartItemsCount = count;
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

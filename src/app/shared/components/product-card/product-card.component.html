@@ -11,7 +11,9 @@
     <p class="product-card-price">${{ product.price }}</p>
     <div class="product-card-actions">
       <app-star-rating [rating]="product.rating"></app-star-rating>
-      <button class="product-card-button">Add to Cart</button>
+      <button class="product-card-button" (click)="addToCart()">
+        Add to Cart
+      </button>
     </div>
   </div>
 </div>

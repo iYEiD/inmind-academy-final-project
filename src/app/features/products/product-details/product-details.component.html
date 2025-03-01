@@ -28,7 +28,9 @@
           <button (click)="decrementQuantity()">-</button>
           <input [(ngModel)]="quantity" min="1" (change)="onQuantityChange()" />
           <button (click)="incrementQuantity()">+</button>
-          <button class="add-to-cart-button">Add to Cart</button>
+          <button class="add-to-cart-button" (click)="addToCart(product)">
+            Add to Cart
+          </button>
         </div>
         <p style="font-size: 14px; margin-block-start: 5px">
           VAT & delivery fees are applied at checkout

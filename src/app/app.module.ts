@@ -7,6 +7,9 @@ import { FeaturesModule } from './features/features.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { cartReducer } from './shared/states/shopping-cart/cart.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +19,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     CoreModule,
     FeaturesModule,
     HttpClientModule,
+    StoreModule.forRoot({ cart: cartReducer }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+    }),
   ],
   providers: [
     CookieService,

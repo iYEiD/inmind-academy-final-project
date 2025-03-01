@@ -60,11 +60,14 @@
           (click)="submitSearch()"
         />
       </div>
-      <a routerLink="/cart">
+      <a routerLink="/shopping-cart" class="cart-icon-container">
         <img
           src="./assets/images/shopping-cart-icon.png"
           alt="shopping-cart-icon"
         />
+        <span class="cart-count" *ngIf="cartItemsCount > 0">{{
+          cartItemsCount
+        }}</span>
       </a>
       <a routerLink="/profile">
         <img
@@ -132,11 +135,18 @@
         />
       </div>
       <div class="mobile-action-icons">
-        <a routerLink="/cart" (click)="closeMobileMenu()">
+        <a
+          routerLink="/cart"
+          (click)="closeMobileMenu()"
+          class="cart-icon-container"
+        >
           <img
             src="./assets/images/shopping-cart-icon.png"
             alt="shopping-cart-icon"
           />
+          <span class="cart-count" *ngIf="cartItemsCount > 0">{{
+            cartItemsCount
+          }}</span>
         </a>
         <a routerLink="/profile" (click)="closeMobileMenu()">
           <img
