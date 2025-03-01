@@ -1,39 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../services/products.service';
 import { ProductDTO } from '../../../models/product.model';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { switchMap, map, of, tap, shareReplay } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })
-export class ProductDetailsComponent implements OnInit {
-  product!: ProductDTO;
+export class ProductDetailsComponent implements OnDestroy {
   quantity = 1;
-  relatedProducts: ProductDTO[] = [];
   selectedImageIndex = 0;
+  private destroy$ = new Subject<void>();
+
+  product$ = this.route.paramMap.pipe(
+    takeUntil(this.destroy$),
+    switchMap((params) => {
+      const productName = params.get('productName');
+      return productName
+        ? this.productsService.searchProductsByName(productName, 1, 0)
+        : of(null);
+    }),
+    map((response) => response?.products[0]),
+    tap((product) => {
+      if (product) this.selectedImageIndex = 0; // Reset image index
+    }),
+    shareReplay(1)
+  );
+
+  relatedProducts$ = this.product$.pipe(
+    switchMap((product) =>
+      product
+        ? this.productsService.searchProductsByCategory(product.category, 4, 0)
+        : of(null)
+    ),
+    map((response) => response?.products || [])
+  );
 
   constructor(
     private route: ActivatedRoute,
     private productsService: ProductsService
   ) {}
 
-  ngOnInit() {
-    // Look to apply NGRX for this in the future
-    const productName = this.route.snapshot.paramMap.get('productName');
-    if (productName) {
-      this.productsService
-        .searchProductsByName(productName, 1, 0)
-        .subscribe((response) => {
-          this.product = response.products[0];
-          this.productsService
-            .searchProductsByCategory(this.product.category, 4, 1)
-            .subscribe((response) => {
-              this.relatedProducts = response.products;
-            });
-        });
-    }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   selectImage(index: number) {
@@ -54,5 +68,9 @@ export class ProductDetailsComponent implements OnInit {
     if (this.quantity < 1 || isNaN(this.quantity)) {
       this.quantity = 1;
     }
+  }
+
+  trackByImage(index: number, item: string): number {
+    return index;
   }
 }

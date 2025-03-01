@@ -14,9 +14,13 @@ export const adminAuthGuard: CanActivateFn = (route, state) => {
   }
 
   return authService.isAdmin().pipe(
-    map((isAdmin) =>
-      isAdmin ? true : (router.navigate(['/products']), false)
-    ),
+    map((isAdmin) => {
+      if (!isAdmin) {
+        router.navigate(['/products']);
+        return false;
+      }
+      return true;
+    }),
     catchError(() => {
       router.navigate(['/login']);
       return of(false);

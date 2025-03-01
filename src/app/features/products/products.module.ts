@@ -8,6 +8,8 @@ import { AdminProductsComponent } from './admin-products/admin-products.componen
 import { AgGridModule } from 'ag-grid-angular';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
 @NgModule({
   declarations: [
     UserProductsComponent,
@@ -16,7 +18,13 @@ import { FormsModule } from '@angular/forms';
     AdminProductsComponent,
     ProductDetailsComponent,
   ],
-  imports: [CommonModule, SharedModule, AgGridModule, FormsModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    AgGridModule,
+    FormsModule,
+    RouterModule.forChild([{ path: '', component: AdminProductsComponent }]),
+  ],
   exports: [
     UserProductsComponent,
     StatusRendererComponent,

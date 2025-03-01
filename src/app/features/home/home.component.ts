@@ -1,13 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductsService } from '../products/services/products.service';
 import { ProductDTO } from '../../models/product.model';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   categories = [
     {
       name: 'Electronics',
@@ -55,7 +61,8 @@ export class HomeComponent {
   }
   navigateToCategory(category: string) {
     this.router.navigate(['/products'], {
-      queryParams: { category },
+      queryParams: { category, page: 1 },
+      queryParamsHandling: 'merge',
     });
   }
   topRatedProducts: ProductDTO[] = [];
@@ -64,15 +71,31 @@ export class HomeComponent {
   isLoading = true;
   constructor(private productService: ProductsService) {}
 
+  products$ = this.productService.getProducts(12, 0).pipe(
+    map((response) => ({
+      topRated: response.products.slice(0, 4),
+      topExplore: response.products.slice(4, 8),
+      bottomExplore: response.products.slice(8, 12),
+    }))
+  );
+
   ngOnInit() {
-    this.productService.getProducts(12, 0).subscribe({
-      next: (products) => {
-        this.topRatedProducts = products.products.slice(0, 4);
-        this.topExploreProducts = products.products.slice(4, 8);
-        this.bottomExploreProducts = products.products.slice(8, 12);
-        this.isLoading = false;
-      },
-      error: () => (this.isLoading = false),
-    });
+    this.productService
+      .getProducts(12, 0)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (products) => {
+          this.topRatedProducts = products.products.slice(0, 4);
+          this.topExploreProducts = products.products.slice(4, 8);
+          this.bottomExploreProducts = products.products.slice(8, 12);
+          this.isLoading = false;
+        },
+        error: () => (this.isLoading = false),
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

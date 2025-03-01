@@ -91,9 +91,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       queryParams: {
         search: this.searchTerm,
         page: 1,
+        category: null,
       },
-      queryParamsHandling: 'merge',
     });
+    this.searchTerm = '';
   }
 
   onCategoryClick(categoryLink: string): void {

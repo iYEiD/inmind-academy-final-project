@@ -1,4 +1,4 @@
-<section class="product-details">
+<section class="product-details" *ngIf="product$ | async as product">
   <div class="current-product-path">
     <p>Our Products</p>
     <img
@@ -38,7 +38,7 @@
   </div>
   <div class="images-container">
     <div
-      *ngFor="let img of product.images; let i = index"
+      *ngFor="let img of product.images; let i = index; trackBy: trackByImage"
       class="thumbnail-item"
       [class.active]="selectedImageIndex === i"
       (click)="selectImage(i)"
@@ -50,7 +50,7 @@
     <h1>Related products</h1>
     <div class="related-products-container">
       <app-product-card
-        *ngFor="let product of relatedProducts"
+        *ngFor="let product of relatedProducts$ | async"
         [product]="product"
       ></app-product-card>
     </div>

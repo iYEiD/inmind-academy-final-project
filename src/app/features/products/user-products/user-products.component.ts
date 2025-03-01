@@ -23,7 +23,6 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
@@ -34,8 +33,20 @@ export class UserProductsComponent implements OnInit, OnDestroy {
 
   loadProducts(): void {
     const skip = (this.currentPage - 1) * this.itemsPerPage;
-    const category = this.route.snapshot.queryParams['category'];
-    const search = this.route.snapshot.queryParams['search'];
+
+    const params = this.route.snapshot.queryParams;
+
+    // Handle conflicting parameters
+    if (params['search'] && params['category']) {
+      this.router.navigate([], {
+        queryParams: { category: null },
+        queryParamsHandling: 'merge',
+      });
+      return;
+    }
+
+    const category = params['category'];
+    const search = params['search'];
 
     let request$;
 
@@ -55,7 +66,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
       request$ = this.productService.getProducts(this.itemsPerPage, skip);
     }
 
-    request$.subscribe((response) => {
+    request$.pipe(takeUntil(this.destroy$)).subscribe((response) => {
       this.products = response.products;
       this.totalProducts = response.total;
     });
@@ -90,5 +101,9 @@ export class UserProductsComponent implements OnInit, OnDestroy {
 
   get totalPages(): number {
     return Math.ceil(this.totalProducts / this.itemsPerPage);
+  }
+
+  trackByProductId(index: number, product: ProductDTO): number {
+    return product.id;
   }
 }

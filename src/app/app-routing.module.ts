@@ -6,6 +6,8 @@ import { AdminProductsComponent } from './features/products/admin-products/admin
 import { adminAuthGuard } from './guards/admin-auth.guard';
 import { HomeComponent } from './features/home/home.component';
 import { ProductDetailsComponent } from './features/products/product-details/product-details.component';
+import { ProductsModule } from './features/products/products.module';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -13,7 +15,10 @@ const routes: Routes = [
   { path: 'product-details/:productName', component: ProductDetailsComponent },
   {
     path: 'admin/products',
-    component: AdminProductsComponent,
+    loadChildren: () =>
+      import('./features/products/products.module').then(
+        (m) => m.ProductsModule
+      ),
     canActivate: [adminAuthGuard],
   },
   { path: '', redirectTo: '/products', pathMatch: 'full' }, // Default route
