@@ -13,7 +13,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { name: 'Home', link: '/' },
     {
       name: 'Our Products',
-      link: '/products',
+      link: '#',
       sections: [
         {
           title: 'Electronics',
@@ -73,11 +73,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
         },
       ],
     },
-    { name: 'Sale', link: '/products' },
-    { name: 'Contact', link: '/contact' },
+    { name: 'Shop Now', link: '/products' },
+    { name: 'Contact', link: '#' },
   ];
 
   searchTerm: string = '';
+  isMobileMenuOpen: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(private router: Router) {}
@@ -95,6 +96,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       },
     });
     this.searchTerm = '';
+    this.closeMobileMenu();
   }
 
   onCategoryClick(categoryLink: string): void {
@@ -108,6 +110,25 @@ export class NavbarComponent implements OnInit, OnDestroy {
         },
         queryParamsHandling: 'merge',
       });
+    }
+    this.closeMobileMenu();
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
+  }
+
+  toggleMobileDropdown(event: Event): void {
+    const target = event.currentTarget as HTMLElement;
+    const dropdown = target.closest('.mobile-dropdown');
+
+    if (dropdown) {
+      dropdown.classList.toggle('active');
+      event.stopPropagation();
     }
   }
 

@@ -2,33 +2,39 @@
   <div class="row">
     <div class="footer-section">
       <h3>Contact Us</h3>
-      <p>+961 70 346 493</p>
-      <p>Email Us</p>
+      <p><a href="tel:+96170346493">+961 70 346 493</a></p>
+      <p><a href="mailto:contact@ottersstore.com">Email Us</a></p>
       <p>Mon-Fri 9am-3pm PT</p>
     </div>
     <div class="footer-section">
       <h3>Customers</h3>
-      <p>Shop Now</p>
-      <p>Return Policy</p>
-      <p>Start a Return</p>
-      <p>FAQ</p>
+      <p><a routerLink="/products">Shop Now</a></p>
+      <p><a href="">Return Policy</a></p>
+      <p><a href="">Start a Return</a></p>
+      <p><a href="">FAQ</a></p>
     </div>
     <div class="footer-section">
       <h3>Company</h3>
-      <p>About Us</p>
-      <p>Privacy Policy</p>
+      <p><a href="">About Us</a></p>
+      <p><a href="">Privacy Policy</a></p>
     </div>
     <div class="footer-section newsletter">
       <h2>Get the latest news from us</h2>
-      <input type="email" placeholder="Enter your email address" />
+      <input
+        type="email"
+        placeholder="Enter your email address"
+        aria-label="Email subscription"
+      />
       <p>
         By signing up, you agree to our
-        <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>.
+        <a href="">Privacy Policy</a> and <a href="">Terms of Service</a>.
       </p>
-      <app-button [modifiedButton]="'subscribe-button'"> Subscribe </app-button>
+      <button class="subscribe-button" aria-label="Subscribe to newsletter">
+        Subscribe
+      </button>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>©Big c:</p>
+    <p>© 2023 Otters Store. All rights reserved.</p>
   </div>
 </div>

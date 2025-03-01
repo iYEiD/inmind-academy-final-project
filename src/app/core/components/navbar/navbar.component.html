@@ -1,7 +1,12 @@
 <nav>
   <div class="container">
+    <!-- Burger Menu Icon (visible only on mobile) -->
+    <div class="burger-menu" (click)="toggleMobileMenu()">
+      <img src="./assets/images/burger-bar-icon.png" alt="menu" />
+    </div>
+
     <!-- Left Side -->
-    <div class="nav-links">
+    <div class="nav-links desktop-only">
       <ng-container *ngFor="let item of navItems">
         <ng-container *ngIf="!item.sections">
           <a routerLink="{{ item.link }}">{{ item.name }}</a>
@@ -36,12 +41,12 @@
     <!-- Middle Side -->
     <div class="nav-logo">
       <a routerLink="/">
-        <h1><em>Big c:</em></h1>
+        <h1><em>Otters</em></h1>
       </a>
     </div>
 
     <!-- Right Side -->
-    <div class="nav-actions">
+    <div class="nav-actions desktop-only">
       <div class="search-bar">
         <input
           type="text"
@@ -70,3 +75,83 @@
     </div>
   </div>
 </nav>
+
+<!-- Mobile Side Navigation -->
+<div class="mobile-nav" [class.open]="isMobileMenuOpen">
+  <div class="mobile-nav-header">
+    <div class="close-btn" (click)="closeMobileMenu()">✕</div>
+  </div>
+  <div class="mobile-nav-content">
+    <div class="mobile-nav-links">
+      <ng-container *ngFor="let item of navItems">
+        <ng-container *ngIf="!item.sections">
+          <a routerLink="{{ item.link }}" (click)="closeMobileMenu()">{{
+            item.name
+          }}</a>
+        </ng-container>
+        <ng-container *ngIf="item.sections">
+          <div class="mobile-dropdown">
+            <a routerLink="{{ item.link }}" (click)="closeMobileMenu()">{{
+              item.name
+            }}</a>
+            <div
+              class="mobile-dropdown-toggle"
+              (click)="toggleMobileDropdown($event)"
+            >
+              <img src="assets/images/dropdown-icon.png" alt="arrow-down" />
+            </div>
+            <div class="mobile-dropdown-content">
+              <div *ngFor="let section of item.sections" class="mobile-section">
+                <h4 class="section-title">{{ section.title }}</h4>
+                <a
+                  *ngFor="let category of section.categories"
+                  routerLink="{{ category.link }}"
+                  class="category-item"
+                  (click)="onCategoryClick(category.link)"
+                >
+                  {{ category.name }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="mobile-nav-actions">
+      <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Search"
+          (input)="search($event)"
+          (keyup.enter)="submitSearch()"
+        />
+        <img
+          src="./assets/images/search-icon.png"
+          alt="search-icon"
+          (click)="submitSearch()"
+        />
+      </div>
+      <div class="mobile-action-icons">
+        <a routerLink="/cart" (click)="closeMobileMenu()">
+          <img
+            src="./assets/images/shopping-cart-icon.png"
+            alt="shopping-cart-icon"
+          />
+        </a>
+        <a routerLink="/profile" (click)="closeMobileMenu()">
+          <img
+            src="./assets/images/user-profile-icon.png"
+            alt="user-profile-icon"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop for mobile menu -->
+<div
+  class="mobile-nav-backdrop"
+  [class.open]="isMobileMenuOpen"
+  (click)="closeMobileMenu()"
+></div>

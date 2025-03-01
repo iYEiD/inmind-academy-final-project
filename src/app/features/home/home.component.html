@@ -7,7 +7,7 @@
     />
 
     <div class="main-background-image-overlay">
-      <h1 class="title">Big c:</h1>
+      <h1 class="title">Otters</h1>
       <h2 class="subtitle">
         Timeless Fashion, Electronics, <br />Jewelery, in one place
       </h2>
@@ -82,25 +82,18 @@
     <div class="cards-container">
       <ng-container *ngIf="products$ | async as products; else loadingSkeleton">
         <app-product-card
-          *ngFor="let product of products.topExplore"
+          *ngFor="let product of products.exploreProducts"
           [product]="product"
         ></app-product-card>
       </ng-container>
       <ng-template #loadingSkeleton>
-        <div class="product-skeleton" *ngFor="let item of [1, 2, 3, 4]"></div>
+        <div
+          class="product-skeleton"
+          *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8]"
+        ></div>
       </ng-template>
     </div>
-    <div class="cards-container">
-      <ng-container *ngIf="products$ | async as products; else loadingSkeleton">
-        <app-product-card
-          *ngFor="let product of products.bottomExplore"
-          [product]="product"
-        ></app-product-card>
-      </ng-container>
-      <ng-template #loadingSkeleton>
-        <div class="product-skeleton" *ngFor="let item of [1, 2, 3, 4]"></div>
-      </ng-template>
-    </div>
+
     <div class="view-all-button-container">
       <button class="view-all-button" (click)="navigateToProducts()">
         View All Products
