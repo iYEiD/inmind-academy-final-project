@@ -1,51 +1,97 @@
 @import "../../../../app/shared/styles/variables";
+@import "../../../../app/shared/styles/mixins";
 
 .footer {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 0px 100px;
+  flex-direction: column;
+  padding: $spacing-xl $spacing-4xl;
   background-color: $secondary-color;
   color: $primary-color;
 
+  @include respond-to(md) {
+    padding: $spacing-lg $spacing-xl;
+  }
+
+  @include respond-to(sm) {
+    padding: $spacing-md $spacing-lg;
+  }
+
   .row {
-    margin-top: 60px;
+    margin-top: $spacing-2xl;
     display: flex;
     justify-content: space-between;
     width: 100%;
+    flex-wrap: wrap;
+
+    @include respond-to(md) {
+      gap: $spacing-xl;
+    }
+
+    @include respond-to(sm) {
+      flex-direction: column;
+      gap: $spacing-lg;
+    }
 
     .footer-section {
-      margin-right: 20px;
+      flex: 1;
+      min-width: 200px;
+      margin-right: $spacing-lg;
+
+      @include respond-to(sm) {
+        margin-right: 0;
+        margin-bottom: $spacing-lg;
+      }
 
       h2 {
-        margin-bottom: 18px;
+        @include heading-2;
+        margin-bottom: $spacing-md;
         color: $primary-color;
       }
 
       h3 {
-        margin-bottom: 20px;
+        @include heading-3;
+        margin-bottom: $spacing-md;
+        color: $primary-color;
       }
 
       p {
-        margin: 5px 0;
+        @include body-text;
+        margin: $spacing-xs 0;
         color: $primary-color;
+        transition: color $transition-fast;
+
+        &:hover {
+          color: $primary-color-dark;
+          cursor: pointer;
+        }
       }
 
       a {
         color: $primary-color;
+        text-decoration: none;
+        transition: color $transition-fast;
+        &:hover {
+          color: $primary-color-dark;
+        }
       }
 
       &.newsletter {
-        input {
-          width: 100%;
-          padding: 10px;
-          margin-bottom: 10px;
-          border: 1px solid $primary-color;
-          background-color: transparent;
-          color: $primary-color;
+        flex: 2;
+
+        @include respond-to(md) {
+          flex: 1 0 100%;
         }
+
+        input {
+          @include input-field;
+        }
+
         p {
-          margin-bottom: 20px;
+          margin-bottom: $spacing-md;
+          font-size: $font-size-sm;
+          a {
+            text-decoration: underline;
+          }
         }
       }
     }
@@ -53,10 +99,17 @@
 
   .footer-bottom {
     display: flex;
-    text-align: center;
-    margin-top: 60px;
+    justify-content: center;
+    margin-top: $spacing-2xl;
+    margin-bottom: $spacing-lg;
+
     p {
       color: $primary-color;
+      font-size: $font-size-sm;
     }
+  }
+
+  .subscribe-button {
+    @include white-button;
   }
 }
