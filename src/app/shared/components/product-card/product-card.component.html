@@ -1,14 +1,17 @@
-<div class="product-card" (click)="navigateToDetails()">
-  <div class="product-card-image">
+<div class="product-card">
+  <div class="product-card-image" (click)="navigateToDetails()">
     <img [src]="product.thumbnail" alt="Product Image" />
-    <h3 class="product-card-title">{{ product.title }}</h3>
+    <div class="image-overlay">
+      <span class="view-details">View Details</span>
+    </div>
   </div>
 
+  <h3 class="product-card-title">{{ product.title }}</h3>
   <div class="product-card-content">
     <p class="product-card-price">${{ product.price }}</p>
-    <div class="product-card-rating">
+    <div class="product-card-actions">
       <app-star-rating [rating]="product.rating"></app-star-rating>
-      <p class="product-card-rating-count">({{ product.reviews.length }})</p>
+      <button class="product-card-button">Add to Cart</button>
     </div>
   </div>
 </div>
