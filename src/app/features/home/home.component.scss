@@ -1,5 +1,6 @@
 @import "../../shared/styles/variables";
 @import "../../shared/styles/mixins";
+
 .hero-section {
   .container {
     position: relative;
@@ -11,35 +12,112 @@
     }
 
     .main-background-image-overlay {
-      padding-top: $spacing-sm;
-      padding-bottom: $spacing-3xl;
+      padding-block-start: $spacing-sm;
+      padding-block-end: $spacing-3xl;
       position: absolute;
       bottom: 0;
       width: 100%;
       display: flex;
       flex-direction: column;
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: rgba(0, 0, 0, 0.4);
       flex-wrap: wrap;
       align-content: flex-start;
       align-items: flex-start;
+
+      @include respond-to(md) {
+        padding-block-end: $spacing-md;
+      }
+      @include respond-to(sm) {
+        padding-block-end: $spacing-sm;
+      }
+      @include respond-to(xs) {
+        padding-bottom: $spacing-xs;
+      }
       .title {
         margin-inline-start: $spacing-4xl;
         color: $primary-color;
         text-align: center;
         margin-block-end: $spacing-sm;
         text-shadow: $subtle-text-shadow;
+
+        @include respond-to(md) {
+          margin-inline-start: $spacing-xl;
+          font-size: $font-size-3xl;
+          text-align: center;
+        }
+
+        @include respond-to(sm) {
+          margin-inline-start: $spacing-lg;
+          font-size: $font-size-2xl;
+          text-align: center;
+          width: 100%;
+          margin-inline-start: 0;
+        }
+
+        @include respond-to(xs) {
+          margin-inline-start: 0;
+          font-size: $font-size-xl;
+          text-align: center;
+          width: 100%;
+        }
       }
+
       .subtitle {
         margin-inline-start: $spacing-4xl;
         color: $primary-color;
         text-align: flex-start;
         font-size: $font-size-xl;
         font-weight: $font-weight-light;
+
+        @include respond-to(md) {
+          margin-inline-start: $spacing-xl;
+          font-size: $font-size-lg;
+        }
+
+        @include respond-to(sm) {
+          margin-inline-start: $spacing-lg;
+          font-size: $font-size-md;
+          text-align: center;
+          width: 100%;
+          margin-inline-start: 0;
+        }
+
+        @include respond-to(xs) {
+          margin-inline-start: 0;
+          font-size: $font-size-base;
+          text-align: center;
+          width: 100%;
+        }
       }
+
       .shop-button {
         margin-inline-start: $spacing-4xl;
         margin-block-start: $spacing-lg;
         @include white-button;
+
+        @include respond-to(md) {
+          margin-inline-start: $spacing-xl;
+        }
+
+        @include respond-to(sm) {
+          margin-inline-start: 0;
+          align-self: center;
+        }
+
+        @include respond-to(xs) {
+          margin-inline-start: 0;
+          align-self: center;
+        }
+      }
+
+      @include respond-to(sm) {
+        align-items: center;
+        align-content: center;
+      }
+
+      @include respond-to(xs) {
+        align-items: center;
+        align-content: center;
       }
     }
   }
@@ -47,29 +125,78 @@
 
 .categories-section {
   .container {
-    margin: $spacing-3xl $spacing-4xl;
-    padding: 0;
+    margin: $spacing-3xl auto;
+    padding: 0 $spacing-4xl;
+
+    @include respond-to(md) {
+      padding: 0 $spacing-xl;
+    }
+
+    @include respond-to(sm) {
+      padding: 0 $spacing-lg;
+    }
+
+    @include respond-to(xs) {
+      padding: 0 $spacing-md;
+    }
+
     .section-title {
       margin-block-end: $spacing-lg;
       text-shadow: $subtle-text-shadow;
+      text-align: left;
+
+      @include respond-to(sm) {
+        font-size: $font-size-2xl;
+        text-align: center;
+      }
+
+      @include respond-to(xs) {
+        text-align: center;
+      }
     }
+
     .categories-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+
+      @include respond-to(md) {
+        justify-content: space-around;
+        gap: $spacing-lg;
+      }
+
+      @include respond-to(sm) {
+        justify-content: center;
+      }
+
+      @include respond-to(xs) {
+        justify-content: center;
+      }
+
       .category-card {
         gap: $spacing-lg;
         position: relative;
         cursor: pointer;
+        margin-block-end: $spacing-lg;
+
         &:hover {
           transform: scale(1.05);
           transition: transform $transition-base;
         }
+
         .category-image {
           width: 18.75rem; // 300px
-
           object-fit: contain;
+
+          @include respond-to(sm) {
+            width: 15rem; // 240px
+          }
+
+          @include respond-to(xs) {
+            width: 100%;
+          }
         }
+
         .category-title {
           color: $primary-color;
           text-shadow: $subtle-text-shadow;
@@ -79,6 +206,7 @@
           display: flex;
           width: 100%;
           justify-content: center;
+          padding: $spacing-xs;
         }
       }
     }
@@ -86,41 +214,115 @@
 }
 
 .best-sellers-section {
-  margin: 0 $spacing-4xl $spacing-3xl $spacing-4xl;
+  margin: 0 auto $spacing-3xl;
+  padding: 0 $spacing-4xl;
+
+  @include respond-to(md) {
+    padding: 0 $spacing-xl;
+  }
+
+  @include respond-to(sm) {
+    padding: 0 $spacing-lg;
+  }
+
+  @include respond-to(xs) {
+    padding: 0 $spacing-md;
+  }
+
   .container {
     .section-title {
       margin-block-end: $spacing-lg;
       text-shadow: $subtle-text-shadow;
+      text-align: left;
+
+      @include respond-to(sm) {
+        font-size: $font-size-2xl;
+        text-align: center;
+        margin-block-end: $spacing-sm;
+        width: 100%;
+      }
+
+      @include respond-to(xs) {
+        text-align: center;
+        margin-block-end: $spacing-sm;
+        width: 100%;
+      }
     }
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
+    @include respond-to(sm) {
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @include respond-to(xs) {
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .view-all-button {
       @include brown-button;
       margin-block-end: $spacing-sm;
+
+      @include respond-to(sm) {
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        margin-block-start: 0;
+        margin-block-end: $spacing-md;
+        order: 2;
+      }
+
+      @include respond-to(xs) {
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        margin-block-start: 0;
+        margin-block-end: $spacing-md;
+        order: 2;
+      }
     }
   }
+
   .cards-container {
     gap: $spacing-lg;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
+    @include respond-to(md) {
+      justify-content: space-around;
+    }
+
+    @include respond-to(sm) {
+      justify-content: center;
+    }
+
+    @include respond-to(xs) {
+      justify-content: center;
+    }
   }
 }
 
 .sales-section {
   display: flex;
   position: relative;
-  margin-bottom: $spacing-3xl;
+  margin-block-end: $spacing-3xl;
+
   .container {
     margin: 0;
     width: 100%;
     padding: 0;
+
     .sales-image {
       display: flex;
       width: 100%;
       object-fit: cover;
+      min-height: 15rem;
     }
+
     .text-container {
       display: flex;
       flex-direction: column;
@@ -130,14 +332,39 @@
       bottom: 0;
       top: 0;
       width: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+
       .title {
         margin-block-end: $spacing-sm;
         font-size: $font-size-2xl;
+        color: $primary-color;
+        text-shadow: $subtle-text-shadow;
+
+        @include respond-to(sm) {
+          font-size: $font-size-xl;
+        }
+
+        @include respond-to(xs) {
+          font-size: $font-size-lg;
+        }
       }
+
       .subtitle {
         font-size: $font-size-lg;
         font-weight: $font-weight-light;
+        color: $primary-color;
+        text-align: center;
+        padding: 0 $spacing-md;
+
+        @include respond-to(sm) {
+          font-size: $font-size-md;
+        }
+
+        @include respond-to(xs) {
+          font-size: $font-size-base;
+        }
       }
+
       .shop-button {
         @include white-button;
         margin-block-start: $spacing-lg;
@@ -147,16 +374,41 @@
 }
 
 .explore-section {
-  margin: 0 $spacing-4xl $spacing-3xl $spacing-4xl;
+  margin: 0 auto $spacing-3xl;
+  padding: 0 $spacing-4xl;
+
+  @include respond-to(md) {
+    padding: 0 $spacing-xl;
+  }
+
+  @include respond-to(sm) {
+    padding: 0 $spacing-lg;
+  }
+
+  @include respond-to(xs) {
+    padding: 0 $spacing-md;
+  }
+
   .container {
     .section-title {
       margin-block-end: $spacing-lg;
       text-shadow: $subtle-text-shadow;
+      text-align: left;
+
+      @include respond-to(sm) {
+        font-size: $font-size-2xl;
+        text-align: center;
+      }
+
+      @include respond-to(xs) {
+        text-align: center;
+      }
     }
     margin: 0;
     width: 100%;
     padding: 0;
   }
+
   .cards-container {
     gap: $spacing-lg;
     margin-block-end: $spacing-lg;
@@ -164,41 +416,75 @@
     flex-wrap: wrap;
     justify-content: space-between;
     grid-template-columns: repeat(4, minmax(15.625rem, 1fr));
+
+    @include respond-to(md) {
+      justify-content: space-around;
+    }
+
+    @include respond-to(sm) {
+      justify-content: center;
+    }
+
+    @include respond-to(xs) {
+      justify-content: center;
+    }
   }
+
   .view-all-button-container {
     display: flex;
     justify-content: center;
     margin-block-start: $spacing-lg;
   }
+
   .view-all-button {
     @include brown-button;
+    height: 3.125rem;
 
-    height: 3.125rem; // 50px
+    @include respond-to(xs) {
+      width: 100%;
+    }
   }
 }
 
 .services-section {
-  margin-bottom: $spacing-3xl;
+  margin-block-end: $spacing-3xl;
+  padding: 0 $spacing-md;
+
   .container {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    gap: $spacing-lg;
+
     .service-card {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      text-align: center;
+      padding: $spacing-md;
+
+      @include respond-to(md) {
+        flex-basis: 45%;
+      }
+
+      @include respond-to(xs) {
+        flex-basis: 100%;
+      }
     }
   }
 }
 
 .product-skeleton {
-  // To refactor into product-card.component.scss
   width: 16.875rem; // 270px
   height: 25rem; // 400px
   background: #f0f0f0;
   border-radius: $border-radius-md;
   animation: pulse 1.5s infinite;
+
+  @include respond-to(xs) {
+    width: 100%;
+  }
 
   @keyframes pulse {
     0%,

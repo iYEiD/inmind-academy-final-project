@@ -66,16 +66,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
   topRatedProducts: ProductDTO[] = [];
-  topExploreProducts: ProductDTO[] = [];
-  bottomExploreProducts: ProductDTO[] = [];
+  exploreProducts: ProductDTO[] = [];
   isLoading = true;
   constructor(private productService: ProductsService) {}
 
   products$ = this.productService.getProducts(12, 0).pipe(
     map((response) => ({
       topRated: response.products.slice(0, 4),
-      topExplore: response.products.slice(4, 8),
-      bottomExplore: response.products.slice(8, 12),
+      exploreProducts: response.products.slice(4, 12),
     }))
   );
 
@@ -86,8 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (products) => {
           this.topRatedProducts = products.products.slice(0, 4);
-          this.topExploreProducts = products.products.slice(4, 8);
-          this.bottomExploreProducts = products.products.slice(8, 12);
+          this.exploreProducts = products.products.slice(4, 12);
           this.isLoading = false;
         },
         error: () => (this.isLoading = false),
