@@ -3,7 +3,7 @@
 
 nav {
   background-color: $primary-color;
-  border-bottom: 1px solid $tertiary-color;
+  border-block-end: 1px solid $tertiary-color;
 
   .container {
     display: flex;
@@ -147,7 +147,7 @@ a {
     display: flex;
     justify-content: flex-end;
     padding: $spacing-md;
-    border-bottom: 1px solid $tertiary-color;
+    border-block-end: 1px solid $tertiary-color;
 
     .close-btn {
       font-size: $font-size-xl;

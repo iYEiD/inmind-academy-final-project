@@ -4,25 +4,35 @@
     <h1>Log In</h1>
     <p>Enter your details below</p>
     <form (ngSubmit)="onLogin()">
-      <app-input
-        type="text"
-        id="username"
-        name="username"
-        [value]="userLogin.username"
-        (valueChange)="userLogin.username = $event"
-        placeholder="Username"
-      ></app-input>
-      <app-input
-        type="password"
-        id="password"
-        name="password"
-        [value]="userLogin.password"
-        (valueChange)="userLogin.password = $event"
-        placeholder="Password"
-      ></app-input>
+      <div class="form-group">
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="userLogin.username"
+          placeholder="Username"
+          class="input-field"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="userLogin.password"
+          placeholder="Password"
+          class="input-field"
+        />
+      </div>
       <div class="login-form-actions">
-        <app-button type="submit">Log In</app-button>
-        <app-button type="gmail">Login with Gmail</app-button>
+        <button type="submit" class="login-button">Log In</button>
+        <button type="button" class="gmail-button">
+          <img
+            src="../../../../../assets/images/gmail-icon.png"
+            alt="gmail-icon"
+          />
+          Login with Gmail
+        </button>
         <p>Don't have an account? <a href="#">Sign up</a></p>
       </div>
     </form>

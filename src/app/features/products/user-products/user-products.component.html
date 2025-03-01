@@ -3,9 +3,11 @@
     *ngFor="let product of products; trackBy: trackByProductId"
     [product]="product"
   ></app-product-card>
+
+  <div *ngIf="products.length === 0" class="no-products">No products found</div>
 </div>
 
-<div class="pagination-controls">
+<div class="pagination-controls" *ngIf="totalProducts > 0">
   <button (click)="previousPage()" [disabled]="currentPage === 1">
     Previous
   </button>

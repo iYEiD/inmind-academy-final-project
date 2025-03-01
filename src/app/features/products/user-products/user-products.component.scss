@@ -1,27 +1,67 @@
+@import "../../../../app/shared/styles/variables";
+@import "../../../../app/shared/styles/mixins";
+
 .products-container {
-  padding: 60px 100px;
+  padding: $spacing-4xl $spacing-3xl;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: $spacing-lg;
+  min-height: 50vh;
+}
+
+.no-products {
+  width: 100%;
+  text-align: center;
+  padding: $spacing-3xl 0;
+  @include heading-3;
+  color: $tertiary-color;
 }
 
 .pagination-controls {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  padding: 20px;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
 
   button {
-    padding: 8px 16px;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
+    padding: $spacing-sm $spacing-md;
+    background-color: $primary-color-light;
+    border: 1px solid $primary-color-dark;
     cursor: pointer;
+    border-radius: $border-radius-sm;
+    transition: background-color $transition-fast;
+
+    &:hover:not(:disabled) {
+      background-color: $primary-color-dark;
+    }
 
     &:disabled {
-      background-color: #e0e0e0;
+      background-color: $primary-color-dark;
       cursor: not-allowed;
+      opacity: 0.7;
     }
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    @include body-text;
+    color: $secondary-color;
+  }
+}
+
+@include respond-to(md) {
+  .products-container {
+    padding: $spacing-3xl $spacing-xl;
+    gap: $spacing-md;
+  }
+}
+
+@include respond-to(sm) {
+  .products-container {
+    padding: $spacing-2xl $spacing-lg;
+    gap: $spacing-sm;
   }
 }

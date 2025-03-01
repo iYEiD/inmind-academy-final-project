@@ -1,36 +1,118 @@
+@import "../../../../../app/shared/styles/variables";
+@import "../../../../../app/shared/styles/mixins";
+
 .login-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  padding: 60px 0px 60px 0px;
+  padding: $spacing-3xl $spacing-xl;
+  max-width: 87.5rem;
+  margin: 0 auto;
+
   img {
-    max-width: 816px;
-    max-height: 781px;
+    max-width: 55%;
+    max-height: 48.8125rem;
     object-fit: cover;
+
+    @include respond-to(md) {
+      display: none; // Hide image on smaller screens
+    }
   }
+
   .login-form {
-    margin-bottom: 140px;
-    margin-left: 47px;
+    flex: 1;
+    margin-block-end: $spacing-4xl;
+    margin-inline-start: $spacing-xl;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    h1 {
-      margin-bottom: 18px;
+
+    @include respond-to(md) {
+      margin-inline: auto; // Center the form on smaller screens
+      align-items: center;
+      margin-block-end: $spacing-2xl;
     }
+
+    h1 {
+      margin-block-end: $spacing-md;
+    }
+
     p {
-      margin: 0px;
-      margin-bottom: 40px;
+      margin: 0;
+      margin-block-end: $spacing-xl;
+    }
+
+    form {
+      width: 100%;
+      max-width: 23.125rem;
+    }
+
+    .form-group {
+      margin-block-end: $spacing-md;
+      width: 100%;
+
+      .input-field {
+        background-color: $primary-color;
+        border: none;
+        border-block-end: 0.0625rem solid $tertiary-color;
+        padding: 0 0 $spacing-xs 0;
+        width: 100%;
+        height: $spacing-xl;
+        font-size: $font-size-sm;
+        color: $tertiary-color;
+
+        &:focus {
+          outline: none;
+          border-block-end: 0.125rem solid $secondary-color;
+        }
+      }
     }
   }
 
   .login-form-actions {
-    margin-top: 30px;
+    margin-block-start: $spacing-lg;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    app-button {
-      width: 100%;
+    gap: $spacing-sm;
+    width: 100%;
+
+    button {
+      width: 80%;
+      padding: $spacing-sm $spacing-lg;
+      border-radius: $border-radius-sm;
+      cursor: pointer;
+      transition: background-color $transition-base;
+      font-size: $font-size-base;
     }
+
+    .login-button {
+      @include brown-button;
+      width: 80%;
+    }
+
+    .gmail-button {
+      @include white-button;
+      border: 0.0625rem solid $secondary-color;
+      width: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: $spacing-sm;
+
+      img {
+        width: 1.25rem;
+        height: 1.25rem;
+        display: inline-block;
+      }
+    }
+
+    p {
+      margin-block-start: $spacing-md;
+    }
+  }
+
+  @include respond-to(sm) {
+    padding: $spacing-xl $spacing-md;
   }
 }
