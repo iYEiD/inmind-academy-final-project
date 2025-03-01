@@ -5,12 +5,18 @@ import { UserProductsComponent } from './features/products/user-products/user-pr
 import { adminAuthGuard } from './guards/admin-auth.guard';
 import { HomeComponent } from './features/home/home.component';
 import { ProductDetailsComponent } from './features/products/product-details/product-details.component';
-import { ShoppingCartComponent } from './features/shopping-cart/components/shopping-cart.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'products', component: UserProductsComponent },
-  { path: 'shopping-cart', component: ShoppingCartComponent },
+  {
+    path: 'shopping-cart',
+    loadChildren: () =>
+      import('./features/shopping-cart/shopping-cart.module').then(
+        (m) => m.ShoppingCartModule
+      ),
+  },
   { path: 'product-details/:productName', component: ProductDetailsComponent },
   {
     path: 'admin/products',

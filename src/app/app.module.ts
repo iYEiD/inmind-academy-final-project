@@ -10,11 +10,13 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { StoreModule } from '@ngrx/store';
 import { cartReducer } from './shared/states/shopping-cart/cart.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
     FeaturesModule,
