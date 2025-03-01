@@ -1,0 +1,105 @@
+@import "./variables";
+
+// Media query mixins
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: $breakpoint-xs) {
+      @content;
+    }
+  } @else if $breakpoint == sm {
+    @media (max-width: $breakpoint-sm) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @media (max-width: $breakpoint-md) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (max-width: $breakpoint-lg) {
+      @content;
+    }
+  } @else if $breakpoint == xl {
+    @media (max-width: $breakpoint-xl) {
+      @content;
+    }
+  }
+}
+
+@mixin white-button {
+  background-color: $primary-color;
+  color: $secondary-color;
+  border: none;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: background-color $transition-base;
+  width: auto;
+  height: 2.5rem;
+  &:hover {
+    background-color: $secondary-color-lighter;
+    color: $primary-color;
+  }
+}
+
+@mixin brown-button {
+  background-color: $secondary-color;
+  color: $primary-color;
+  border: none;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: background-color $transition-base;
+  width: auto;
+  height: 2.5rem;
+  &:hover {
+    background-color: $secondary-color-lighter;
+    color: $primary-color;
+  }
+}
+
+// Typography mixins
+@mixin heading-1 {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-bold;
+  line-height: 1.2;
+  margin: 0;
+}
+
+@mixin heading-2 {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-semibold;
+  line-height: 1.3;
+  margin: 0;
+}
+
+@mixin heading-3 {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+  line-height: 1.4;
+  margin: 0;
+}
+
+@mixin body-text {
+  font-size: $font-size-base;
+  font-weight: $font-weight-regular;
+  line-height: 1.5;
+  margin: 0;
+}
+
+// Container mixin
+@mixin container($padding: true) {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  @if $padding {
+    padding-inline: $spacing-lg;
+
+    @include respond-to(md) {
+      padding-inline: $spacing-md;
+    }
+
+    @include respond-to(sm) {
+      padding-inline: $spacing-sm;
+    }
+  }
+}
