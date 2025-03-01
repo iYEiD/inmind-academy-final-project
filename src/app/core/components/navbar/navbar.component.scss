@@ -1,4 +1,5 @@
 @import "../../../shared/styles/_variables.scss";
+@import "../../../shared/styles/_mixins.scss";
 
 nav {
   background-color: $primary-color;
@@ -9,7 +10,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     margin: 0px 100px;
-    padding: 35px 0px 30px 0px;
+    padding: $spacing-xl 0px $spacing-lg 0px;
   }
 
   .logo {
@@ -33,13 +34,13 @@ nav {
       position: absolute;
       left: 0;
       top: 100%;
-      z-index: 10;
+      z-index: $z-index-dropdown;
       background-color: $primary-color;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      box-shadow: $shadow-md;
       width: 1000px;
       grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      padding: 25px;
+      gap: $spacing-lg;
+      padding: $spacing-md;
     }
 
     &:hover .dropdown-content {
@@ -51,7 +52,7 @@ nav {
       align-items: center;
 
       img {
-        margin-left: 5px;
+        margin-inline-start: $spacing-xs;
       }
     }
   }
@@ -59,30 +60,30 @@ nav {
   .nav-actions {
     display: flex;
     align-items: center;
-    gap: 26px;
+    gap: $spacing-md;
   }
 
   .search-bar {
     display: flex;
     align-items: center;
-    background-color: #d9d9d9;
-    border-radius: 20px;
-    padding: 5px 10px;
+    background-color: $primary-color-dark;
+    border-radius: $border-radius-md;
+    padding: $spacing-xs $spacing-sm;
 
     input {
       width: 100%;
       border: none;
       background: none;
       outline: none;
-      padding: 5px;
-      font-size: 16px;
+      padding: $spacing-xs;
+      font-size: $font-size-base;
       color: $secondary-color;
     }
 
     img {
       width: 20px;
       height: 20px;
-      margin-left: 10px;
+      margin-inline-start: $spacing-sm;
       cursor: pointer;
     }
   }
@@ -95,7 +96,7 @@ a {
 
 .dropdown-section {
   min-width: 250px;
-  padding: 0 15px;
+  padding: 0 $spacing-sm;
 
   .section-title {
     white-space: nowrap;
@@ -104,53 +105,207 @@ a {
 
 .category-item {
   color: $secondary-color;
-  margin-bottom: 2px;
-  transition: all 0.2s ease;
+  margin-block-end: $spacing-xs;
+  transition: all $transition-fast;
 
   &:hover {
-    color: darken($secondary-color, 20%);
+    color: $secondary-color-lighter;
     background-color: rgba(255, 255, 255, 0.2);
     transform: translateX(2px);
   }
 }
 
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    margin: 0 20px !important;
-  }
+// Burger menu and mobile navigation styles
+.burger-menu {
+  display: none;
+  cursor: pointer;
 
-  .nav-links {
-    flex-direction: column;
-    gap: 15px !important;
-  }
-
-  .dropdown-content {
-    grid-template-columns: repeat(2, 1fr) !important;
-    width: 240% !important;
-    gap: 15px;
-    padding: 15px;
-  }
-
-  .dropdown-section {
-    min-width: 100%;
-    padding: 0;
-  }
-
-  .nav-actions {
-    margin-top: 15px;
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .search-bar {
-    width: 100%;
+  img {
+    width: 30px;
+    height: 30px;
   }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  max-width: 320px;
+  height: 100vh;
+  background-color: $primary-color;
+  z-index: $z-index-modal;
+  box-shadow: $shadow-lg;
+  transition: left $transition-base;
+  overflow-y: auto;
+
+  &.open {
+    left: 0;
+  }
+
+  .mobile-nav-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing-md;
+    border-bottom: 1px solid $tertiary-color;
+
+    .close-btn {
+      font-size: $font-size-xl;
+      cursor: pointer;
+      color: $secondary-color;
+    }
+  }
+
+  .mobile-nav-content {
+    padding: $spacing-md;
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin-block-end: $spacing-lg;
+
+    a {
+      font-size: $font-size-md;
+      padding: $spacing-xs 0;
+    }
+  }
+
+  .mobile-dropdown {
+    position: relative;
+
+    .mobile-dropdown-toggle {
+      position: absolute;
+      right: 0;
+      top: $spacing-xs;
+      cursor: pointer;
+
+      img {
+        width: 15px;
+        height: 15px;
+        transition: transform $transition-base;
+      }
+    }
+
+    .mobile-dropdown-content {
+      display: none;
+      margin-block-start: $spacing-sm;
+      padding-inline-start: $spacing-sm;
+    }
+
+    &.active {
+      .mobile-dropdown-toggle img {
+        transform: rotate(180deg);
+      }
+
+      .mobile-dropdown-content {
+        display: block;
+      }
+    }
+  }
+
+  .mobile-section {
+    margin-block-end: $spacing-sm;
+
+    .section-title {
+      margin-block-end: $spacing-xs;
+      font-size: $font-size-base;
+    }
+
+    .category-item {
+      display: block;
+      padding: $spacing-xs 0;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .mobile-nav-actions {
+    .search-bar {
+      margin-block-end: $spacing-md;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      background-color: $primary-color-dark;
+      border-radius: $border-radius-md;
+      padding: $spacing-xs $spacing-sm;
+
+      input {
+        width: 100%;
+        border: none;
+        background: none;
+        outline: none;
+        padding: $spacing-xs;
+        font-size: $font-size-base;
+        color: $secondary-color;
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        margin-inline-start: $spacing-sm;
+        cursor: pointer;
+      }
+    }
+
+    .mobile-action-icons {
+      display: flex;
+      gap: $spacing-md;
+
+      a {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        img {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+}
+
+.mobile-nav-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: $z-index-modal-backdrop;
+  display: none;
+
+  &.open {
+    display: block;
+  }
+}
+
+// Media queries
+@media (max-width: $breakpoint-sm) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .burger-menu {
+    display: block;
+  }
+
+  nav .container {
+    margin: 0 $spacing-md !important;
+    padding: $spacing-md 0;
+  }
+}
+
+@media (min-width: ($breakpoint-sm + 1px)) {
+  .mobile-nav {
+    display: none;
+  }
+}
+
+@media (min-width: ($breakpoint-sm + 1px)) and (max-width: $breakpoint-md) {
   .container {
-    margin: 0 50px !important;
+    margin: 0 $spacing-xl !important;
   }
 
   .dropdown-content {

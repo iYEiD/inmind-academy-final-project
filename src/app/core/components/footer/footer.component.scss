@@ -17,7 +17,7 @@
   }
 
   .row {
-    margin-top: $spacing-2xl;
+    margin-block-start: $spacing-2xl;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -35,22 +35,22 @@
     .footer-section {
       flex: 1;
       min-width: 200px;
-      margin-right: $spacing-lg;
+      margin-inline-end: $spacing-lg;
 
       @include respond-to(sm) {
-        margin-right: 0;
-        margin-bottom: $spacing-lg;
+        margin-inline-end: 0;
+        margin-block-end: $spacing-lg;
       }
 
       h2 {
         @include heading-2;
-        margin-bottom: $spacing-md;
+        margin-block-end: $spacing-md;
         color: $primary-color;
       }
 
       h3 {
         @include heading-3;
-        margin-bottom: $spacing-md;
+        margin-block-end: $spacing-md;
         color: $primary-color;
       }
 
@@ -87,7 +87,7 @@
         }
 
         p {
-          margin-bottom: $spacing-md;
+          margin-block-end: $spacing-md;
           font-size: $font-size-sm;
           a {
             text-decoration: underline;
@@ -100,8 +100,8 @@
   .footer-bottom {
     display: flex;
     justify-content: center;
-    margin-top: $spacing-2xl;
-    margin-bottom: $spacing-lg;
+    margin-block-start: $spacing-2xl;
+    margin-block-end: $spacing-lg;
 
     p {
       color: $primary-color;
