@@ -7,6 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const routes: Routes = [{ path: '', component: ShoppingCartComponent }];
 
@@ -21,6 +25,10 @@ const routes: Routes = [{ path: '', component: ShoppingCartComponent }];
     MatFormFieldModule,
     MatButtonModule,
     MatRadioModule,
+    MatTableModule,
+    MatIconModule,
+    MatSortModule,
+    MatPaginatorModule,
   ],
 })
 export class ShoppingCartModule {}

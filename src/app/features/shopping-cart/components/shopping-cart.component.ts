@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -13,6 +13,8 @@ import {
   removeFromCart,
   clearCart,
 } from '../../../shared/states/shopping-cart/cart.actions';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -21,12 +23,24 @@ import {
 })
 export class ShoppingCartComponent implements OnInit, OnDestroy {
   cartItems: ICartItem[] = [];
+  dataSource: MatTableDataSource<ICartItem>;
   subtotal: number = 0;
   vat: number = 0;
   total: number = 0;
   billingForm: FormGroup;
   paymentMethod: 'card' | 'cash' = 'card';
   private destroy$ = new Subject<void>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  // Define columns for the Material table
+  displayedColumns: string[] = [
+    'item',
+    'price',
+    'quantity',
+    'total',
+    'actions',
+  ];
 
   constructor(private store: Store, private fb: FormBuilder) {
     this.billingForm = this.fb.group({
@@ -36,6 +50,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       contactNumber: ['', Validators.required],
     });
+    this.dataSource = new MatTableDataSource<ICartItem>([]);
   }
 
   ngOnInit(): void {
@@ -45,6 +60,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((items) => {
         this.cartItems = items;
+        this.dataSource.data = items;
       });
 
     // Get total price
@@ -56,6 +72,10 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
         this.vat = this.subtotal * 0.2; // 20% VAT
         this.total = this.subtotal + this.vat;
       });
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy(): void {

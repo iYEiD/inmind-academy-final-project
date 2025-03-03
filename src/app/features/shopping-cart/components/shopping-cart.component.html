@@ -83,28 +83,35 @@
     <h2>Your Cart</h2>
 
     <div class="cart-table">
-      <div class="cart-header">
-        <div class="header-item">Item</div>
-        <div class="header-price">Price</div>
-        <div class="header-quantity">Quantity</div>
-        <div class="header-actions">Actions</div>
-      </div>
+      <table mat-table [dataSource]="dataSource">
+        <!-- Item Column -->
+        <ng-container matColumnDef="item">
+          <th mat-header-cell *matHeaderCellDef>Item</th>
+          <td mat-cell *matCellDef="let item">
+            <div class="item-details">
+              <img [src]="item.thumbnail" [alt]="item.title" />
+              <span>{{ item.title }}</span>
+            </div>
+          </td>
+        </ng-container>
 
-      <div class="cart-items-container">
-        <div class="cart-item" *ngFor="let item of cartItems">
-          <div class="item-details">
-            <img [src]="item.thumbnail" alt="{{ item.title }}" />
-            <span>{{ item.title }}</span>
-          </div>
-          <div class="item-price">${{ item.price.toFixed(2) }}</div>
-          <div class="item-quantity">
+        <!-- Price Column -->
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let item">${{ item.price.toFixed(2) }}</td>
+        </ng-container>
+
+        <!-- Quantity Column -->
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>Quantity</th>
+          <td mat-cell *matCellDef="let item">
             <div class="quantity-controls">
               <button
                 mat-icon-button
                 color="primary"
                 (click)="decrementQuantity(item)"
               >
-                -
+                <mat-icon>-</mat-icon>
               </button>
               <input type="text" [value]="item.quantity" readonly />
               <button
@@ -112,20 +119,43 @@
                 color="primary"
                 (click)="incrementQuantity(item)"
               >
-                +
+                <mat-icon>+</mat-icon>
               </button>
             </div>
-          </div>
-          <div class="item-actions">
-            <button mat-stroked-button color="warn" (click)="removeItem(item)">
-              Remove
-            </button>
-          </div>
-        </div>
+          </td>
+        </ng-container>
 
-        <div class="empty-cart-message" *ngIf="cartItems.length === 0">
-          Your cart is empty. <a routerLink="/products">Continue shopping</a>
-        </div>
+        <!-- Total Column -->
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total</th>
+          <td mat-cell *matCellDef="let item">
+            ${{ (item.price * item.quantity).toFixed(2) }}
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Remove</th>
+          <td mat-cell *matCellDef="let item">
+            <button mat-stroked-button color="warn" (click)="removeItem(item)">
+              x
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <mat-paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5]"
+        showFirstLastButtons
+        aria-label="Select page of cart items"
+      ></mat-paginator>
+
+      <div class="empty-cart-message" *ngIf="cartItems.length === 0">
+        Your cart is empty. <a routerLink="/products">Continue shopping</a>
       </div>
 
       <div class="cart-summary">
