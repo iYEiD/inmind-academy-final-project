@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ProductDTO } from '../../../models/product.model';
 import { ProductsService } from '../services/products.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -14,13 +14,12 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   currentPage = 1;
   itemsPerPage = 15;
   totalProducts = 0;
+
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private productService: ProductsService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  productService = inject(ProductsService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.route.queryParams

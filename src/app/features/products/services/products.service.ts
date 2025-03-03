@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ProductDTO } from '../../../models/product.model';
@@ -14,8 +14,7 @@ export class ProductsService {
   private totalSubject = new BehaviorSubject<number>(0);
   products$ = this.productsSubject.asObservable();
   total$ = this.totalSubject.asObservable();
-
-  constructor(private productsApiService: ProductsApiService) {}
+  productsApiService = inject(ProductsApiService);
 
   getProducts(
     limit: number,

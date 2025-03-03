@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthApiService } from './auth-api.service';
@@ -9,10 +9,8 @@ import { ILoginRequest, IAuthResponse } from '../../../models/auth.model';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(
-    private authApiService: AuthApiService,
-    private cookieService: CookieService
-  ) {}
+  authApiService = inject(AuthApiService);
+  cookieService = inject(CookieService);
 
   login(credentials: ILoginRequest): Observable<IAuthResponse> {
     return this.authApiService.login(credentials).pipe(

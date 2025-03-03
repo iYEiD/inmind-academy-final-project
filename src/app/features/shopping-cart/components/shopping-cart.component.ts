@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -42,7 +42,10 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     'actions',
   ];
 
-  constructor(private store: Store, private fb: FormBuilder) {
+  store = inject(Store);
+  fb = inject(FormBuilder);
+
+  constructor() {
     this.billingForm = this.fb.group({
       fullName: ['', Validators.required],
       streetAddress: ['', Validators.required],

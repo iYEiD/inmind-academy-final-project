@@ -69,7 +69,7 @@ export class HomeComponent implements OnDestroy {
   topRatedProducts: ProductDTO[] = [];
   exploreProducts: ProductDTO[] = [];
   isLoading = true;
-  constructor(private productService: ProductsService) {}
+  productService = inject(ProductsService);
 
   products$ = this.productService.getProducts(12, 0).pipe(
     map((response) => {

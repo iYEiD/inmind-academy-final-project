@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -15,8 +15,7 @@ import { AuthMapper } from '../../../shared/mappers/auth.mapper';
 })
 export class AuthApiService {
   private authUrl = env.authUrl;
-
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
   login(credentials: ILoginRequest): Observable<IAuthResponse> {
     return this.http

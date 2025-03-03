@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ProductsService } from '../services/products.service';
-import { CellApiModule, ColDef } from 'ag-grid-community';
+import { ColDef } from 'ag-grid-community';
 import { AdminDashboardDTO, ICategory } from '../../../models/product.model';
 import { StatusRendererComponent } from './components/status-renderer/status-renderer.component';
 import { ProfileRendererComponent } from './components/profile-renderer/profile-renderer.component';
@@ -62,8 +62,7 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   };
 
   private destroy$ = new Subject<void>();
-
-  constructor(private productService: ProductsService) {}
+  productService = inject(ProductsService);
 
   ngOnInit(): void {
     this.loadProducts();
