@@ -5,6 +5,7 @@ import { ProductDTO } from '../../models/product.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
+import { ProductMapper } from '../../shared/mappers/product.mapper';
 
 @Component({
   selector: 'app-home',
@@ -70,12 +71,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   isLoading = true;
   constructor(private productService: ProductsService) {}
 
-  products$ = this.productService.getProducts(12, 0).pipe(
-    map((response) => ({
-      topRated: response.products.slice(0, 4),
-      exploreProducts: response.products.slice(4, 12),
-    }))
-  );
+  products$ = this.productService
+    .getProducts(12, 0)
+    .pipe(map((response) => ProductMapper.toHomeView(response.products)));
 
   ngOnInit() {
     this.productService
@@ -83,8 +81,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (products) => {
-          this.topRatedProducts = products.products.slice(0, 4);
-          this.exploreProducts = products.products.slice(4, 12);
+          const homeView = ProductMapper.toHomeView(products.products);
+          this.topRatedProducts = homeView.topRated;
+          this.exploreProducts = homeView.exploreProducts;
           this.isLoading = false;
         },
         error: () => (this.isLoading = false),

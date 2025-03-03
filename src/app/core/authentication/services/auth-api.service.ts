@@ -8,6 +8,7 @@ import {
   LoginDTO,
   IAuthResponse,
 } from '../../../models/auth.model';
+import { AuthMapper } from '../../../shared/mappers/auth.mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -18,21 +19,9 @@ export class AuthApiService {
   constructor(private http: HttpClient) {}
 
   login(credentials: ILoginRequest): Observable<IAuthResponse> {
-    return this.http.post<LoginDTO>(`${this.authUrl}/login`, credentials).pipe(
-      map((dto) => ({
-        accessToken: dto.accessToken,
-        refreshToken: dto.refreshToken,
-        user: {
-          id: dto.id,
-          username: dto.username,
-          email: dto.email,
-          firstName: dto.firstName,
-          lastName: dto.lastName,
-          gender: dto.gender,
-          image: dto.image,
-        },
-      }))
-    );
+    return this.http
+      .post<LoginDTO>(`${this.authUrl}/login`, credentials)
+      .pipe(map((dto) => AuthMapper.toAuthResponse(dto)));
   }
 
   getAdmin(): Observable<boolean> {

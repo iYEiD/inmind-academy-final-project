@@ -5,6 +5,7 @@ import { env } from '../../../../environments/env';
 import { ProductDTO } from '../../../models/product.model';
 import { AdminDashboardDTO } from '../../../models/product.model';
 import { map } from 'rxjs/operators';
+import { ProductMapper } from '../../../shared/mappers/product.mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -47,16 +48,7 @@ export class ProductsApiService {
     const url = `${this.apiUrl}?limit=${limit}&skip=${skip}`;
     return this.http.get<{ products: ProductDTO[]; total: number }>(url).pipe(
       map((response) => ({
-        products: response.products.map((p) => ({
-          id: p.id,
-          thumbnail: p.thumbnail,
-          title: p.title,
-          category: p.category,
-          inventory: p.stock,
-          price: p.price,
-          reviews: p.reviews,
-          rating: p.rating,
-        })),
+        products: ProductMapper.toAdminDashboardList(response.products),
         total: response.total,
       }))
     );
