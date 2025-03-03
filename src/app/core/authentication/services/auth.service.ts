@@ -17,16 +17,24 @@ export class AuthService {
   login(credentials: ILoginRequest): Observable<IAuthResponse> {
     return this.authApiService.login(credentials).pipe(
       tap((response) => {
-        this.cookieService.set('accessToken', response.accessToken);
-        this.cookieService.set('refreshToken', response.refreshToken);
+        this.cookieService.set('accessToken', response.accessToken, {
+          path: '/',
+          secure: true,
+          sameSite: 'Strict',
+        });
+        this.cookieService.set('refreshToken', response.refreshToken, {
+          path: '/',
+          secure: true,
+          sameSite: 'Strict',
+        });
         localStorage.setItem('user', JSON.stringify(response.user));
       })
     );
   }
 
   logout(): void {
-    this.cookieService.delete('accessToken');
-    this.cookieService.delete('refreshToken');
+    this.cookieService.delete('accessToken', '/');
+    this.cookieService.delete('refreshToken', '/');
     localStorage.removeItem('user');
   }
 

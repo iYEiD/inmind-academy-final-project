@@ -1,9 +1,9 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductsService } from '../products/services/products.service';
 import { ProductDTO } from '../../models/product.model';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, finalize } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { ProductMapper } from '../../shared/mappers/product.mapper';
 
@@ -12,7 +12,7 @@ import { ProductMapper } from '../../shared/mappers/product.mapper';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   categories = [
@@ -71,24 +71,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   isLoading = true;
   constructor(private productService: ProductsService) {}
 
-  products$ = this.productService
-    .getProducts(12, 0)
-    .pipe(map((response) => ProductMapper.toHomeView(response.products)));
-
-  ngOnInit() {
-    this.productService
-      .getProducts(12, 0)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (products) => {
-          const homeView = ProductMapper.toHomeView(products.products);
-          this.topRatedProducts = homeView.topRated;
-          this.exploreProducts = homeView.exploreProducts;
-          this.isLoading = false;
-        },
-        error: () => (this.isLoading = false),
-      });
-  }
+  products$ = this.productService.getProducts(12, 0).pipe(
+    map((response) => {
+      const homeView = ProductMapper.toHomeView(response.products);
+      this.topRatedProducts = homeView.topRated;
+      this.exploreProducts = homeView.exploreProducts;
+      return homeView;
+    }),
+    finalize(() => (this.isLoading = false)),
+    takeUntil(this.destroy$)
+  );
 
   ngOnDestroy(): void {
     this.destroy$.next();
