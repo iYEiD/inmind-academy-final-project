@@ -9,6 +9,7 @@ import {
   updateQuantity,
   removeFromCart,
   clearCart,
+  addToCart,
 } from '../../../shared/states/shopping-cart/cart.actions';
 import { Observable } from 'rxjs';
 
@@ -49,6 +50,10 @@ export class ShoppingCartFacade {
     this.store.select(selectTotalPrice).subscribe((price) => {
       this.subtotalSignal.set(price);
     });
+  }
+
+  addToCart(item: ICartItem): void {
+    this.store.dispatch(addToCart({ item }));
   }
 
   incrementQuantity(item: ICartItem): void {

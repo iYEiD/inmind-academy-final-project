@@ -1,9 +1,8 @@
 import { Component, inject, Input } from '@angular/core';
 import { ProductDTO } from '../../../models/product.model';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { addToCart } from '../../states/shopping-cart/cart.actions';
 import { ICartItem } from '../../../models/shopping-cart.model';
+import { ShoppingCartFacade } from '../../../features/shopping-cart/facades/shopping-cart.facade';
 
 @Component({
   selector: 'app-product-card',
@@ -13,7 +12,7 @@ import { ICartItem } from '../../../models/shopping-cart.model';
 export class ProductCardComponent {
   @Input() product!: ProductDTO;
   router = inject(Router);
-  store = inject(Store);
+  private cartFacade = inject(ShoppingCartFacade);
 
   navigateToDetails() {
     const productName = this.product.title.toLowerCase().replace(/ /g, '-');
@@ -30,7 +29,7 @@ export class ProductCardComponent {
       thumbnail: this.product.thumbnail,
     };
 
-    // Dispatch the addToCart action
-    this.store.dispatch(addToCart({ item: cartItem }));
+    // Use the facade to add item to cart
+    this.cartFacade.addToCart(cartItem);
   }
 }

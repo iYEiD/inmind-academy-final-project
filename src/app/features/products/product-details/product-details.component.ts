@@ -5,9 +5,8 @@ import { ProductDTO } from '../../../models/product.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { switchMap, map, of, tap, shareReplay } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { addToCart } from '../../../shared/states/shopping-cart/cart.actions';
 import { ICartItem } from '../../../models/shopping-cart.model';
+import { ShoppingCartFacade } from '../../../features/shopping-cart/facades/shopping-cart.facade';
 
 @Component({
   selector: 'app-product-details',
@@ -17,7 +16,7 @@ import { ICartItem } from '../../../models/shopping-cart.model';
 export class ProductDetailsComponent implements OnDestroy {
   quantity = 1;
   selectedImageIndex = 0;
-  store = inject(Store);
+  private cartFacade = inject(ShoppingCartFacade);
   route = inject(ActivatedRoute);
   productsService = inject(ProductsService);
   private destroy$ = new Subject<void>();
@@ -81,8 +80,8 @@ export class ProductDetailsComponent implements OnDestroy {
       thumbnail: product.thumbnail,
     };
 
-    // Dispatch the addToCart action
-    this.store.dispatch(addToCart({ item: cartItem }));
+    // Use the facade to add item to cart
+    this.cartFacade.addToCart(cartItem);
   }
 
   trackByImage(index: number, item: string): number {
