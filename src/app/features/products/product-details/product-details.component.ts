@@ -1,10 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../services/products.service';
 import { ProductDTO } from '../../../models/product.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { switchMap, map, of, tap, shareReplay } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { addToCart } from '../../../shared/states/shopping-cart/cart.actions';
+import { ICartItem } from '../../../models/shopping-cart.model';
 
 @Component({
   selector: 'app-product-details',
@@ -14,6 +17,9 @@ import { switchMap, map, of, tap, shareReplay } from 'rxjs';
 export class ProductDetailsComponent implements OnDestroy {
   quantity = 1;
   selectedImageIndex = 0;
+  store = inject(Store);
+  route = inject(ActivatedRoute);
+  productsService = inject(ProductsService);
   private destroy$ = new Subject<void>();
 
   product$ = this.route.paramMap.pipe(
@@ -40,11 +46,6 @@ export class ProductDetailsComponent implements OnDestroy {
     map((response) => response?.products || [])
   );
 
-  constructor(
-    private route: ActivatedRoute,
-    private productsService: ProductsService
-  ) {}
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -68,6 +69,20 @@ export class ProductDetailsComponent implements OnDestroy {
     if (this.quantity < 1 || isNaN(this.quantity)) {
       this.quantity = 1;
     }
+  }
+
+  addToCart(product: ProductDTO) {
+    // Create a cart item from the product with the selected quantity
+    const cartItem: ICartItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      quantity: this.quantity,
+      thumbnail: product.thumbnail,
+    };
+
+    // Dispatch the addToCart action
+    this.store.dispatch(addToCart({ item: cartItem }));
   }
 
   trackByImage(index: number, item: string): number {

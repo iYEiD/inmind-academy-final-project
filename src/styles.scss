@@ -1,5 +1,24 @@
+// Custom Theming for Angular Material
+@use "@angular/material" as mat;
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Import our variables
 @import "./app/shared/styles/_variables.scss";
 
+// Import our custom Angular Material theme
+@import "./app/shared/styles/angular-material-theme.scss";
+
+// Include theme styles for core and each component used in your app.
+@include mat.all-component-themes($otters-store-frontend-theme);
+
+// Include our custom Angular Material styles
+@include angular-material-custom-styles;
+
+// Global styles
 * {
   font-family: $default-font !important;
 }
@@ -41,4 +60,14 @@ a {
   color: $secondary-color;
   margin: 0;
   padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: $default-font;
 }

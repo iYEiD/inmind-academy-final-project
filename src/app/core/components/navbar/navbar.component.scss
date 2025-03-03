@@ -9,8 +9,8 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0px 100px;
-    padding: $spacing-xl 0px $spacing-lg 0px;
+    margin: 0rem 6rem;
+    padding: $spacing-lg 0px $spacing-md 0px;
   }
 
   .logo {
@@ -311,5 +311,26 @@ a {
   .dropdown-content {
     width: 700px;
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.cart-icon-container {
+  position: relative;
+  display: inline-block;
+
+  .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: $secondary-color;
+    color: $primary-color;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
   }
 }
