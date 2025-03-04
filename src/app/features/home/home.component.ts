@@ -1,17 +1,18 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductsService } from '../products/services/products.service';
 import { ProductDTO } from '../../models/product.model';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, finalize } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
+import { ProductMapper } from '../../shared/mappers/product.mapper';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   categories = [
@@ -68,28 +69,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   topRatedProducts: ProductDTO[] = [];
   exploreProducts: ProductDTO[] = [];
   isLoading = true;
-  constructor(private productService: ProductsService) {}
+  productService = inject(ProductsService);
 
   products$ = this.productService.getProducts(12, 0).pipe(
-    map((response) => ({
-      topRated: response.products.slice(0, 4),
-      exploreProducts: response.products.slice(4, 12),
-    }))
+    map((response) => {
+      const homeView = ProductMapper.toHomeView(response.products);
+      this.topRatedProducts = homeView.topRated;
+      this.exploreProducts = homeView.exploreProducts;
+      return homeView;
+    }),
+    finalize(() => (this.isLoading = false)),
+    takeUntil(this.destroy$)
   );
-
-  ngOnInit() {
-    this.productService
-      .getProducts(12, 0)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (products) => {
-          this.topRatedProducts = products.products.slice(0, 4);
-          this.exploreProducts = products.products.slice(4, 12);
-          this.isLoading = false;
-        },
-        error: () => (this.isLoading = false),
-      });
-  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

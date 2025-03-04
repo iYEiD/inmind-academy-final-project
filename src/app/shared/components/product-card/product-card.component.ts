@@ -1,9 +1,8 @@
 import { Component, inject, Input } from '@angular/core';
 import { ProductDTO } from '../../../models/product.model';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { addToCart } from '../../states/shopping-cart/cart.actions';
-import { ICartItem } from '../../../models/shopping-cart.model';
+import { ShoppingCartFacade } from '../../../features/shopping-cart/facades/shopping-cart.facade';
+import { CartMapper } from '../../mappers/cart.mapper';
 
 @Component({
   selector: 'app-product-card',
@@ -13,7 +12,8 @@ import { ICartItem } from '../../../models/shopping-cart.model';
 export class ProductCardComponent {
   @Input() product!: ProductDTO;
   router = inject(Router);
-  store = inject(Store);
+  private cartFacade = inject(ShoppingCartFacade);
+  private cartMapper = inject(CartMapper);
 
   navigateToDetails() {
     const productName = this.product.title.toLowerCase().replace(/ /g, '-');
@@ -21,16 +21,7 @@ export class ProductCardComponent {
   }
 
   addToCart() {
-    // Create a cart item from the product
-    const cartItem: ICartItem = {
-      id: this.product.id,
-      title: this.product.title,
-      price: this.product.price,
-      quantity: 1, // Default quantity is 1 when adding from product card
-      thumbnail: this.product.thumbnail,
-    };
-
-    // Dispatch the addToCart action
-    this.store.dispatch(addToCart({ item: cartItem }));
+    const cartItem = this.cartMapper.mapProductToCartItem(this.product);
+    this.cartFacade.addToCart(cartItem);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ILoginRequest } from '../../../../models/auth.model';
@@ -10,8 +10,8 @@ import { ILoginRequest } from '../../../../models/auth.model';
 })
 export class LoginComponent {
   userLogin: ILoginRequest = { username: '', password: '' };
-
-  constructor(private authService: AuthService, private router: Router) {}
+  authService = inject(AuthService);
+  router = inject(Router);
 
   onLogin(): void {
     this.authService.login(this.userLogin).subscribe({

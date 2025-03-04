@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   HttpInterceptor,
   HttpRequest,
@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private cookieService: CookieService) {}
+  cookieService = inject(CookieService);
 
   intercept(
     request: HttpRequest<unknown>,

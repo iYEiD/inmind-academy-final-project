@@ -1,20 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ICartItem } from '../../../models/shopping-cart.model';
-import {
-  selectCartItems,
-  selectTotalPrice,
-} from '../../../shared/states/shopping-cart/cart.selectors';
-import {
-  updateQuantity,
-  removeFromCart,
-  clearCart,
-} from '../../../shared/states/shopping-cart/cart.actions';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+import { ShoppingCartFacade } from '../facades/shopping-cart.facade';
+import { ShoppingCartService } from '../services/shopping-cart.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -22,18 +14,13 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
   styleUrl: './shopping-cart.component.scss',
 })
 export class ShoppingCartComponent implements OnInit, OnDestroy {
-  cartItems: ICartItem[] = [];
   dataSource: MatTableDataSource<ICartItem>;
-  subtotal: number = 0;
-  vat: number = 0;
-  total: number = 0;
   billingForm: FormGroup;
   paymentMethod: 'card' | 'cash' = 'card';
   private destroy$ = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // Define columns for the Material table
   displayedColumns: string[] = [
     'item',
     'price',
@@ -42,7 +29,11 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     'actions',
   ];
 
-  constructor(private store: Store, private fb: FormBuilder) {
+  private cartFacade = inject(ShoppingCartFacade);
+  private cartService = inject(ShoppingCartService);
+  private fb = inject(FormBuilder);
+
+  constructor() {
     this.billingForm = this.fb.group({
       fullName: ['', Validators.required],
       streetAddress: ['', Validators.required],
@@ -55,22 +46,11 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Get cart items
-    this.store
-      .select(selectCartItems)
+    this.cartFacade
+      .getCartItems()
       .pipe(takeUntil(this.destroy$))
       .subscribe((items) => {
-        this.cartItems = items;
         this.dataSource.data = items;
-      });
-
-    // Get total price
-    this.store
-      .select(selectTotalPrice)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((price) => {
-        this.subtotal = price;
-        this.vat = this.subtotal * 0.2; // 20% VAT
-        this.total = this.subtotal + this.vat;
       });
   }
 
@@ -83,48 +63,47 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // Getters for template
+  get cartItems() {
+    return this.cartFacade.cartItems;
+  }
+  get subtotal() {
+    return this.cartFacade.subtotal;
+  }
+  get vat() {
+    return this.cartFacade.vat;
+  }
+  get total() {
+    return this.cartFacade.total;
+  }
+
   incrementQuantity(item: ICartItem): void {
-    this.store.dispatch(
-      updateQuantity({
-        item,
-        quantity: item.quantity + 1,
-      })
-    );
+    this.cartFacade.incrementQuantity(item);
   }
 
   decrementQuantity(item: ICartItem): void {
-    if (item.quantity > 1) {
-      this.store.dispatch(
-        updateQuantity({
-          item,
-          quantity: item.quantity - 1,
-        })
-      );
-    }
+    this.cartFacade.decrementQuantity(item);
   }
 
   removeItem(item: ICartItem): void {
-    this.store.dispatch(removeFromCart({ item }));
+    this.cartFacade.removeItem(item);
   }
 
   placeOrder(): void {
-    if (this.billingForm.valid && this.cartItems.length > 0) {
-      console.log('Order placed', {
-        billingDetails: this.billingForm.value,
-        items: this.cartItems,
-        paymentMethod: this.paymentMethod,
-        subtotal: this.subtotal,
-        vat: this.vat,
-        total: this.total,
-      });
+    if (this.cartService.validateOrder(this.billingForm, this.cartItems)) {
+      const orderDetails = this.cartService.createOrderDetails(
+        this.billingForm,
+        this.cartItems,
+        this.paymentMethod,
+        this.subtotal,
+        this.vat,
+        this.total
+      );
 
-      // Clear the cart after successful order
-      this.store.dispatch(clearCart());
-
-      // Reset the form
+      this.cartService.placeOrder(orderDetails);
+      this.cartFacade.clearCart();
       this.billingForm.reset();
     } else {
-      // Mark all fields as touched to show validation errors
       this.billingForm.markAllAsTouched();
     }
   }

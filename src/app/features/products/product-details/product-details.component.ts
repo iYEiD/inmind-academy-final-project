@@ -5,9 +5,8 @@ import { ProductDTO } from '../../../models/product.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { switchMap, map, of, tap, shareReplay } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { addToCart } from '../../../shared/states/shopping-cart/cart.actions';
-import { ICartItem } from '../../../models/shopping-cart.model';
+import { ShoppingCartFacade } from '../../../features/shopping-cart/facades/shopping-cart.facade';
+import { CartMapper } from '../../../shared/mappers/cart.mapper';
 
 @Component({
   selector: 'app-product-details',
@@ -17,7 +16,8 @@ import { ICartItem } from '../../../models/shopping-cart.model';
 export class ProductDetailsComponent implements OnDestroy {
   quantity = 1;
   selectedImageIndex = 0;
-  store = inject(Store);
+  private cartFacade = inject(ShoppingCartFacade);
+  private cartMapper = inject(CartMapper);
   route = inject(ActivatedRoute);
   productsService = inject(ProductsService);
   private destroy$ = new Subject<void>();
@@ -72,17 +72,11 @@ export class ProductDetailsComponent implements OnDestroy {
   }
 
   addToCart(product: ProductDTO) {
-    // Create a cart item from the product with the selected quantity
-    const cartItem: ICartItem = {
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      quantity: this.quantity,
-      thumbnail: product.thumbnail,
-    };
-
-    // Dispatch the addToCart action
-    this.store.dispatch(addToCart({ item: cartItem }));
+    const cartItem = this.cartMapper.mapProductToCartItemWithQuantity(
+      product,
+      this.quantity
+    );
+    this.cartFacade.addToCart(cartItem);
   }
 
   trackByImage(index: number, item: string): number {
