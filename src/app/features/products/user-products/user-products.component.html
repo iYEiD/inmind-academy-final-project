@@ -1,5 +1,5 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+<mat-drawer-container class="drawer-container">
+  <mat-drawer #drawer mode="side" opened class="drawer">
     <div class="categories-panel">
       <h3>Categories</h3>
       <div class="main-categories">
@@ -28,9 +28,9 @@
         </div>
       </div>
     </div>
-  </mat-sidenav>
+  </mat-drawer>
 
-  <mat-sidenav-content>
+  <mat-drawer-content>
     <div class="products-container">
       <app-product-card
         *ngFor="let product of products; trackBy: trackByProductId"
@@ -54,5 +54,5 @@
         Next
       </button>
     </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </mat-drawer-content>
+</mat-drawer-container>
