@@ -22,6 +22,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   itemsPerPage = 15;
   totalProducts = 0;
   activeCategory: string | null = null;
+  currentSort: string | null = null;
 
   categorySections: ICategorySection[] = CATEGORY_SECTIONS;
 
@@ -37,6 +38,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
       .subscribe((params) => {
         this.currentPage = +params['page'] || 1;
         this.activeCategory = params['category'] || null;
+        this.currentSort = params['sort'] || null;
         this.loadProducts();
       });
   }
@@ -48,19 +50,53 @@ export class UserProductsComponent implements OnInit, OnDestroy {
 
     // Handle conflicting parameters
     if (params['search'] && params['category']) {
-      this.router.navigate([], {
-        queryParams: { category: null },
-        queryParamsHandling: 'merge',
+      this.router.navigate(['/products'], {
+        queryParams: {
+          category: params['category'],
+          page: params['page'] || 1,
+          sort: params['sort'] || null,
+          search: null,
+        },
+      });
+      return;
+    }
+
+    // Handle conflicting sort and category/search (prioritize sort)
+    if (params['sort'] && (params['category'] || params['search'])) {
+      this.router.navigate(['/products'], {
+        queryParams: {
+          sort: params['sort'],
+          page: params['page'] || 1,
+          category: null,
+          search: null,
+        },
       });
       return;
     }
 
     const category = params['category'];
     const search = params['search'];
+    const sort = params['sort'];
 
     let request$;
 
-    if (category) {
+    // Check if sorting is applied
+    if (sort) {
+      const [field, direction] = sort.split(':');
+      if (field && (direction === 'asc' || direction === 'desc')) {
+        request$ = this.productService.getSortedProducts(
+          field,
+          direction as 'asc' | 'desc',
+          this.itemsPerPage,
+          skip
+        );
+      } else {
+        // Default to regular products if sort format is invalid
+        request$ = this.productService.getProducts(this.itemsPerPage, skip);
+      }
+    }
+    // If no sorting, use regular filters
+    else if (category) {
       request$ = this.productService.searchProductsByCategory(
         category,
         this.itemsPerPage,
@@ -97,10 +133,16 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   }
 
   private updateRouteWithPagination(): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { page: this.currentPage },
-      queryParamsHandling: 'merge',
+    const params = this.route.snapshot.queryParams;
+
+    this.router.navigate(['/products'], {
+      queryParams: {
+        page: this.currentPage,
+        // Preserve existing filter/sort params
+        category: params['category'] || null,
+        sort: params['sort'] || null,
+        search: params['search'] || null,
+      },
     });
   }
 
@@ -128,14 +170,34 @@ export class UserProductsComponent implements OnInit, OnDestroy {
     const category = categoryLink.split('/').pop();
     if (category) {
       this.activeCategory = category;
+      this.currentSort = null;
+
       this.router.navigate(['/products'], {
         queryParams: {
-          search: null,
           category,
           page: 1,
+          sort: null,
+          search: null,
         },
-        queryParamsHandling: 'merge',
       });
     }
+  }
+
+  applySorting(field: string, direction: 'asc' | 'desc'): void {
+    this.currentSort = `${field}:${direction}`;
+
+    // Get current page from route params or default to 1
+    const currentPage = +this.route.snapshot.queryParams['page'] || 1;
+
+    // Reset all query params except pagination when sorting
+    this.router.navigate(['/products'], {
+      queryParams: {
+        sort: this.currentSort,
+        page: currentPage,
+        // Reset other filter params
+        category: null,
+        search: null,
+      },
+    });
   }
 }

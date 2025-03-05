@@ -67,4 +67,20 @@ export class ProductsService {
       })
     );
   }
+
+  getSortedProducts(
+    field: string,
+    direction: 'asc' | 'desc',
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    return this.productsApiService
+      .getSortedProducts(field, direction, limit, skip)
+      .pipe(
+        tap((response) => {
+          this.productsSubject.next(response.products);
+          this.totalSubject.next(response.total);
+        })
+      );
+  }
 }

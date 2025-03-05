@@ -29,6 +29,45 @@
         </div>
       </div>
     </div>
+    <div class="sort-panel">
+      <h3>Sort By</h3>
+      <div class="sort-options">
+        <button mat-button [matMenuTriggerFor]="priceMenu" class="sort-button">
+          Sort By Price
+        </button>
+        <button mat-button [matMenuTriggerFor]="nameMenu" class="sort-button">
+          Sort By Name
+        </button>
+        <button mat-button [matMenuTriggerFor]="ratingMenu" class="sort-button">
+          Sort By Rating
+        </button>
+      </div>
+
+      <mat-menu #priceMenu="matMenu">
+        <button mat-menu-item (click)="applySorting('price', 'asc')">
+          Price: Low to High
+        </button>
+        <button mat-menu-item (click)="applySorting('price', 'desc')">
+          Price: High to Low
+        </button>
+      </mat-menu>
+      <mat-menu #nameMenu="matMenu">
+        <button mat-menu-item (click)="applySorting('title', 'asc')">
+          Name: A to Z
+        </button>
+        <button mat-menu-item (click)="applySorting('title', 'desc')">
+          Name: Z to A
+        </button>
+      </mat-menu>
+      <mat-menu #ratingMenu="matMenu">
+        <button mat-menu-item (click)="applySorting('rating', 'asc')">
+          Rating: Low to High
+        </button>
+        <button mat-menu-item (click)="applySorting('rating', 'desc')">
+          Rating: High to Low
+        </button>
+      </mat-menu>
+    </div>
   </mat-drawer>
 
   <mat-drawer-content>
