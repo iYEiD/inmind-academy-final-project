@@ -4,15 +4,10 @@ import { ProductDTO } from '../../../models/product.model';
 import { ProductsService } from '../services/products.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-
-interface CategorySection {
-  title: string;
-  isOpen: boolean;
-  categories: Array<{
-    name: string;
-    link: string;
-  }>;
-}
+import {
+  ICategorySection,
+  CATEGORY_SECTIONS,
+} from '../../../models/category.model';
 
 @Component({
   selector: 'app-user-products',
@@ -26,61 +21,9 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   currentPage = 1;
   itemsPerPage = 15;
   totalProducts = 0;
+  activeCategory: string | null = null;
 
-  categorySections: CategorySection[] = [
-    {
-      title: 'Electronics',
-      isOpen: false,
-      categories: [
-        { name: 'Smartphones', link: '/products/smartphones' },
-        { name: 'Laptops', link: '/products/laptops' },
-        { name: 'Tablets', link: '/products/tablets' },
-        { name: 'Mobile Accessories', link: '/products/mobile-accessories' },
-      ],
-    },
-    {
-      title: 'Fashion',
-      isOpen: false,
-      categories: [
-        { name: "Men's Shirts", link: '/products/mens-shirts' },
-        { name: "Men's Shoes", link: '/products/mens-shoes' },
-        { name: "Men's Watches", link: '/products/mens-watches' },
-        { name: "Women's Dresses", link: '/products/womens-dresses' },
-        { name: "Women's Bags", link: '/products/womens-bags' },
-        { name: "Women's Jewellery", link: '/products/womens-jewellery' },
-        { name: "Women's Shoes", link: '/products/womens-shoes' },
-        { name: "Women's Watches", link: '/products/womens-watches' },
-      ],
-    },
-    {
-      title: 'Home & Living',
-      isOpen: false,
-      categories: [
-        { name: 'Furniture', link: '/products/furniture' },
-        { name: 'Home Decoration', link: '/products/home-decoration' },
-        { name: 'Kitchen Accessories', link: '/products/kitchen-accessories' },
-      ],
-    },
-    {
-      title: 'Lifestyle',
-      isOpen: false,
-      categories: [
-        { name: 'Beauty', link: '/products/beauty' },
-        { name: 'Fragrances', link: '/products/fragrances' },
-        { name: 'Skin Care', link: '/products/skin-care' },
-        { name: 'Sunglasses', link: '/products/sunglasses' },
-      ],
-    },
-    {
-      title: 'Sports & Outdoors',
-      isOpen: false,
-      categories: [
-        { name: 'Sports Accessories', link: '/products/sports-accessories' },
-        { name: 'Motorcycle', link: '/products/motorcycle' },
-        { name: 'Vehicle', link: '/products/vehicle' },
-      ],
-    },
-  ];
+  categorySections: ICategorySection[] = CATEGORY_SECTIONS;
 
   private destroy$ = new Subject<void>();
 
@@ -93,6 +36,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
         this.currentPage = +params['page'] || 1;
+        this.activeCategory = params['category'] || null;
         this.loadProducts();
       });
   }
@@ -183,6 +127,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   onCategoryClick(categoryLink: string): void {
     const category = categoryLink.split('/').pop();
     if (category) {
+      this.activeCategory = category;
       this.router.navigate(['/products'], {
         queryParams: {
           search: null,

@@ -78,6 +78,14 @@
               color: $secondary-color-light;
               transform: translateX(4px);
             }
+
+            &.active {
+              background-color: $primary-color-darker;
+              color: $secondary-color-light;
+              font-weight: 600;
+              border-left: 3px solid $secondary-color;
+              padding-left: calc($spacing-md - 3px);
+            }
           }
         }
       }

@@ -21,6 +21,7 @@
               *ngFor="let category of section.categories"
               (click)="onCategoryClick(category.link)"
               class="category-item"
+              [class.active]="activeCategory === category.link.split('/').pop()"
             >
               {{ category.name }}
             </a>
