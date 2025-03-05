@@ -1,6 +1,88 @@
 @import "../../../../app/shared/styles/variables";
 @import "../../../../app/shared/styles/mixins";
 
+.sidenav-container {
+  min-height: calc(100vh - 64px); // Adjust based on your navbar height
+  background-color: $primary-color;
+}
+
+.sidenav {
+  width: 250px;
+  background-color: $primary-color-light;
+  border-right: 1px solid $primary-color-dark;
+  padding: $spacing-md;
+
+  .categories-panel {
+    h3 {
+      color: $secondary-color;
+      margin-block-end: $spacing-lg;
+      font-size: $font-size-lg;
+      font-weight: 600;
+    }
+
+    .main-categories {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      .category-section {
+        .category-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: $spacing-sm;
+          cursor: pointer;
+          color: $secondary-color;
+          transition: all $transition-fast;
+
+          &:hover {
+            background-color: $primary-color-dark;
+            color: $secondary-color-light;
+          }
+
+          &.active {
+            color: $secondary-color;
+            background-color: $primary-color-darker;
+          }
+
+          img {
+            transition: transform $transition-fast;
+
+            &.rotated {
+              transform: rotate(180deg);
+            }
+          }
+        }
+
+        .subcategories {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height $transition-base;
+          background-color: $primary-color-dark;
+
+          &.open {
+            max-height: 500px; // Adjust based on your content
+          }
+
+          .category-item {
+            display: block;
+            padding: $spacing-sm $spacing-md;
+            color: $secondary-color;
+            text-decoration: none;
+            transition: all $transition-fast;
+
+            &:hover {
+              background-color: $primary-color-darker;
+              color: $secondary-color-light;
+              transform: translateX(4px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .products-container {
   padding: $spacing-4xl $spacing-3xl;
   display: flex;
@@ -57,11 +139,19 @@
     padding: $spacing-3xl $spacing-xl;
     gap: $spacing-md;
   }
+
+  .sidenav {
+    width: 200px;
+  }
 }
 
 @include respond-to(sm) {
   .products-container {
     padding: $spacing-2xl $spacing-lg;
     gap: $spacing-sm;
+  }
+
+  .sidenav {
+    width: 180px;
   }
 }
