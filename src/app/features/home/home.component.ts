@@ -2,8 +2,8 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductsService } from '../products/services/products.service';
 import { ProductDTO } from '../../models/product.model';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
-import { takeUntil, finalize, switchMap, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { ProductMapper } from '../../shared/mappers/product.mapper';
 

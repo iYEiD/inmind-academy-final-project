@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, inject, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { ProductDTO } from '../../../models/product.model';
+import { ProductDTO, IProductFilters } from '../../../models/product.model';
 import { ProductsService } from '../services/products.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -50,79 +50,42 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   loadProducts(): void {
     this.isLoading = true;
 
-    const skip = (this.currentPage - 1) * this.itemsPerPage;
-
     const params = this.route.snapshot.queryParams;
 
-    // Handle conflicting parameters
-    if (params['search'] && params['category']) {
+    // Create filters object from current state
+    const filters: IProductFilters = {
+      category: params['category'] || null,
+      search: params['search'] || null,
+      sort: params['sort'] || null,
+      page: this.currentPage,
+      itemsPerPage: this.itemsPerPage,
+    };
+
+    // Check for filter conflicts
+    const conflictResult = this.productService.checkFilterConflicts(filters);
+
+    if (conflictResult.hasConflict && conflictResult.resolvedFilters) {
+      // Navigate to resolved filters
       this.router.navigate(['/products'], {
         queryParams: {
-          category: params['category'],
-          page: params['page'] || 1,
-          sort: params['sort'] || null,
-          search: null,
+          category: conflictResult.resolvedFilters.category || null,
+          search: conflictResult.resolvedFilters.search || null,
+          sort: conflictResult.resolvedFilters.sort || null,
+          page: conflictResult.resolvedFilters.page || 1,
         },
       });
       return;
     }
 
-    // Handle conflicting sort and category/search (prioritize sort)
-    if (params['sort'] && (params['category'] || params['search'])) {
-      this.router.navigate(['/products'], {
-        queryParams: {
-          sort: params['sort'],
-          page: params['page'] || 1,
-          category: null,
-          search: null,
-        },
+    // Get products with filters
+    this.productService
+      .getProductsWithFilters(filters)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response) => {
+        this.products = response.products;
+        this.totalProducts = response.total;
+        this.isLoading = false;
       });
-      return;
-    }
-
-    const category = params['category'];
-    const search = params['search'];
-    const sort = params['sort'];
-
-    let request$;
-
-    // Check if sorting is applied
-    if (sort) {
-      const [field, direction] = sort.split(':');
-      if (field && (direction === 'asc' || direction === 'desc')) {
-        request$ = this.productService.getSortedProducts(
-          field,
-          direction as 'asc' | 'desc',
-          this.itemsPerPage,
-          skip
-        );
-      } else {
-        // Default to regular products if sort format is invalid
-        request$ = this.productService.getProducts(this.itemsPerPage, skip);
-      }
-    }
-    // If no sorting, use regular filters
-    else if (category) {
-      request$ = this.productService.searchProductsByCategory(
-        category,
-        this.itemsPerPage,
-        skip
-      );
-    } else if (search) {
-      request$ = this.productService.searchProductsByName(
-        search,
-        this.itemsPerPage,
-        skip
-      );
-    } else {
-      request$ = this.productService.getProducts(this.itemsPerPage, skip);
-    }
-
-    request$.pipe(takeUntil(this.destroy$)).subscribe((response) => {
-      this.products = response.products;
-      this.totalProducts = response.total;
-      this.isLoading = false;
-    });
   }
 
   nextPage(): void {
@@ -159,7 +122,10 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   }
 
   get totalPages(): number {
-    return Math.ceil(this.totalProducts / this.itemsPerPage);
+    return this.productService.calculateTotalPages(
+      this.totalProducts,
+      this.itemsPerPage
+    );
   }
 
   trackByProductId(index: number, product: ProductDTO): number {
@@ -191,7 +157,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   }
 
   applySorting(field: string, direction: 'asc' | 'desc'): void {
-    this.currentSort = `${field}:${direction}`;
+    this.currentSort = this.productService.createSortString(field, direction);
 
     // Get current page from route params or default to 1
     const currentPage = +this.route.snapshot.queryParams['page'] || 1;
