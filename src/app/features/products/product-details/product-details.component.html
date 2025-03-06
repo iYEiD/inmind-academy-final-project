@@ -9,7 +9,15 @@
   </div>
   <div class="product-details-container">
     <div class="product-details-image">
-      <img [src]="product.images[selectedImageIndex]" alt="Product Image" />
+      <div class="image-loading-skeleton" *ngIf="imageLoading"></div>
+
+      <img
+        [src]="product.images[selectedImageIndex]"
+        alt="Product Image"
+        [class.hidden]="imageLoading"
+        (load)="imageLoading = false"
+        (error)="imageLoading = false"
+      />
     </div>
     <div class="product-details-info">
       <div class="main-content">
@@ -45,7 +53,18 @@
       [class.active]="selectedImageIndex === i"
       (click)="selectImage(i)"
     >
-      <img [src]="img" alt="Thumbnail {{ i + 1 }}" />
+      <div
+        class="thumbnail-loading-skeleton"
+        *ngIf="thumbnailsLoading[i]"
+      ></div>
+
+      <img
+        [src]="img"
+        alt="Thumbnail {{ i + 1 }}"
+        [class.hidden]="thumbnailsLoading[i]"
+        (load)="thumbnailsLoading[i] = false"
+        (error)="thumbnailsLoading[i] = false"
+      />
     </div>
   </div>
   <div class="related-products">
