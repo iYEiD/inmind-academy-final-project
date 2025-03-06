@@ -1,8 +1,19 @@
 <div class="product-card" [class.skeleton]="isLoading">
   <ng-container *ngIf="!isLoading && product; else loadingSkeleton">
     <div class="product-card-image" (click)="navigateToDetails()">
-      <img [src]="product.thumbnail" alt="Product Image" />
-      <div class="image-overlay">
+      <!-- Image loading skeleton -->
+      <div class="image-loading-skeleton" *ngIf="imageLoading"></div>
+
+      <!-- Actual image with loading handling -->
+      <img
+        [src]="product.thumbnail"
+        alt="Product Image"
+        [class.hidden]="imageLoading"
+        (load)="imageLoading = false"
+        (error)="imageLoading = false"
+      />
+
+      <div class="image-overlay" [class.hidden]="imageLoading">
         <span class="view-details">View Details</span>
       </div>
     </div>
