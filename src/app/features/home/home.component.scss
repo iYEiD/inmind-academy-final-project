@@ -475,28 +475,6 @@
   }
 }
 
-.product-skeleton {
-  width: 16.875rem; // 270px
-  height: 25rem; // 400px
-  background: #f0f0f0;
-  border-radius: $border-radius-md;
-  animation: pulse 1.5s infinite;
-
-  @include respond-to(xs) {
-    width: 100%;
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-}
-
 .cards-container {
   transition: opacity $transition-base;
 

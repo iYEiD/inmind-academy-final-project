@@ -32,6 +32,10 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   router = inject(Router);
   route = inject(ActivatedRoute);
 
+  isLoading = true;
+  skeletonCount = 8;
+  skeletons = Array(this.skeletonCount).fill(null);
+
   ngOnInit(): void {
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
@@ -44,6 +48,8 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   }
 
   loadProducts(): void {
+    this.isLoading = true;
+
     const skip = (this.currentPage - 1) * this.itemsPerPage;
 
     const params = this.route.snapshot.queryParams;
@@ -115,6 +121,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
     request$.pipe(takeUntil(this.destroy$)).subscribe((response) => {
       this.products = response.products;
       this.totalProducts = response.total;
+      this.isLoading = false;
     });
   }
 

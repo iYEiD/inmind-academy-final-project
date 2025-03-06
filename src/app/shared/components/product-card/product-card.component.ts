@@ -10,17 +10,21 @@ import { CartMapper } from '../../mappers/cart.mapper';
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
-  @Input() product!: ProductDTO;
+  @Input() product?: ProductDTO;
+  @Input() isLoading: boolean = false;
+
   router = inject(Router);
   private cartFacade = inject(ShoppingCartFacade);
   private cartMapper = inject(CartMapper);
 
   navigateToDetails() {
+    if (!this.product) return;
     const productName = this.product.title.toLowerCase().replace(/ /g, '-');
     this.router.navigate([`/product-details/${productName}`]);
   }
 
   addToCart() {
+    if (!this.product) return;
     const cartItem = this.cartMapper.mapProductToCartItem(this.product);
     this.cartFacade.addToCart(cartItem);
   }

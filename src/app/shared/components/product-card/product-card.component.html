@@ -1,19 +1,25 @@
-<div class="product-card">
-  <div class="product-card-image" (click)="navigateToDetails()">
-    <img [src]="product.thumbnail" alt="Product Image" />
-    <div class="image-overlay">
-      <span class="view-details">View Details</span>
+<div class="product-card" [class.skeleton]="isLoading">
+  <ng-container *ngIf="!isLoading && product; else loadingSkeleton">
+    <div class="product-card-image" (click)="navigateToDetails()">
+      <img [src]="product.thumbnail" alt="Product Image" />
+      <div class="image-overlay">
+        <span class="view-details">View Details</span>
+      </div>
     </div>
-  </div>
 
-  <h3 class="product-card-title">{{ product.title }}</h3>
-  <div class="product-card-content">
-    <p class="product-card-price">${{ product.price }}</p>
-    <div class="product-card-actions">
-      <app-star-rating [rating]="product.rating"></app-star-rating>
-      <button class="product-card-button" (click)="addToCart()">
-        Add to Cart
-      </button>
+    <h3 class="product-card-title">{{ product.title }}</h3>
+    <div class="product-card-content">
+      <p class="product-card-price">${{ product.price }}</p>
+      <div class="product-card-actions">
+        <app-star-rating [rating]="product.rating"></app-star-rating>
+        <button class="product-card-button" (click)="addToCart()">
+          Add to Cart
+        </button>
+      </div>
     </div>
-  </div>
+  </ng-container>
+
+  <ng-template #loadingSkeleton>
+    <div class="skeleton-content"></div>
+  </ng-template>
 </div>

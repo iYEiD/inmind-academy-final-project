@@ -72,14 +72,23 @@
 
   <mat-drawer-content>
     <div class="products-container">
-      <app-product-card
-        *ngFor="let product of products; trackBy: trackByProductId"
-        [product]="product"
-      ></app-product-card>
+      <ng-container *ngIf="!isLoading">
+        <app-product-card
+          *ngFor="let product of products; trackBy: trackByProductId"
+          [product]="product"
+        ></app-product-card>
 
-      <div *ngIf="products.length === 0" class="no-products">
-        No products found
-      </div>
+        <div *ngIf="products.length === 0" class="no-products">
+          No products found
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isLoading">
+        <app-product-card
+          *ngFor="let _ of skeletons"
+          [isLoading]="true"
+        ></app-product-card>
+      </ng-container>
     </div>
 
     <div class="pagination-controls" *ngIf="totalProducts > 0">
