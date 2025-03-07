@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, inject, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
+import { MatSidenav } from '@angular/material/sidenav';
 import { ProductDTO, IProductFilters } from '../../../models/product.model';
 import { ProductsService } from '../services/products.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -15,7 +15,7 @@ import {
   styleUrl: './user-products.component.scss',
 })
 export class UserProductsComponent implements OnInit, OnDestroy {
-  @ViewChild('drawer') drawer!: MatDrawer;
+  @ViewChild('sidenav') sidenav!: MatSidenav;
 
   products: ProductDTO[] = [];
   currentPage = 1;

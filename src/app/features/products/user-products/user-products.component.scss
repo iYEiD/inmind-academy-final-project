@@ -1,16 +1,17 @@
 @import "../../../../app/shared/styles/variables";
 @import "../../../../app/shared/styles/mixins";
 
-.drawer-container {
-  background-color: transparent;
-  height: 100%;
-  width: 100%;
+.sidenav-container {
+  background-color: $primary-color;
+  position: relative;
+  display: flex;
 }
 
-.drawer {
+.sidenav {
   background-color: $primary-color;
   border-inline-end: 1px solid $primary-color-dark;
   padding-block-start: $spacing-3xl;
+  position: relative;
 
   .categories-panel {
     padding-inline-start: $spacing-4xl;
@@ -94,7 +95,7 @@
 
   .sort-panel {
     padding-inline-start: $spacing-4xl;
-    margin-top: $spacing-2xl;
+    margin-block-start: $spacing-2xl;
 
     h3 {
       color: $secondary-color;
@@ -127,9 +128,14 @@
   }
 }
 
+mat-sidenav-content {
+  flex: 1;
+  margin: 0 !important;
+}
+
 .products-container {
   padding: $spacing-3xl $spacing-4xl $spacing-3xl $spacing-2xl;
-  display: flex; //to replace with grid lateron
+  display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   flex-wrap: wrap;
@@ -178,13 +184,8 @@
 }
 
 @include respond-to(md) {
-  .products-container {
-    padding: $spacing-3xl $spacing-xl;
-    gap: $spacing-md;
-    justify-content: center;
-  }
-
-  .drawer {
+  .sidenav {
+    width: 220px;
     padding: $spacing-3xl 0 0 0;
 
     .categories-panel {
@@ -195,16 +196,17 @@
       padding: 0 $spacing-xl;
     }
   }
+
+  .products-container {
+    padding: $spacing-3xl $spacing-xl;
+    gap: $spacing-md;
+    justify-content: center;
+  }
 }
 
 @include respond-to(sm) {
-  .products-container {
-    padding: $spacing-2xl $spacing-lg;
-    gap: $spacing-sm;
-    justify-content: center;
-  }
-
-  .drawer {
+  .sidenav {
+    width: 200px;
     padding: $spacing-2xl 0 0 0;
 
     .categories-panel {
@@ -214,5 +216,11 @@
     .sort-panel {
       padding: 0 $spacing-lg;
     }
+  }
+
+  .products-container {
+    padding: $spacing-2xl $spacing-lg;
+    gap: $spacing-sm;
+    justify-content: center;
   }
 }

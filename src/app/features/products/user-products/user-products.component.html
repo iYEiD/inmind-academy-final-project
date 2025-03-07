@@ -1,5 +1,11 @@
-<mat-drawer-container class="drawer-container">
-  <mat-drawer #drawer mode="side" opened class="drawer">
+<mat-sidenav-container class="sidenav-container" autosize>
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    opened
+    class="sidenav"
+    fixedInViewport="false"
+  >
     <div class="categories-panel">
       <h3>Categories</h3>
       <div class="main-categories">
@@ -68,9 +74,9 @@
         </button>
       </mat-menu>
     </div>
-  </mat-drawer>
+  </mat-sidenav>
 
-  <mat-drawer-content>
+  <mat-sidenav-content>
     <div class="products-container">
       <ng-container *ngIf="!isLoading">
         <app-product-card
@@ -103,5 +109,5 @@
         Next
       </button>
     </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+  </mat-sidenav-content>
+</mat-sidenav-container>
