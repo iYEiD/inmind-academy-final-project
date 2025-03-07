@@ -23,9 +23,23 @@
       <p class="product-card-price">${{ product.price }}</p>
       <div class="product-card-actions">
         <app-star-rating [rating]="product.rating"></app-star-rating>
-        <button class="product-card-button" (click)="addToCart()">
-          Add to Cart
-        </button>
+
+        <!-- Quantity control -->
+        <div class="quantity-control" [class.expanded]="quantity > 0">
+          <button
+            *ngIf="quantity > 0"
+            class="quantity-btn remove-btn"
+            (click)="removeFromCart()"
+          >
+            <span>-</span>
+          </button>
+          <span *ngIf="quantity > 0" class="quantity-value">{{
+            quantity
+          }}</span>
+          <button class="quantity-btn add-btn" (click)="addToCart()">
+            <span>+</span>
+          </button>
+        </div>
       </div>
     </div>
   </ng-container>
