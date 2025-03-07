@@ -133,9 +133,19 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   }
 
   toggleCategory(title: string): void {
-    const section = this.categorySections.find((s) => s.title === title);
-    if (section) {
-      section.isOpen = !section.isOpen;
+    // First, check if the clicked category is already open
+    const clickedSection = this.categorySections.find((s) => s.title === title);
+    const isCurrentlyOpen = clickedSection?.isOpen || false;
+
+    // Close all categories first
+    this.categorySections.forEach((section) => {
+      section.isOpen = false;
+    });
+
+    // If the clicked category wasn't already open, open it
+    // If it was already open, it will remain closed (toggle behavior)
+    if (clickedSection && !isCurrentlyOpen) {
+      clickedSection.isOpen = true;
     }
   }
 
