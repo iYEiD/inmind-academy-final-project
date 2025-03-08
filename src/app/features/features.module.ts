@@ -6,6 +6,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from '../shared/shared.module';
 import { ShoppingCartModule } from './shopping-cart/shopping-cart.module';
+import { AccountManagementModule } from './account-management/account-management.module';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 @NgModule({
@@ -16,6 +17,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
     AgGridModule,
     SharedModule,
     ShoppingCartModule,
+    AccountManagementModule,
   ],
   exports: [ProductsModule, HomeComponent],
 })

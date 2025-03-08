@@ -21,6 +21,13 @@ const routes: Routes = [
   },
   { path: 'product-details/:productName', component: ProductDetailsComponent },
   {
+    path: 'account-management',
+    loadChildren: () =>
+      import('./features/account-management/account-management.module').then(
+        (m) => m.AccountManagementModule
+      ),
+  },
+  {
     path: 'admin/products',
     loadChildren: () =>
       import('./features/products/products.module').then(
