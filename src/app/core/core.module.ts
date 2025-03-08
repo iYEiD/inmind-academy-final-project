@@ -4,7 +4,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { SharedModule } from '../shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './authentication/login/components/login.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { MatInputModule } from '@angular/material/input';
@@ -21,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     MatInputModule,
     MatFormFieldModule,

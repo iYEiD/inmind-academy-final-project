@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 import { AuthApiService } from './auth-api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ILoginRequest, IAuthResponse } from '../../../models/auth.model';
-
+import { ISignupRequest } from '../../../models/user.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -42,5 +42,9 @@ export class AuthService {
 
   isAdmin(): Observable<boolean> {
     return this.authApiService.getAdmin();
+  }
+
+  signup(user: ISignupRequest): Observable<string> {
+    return this.authApiService.signup(user);
   }
 }
