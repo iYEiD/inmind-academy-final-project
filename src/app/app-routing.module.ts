@@ -5,10 +5,12 @@ import { UserProductsComponent } from './features/products/user-products/user-pr
 import { adminAuthGuard } from './guards/admin-auth.guard';
 import { HomeComponent } from './features/home/home.component';
 import { ProductDetailsComponent } from './features/products/product-details/product-details.component';
+import { SignupComponent } from './core/authentication/signup/signup.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'products', component: UserProductsComponent },
   {
     path: 'shopping-cart',

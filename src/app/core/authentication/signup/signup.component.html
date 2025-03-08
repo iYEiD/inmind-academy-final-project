@@ -1,0 +1,59 @@
+<div class="signup-container">
+  <img src="../../../../assets/images/login-image.jpg" alt="signup-image" />
+  <div class="signup-form">
+    <h1>Create an Account</h1>
+    <p>Enter your details below</p>
+    <form (ngSubmit)="onSignup()">
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            type="text"
+            id="username"
+            name="username"
+            [(ngModel)]="userSignup.username"
+            placeholder="Username"
+            required
+          />
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="userSignup.email"
+            placeholder="Email"
+            required
+          />
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            type="password"
+            id="password"
+            name="password"
+            [(ngModel)]="userSignup.password"
+            placeholder="Password"
+            required
+          />
+        </mat-form-field>
+      </div>
+      <div class="signup-form-actions">
+        <button type="submit" class="signup-button">Create Account</button>
+        <button type="button" class="gmail-button">
+          <img
+            src="../../../../../assets/images/gmail-icon.png"
+            alt="gmail-icon"
+          />
+          Sign up with Gmail
+        </button>
+        <p>Already have an account? <a [routerLink]="['/login']">Log in</a></p>
+      </div>
+    </form>
+  </div>
+</div>
