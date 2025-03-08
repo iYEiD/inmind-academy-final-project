@@ -16,6 +16,7 @@ import { ISignupRequest } from '../../../models/auth.model';
 })
 export class AuthApiService {
   private authUrl = env.authUrl;
+  private usersUrl = env.usersUrl;
   http = inject(HttpClient);
 
   login(credentials: ILoginRequest): Observable<IAuthResponse> {
@@ -32,7 +33,7 @@ export class AuthApiService {
 
   signup(user: ISignupRequest): Observable<string> {
     return this.http
-      .post<any>(`${this.authUrl}s/add`, user, {
+      .post<any>(`${this.usersUrl}/add`, user, {
         observe: 'response',
       })
       .pipe(

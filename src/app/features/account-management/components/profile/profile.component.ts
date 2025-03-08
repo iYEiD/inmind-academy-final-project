@@ -1,29 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AccountService } from '../../services/account.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { PasswordValidators } from '../validators/password-validator';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnDestroy {
   profileForm: FormGroup;
   isEditMode = false;
+  private accountService = inject(AccountService);
+  private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder) {
-    this.profileForm = this.fb.group({
-      firstName: [{ value: '', disabled: true }, Validators.required],
-      lastName: [{ value: '', disabled: true }, Validators.required],
-      email: [
-        { value: '', disabled: true },
-        [Validators.required, Validators.email],
-      ],
-      address: [{ value: '', disabled: true }, Validators.required],
-      currentPassword: [{ value: '', disabled: true }, Validators.required],
-      newPassword: [{ value: '', disabled: true }, Validators.required],
-      confirmPassword: [{ value: '', disabled: true }, Validators.required],
-    });
+    this.profileForm = this.fb.group(
+      {
+        firstName: [{ value: '', disabled: true }, Validators.required],
+        lastName: [{ value: '', disabled: true }, Validators.required],
+        email: [
+          { value: '', disabled: true },
+          [Validators.required, Validators.email],
+        ],
+        address: [{ value: '', disabled: true }, Validators.required],
+        currentPassword: [{ value: '', disabled: true }, Validators.required],
+        newPassword: [{ value: '', disabled: true }, Validators.required],
+        confirmPassword: [{ value: '', disabled: true }, Validators.required],
+      },
+      { validators: PasswordValidators.passwordValidation() }
+    );
   }
 
   toggleEditMode(): void {
@@ -52,13 +61,29 @@ export class ProfileComponent {
 
     // Only proceed with save if the form is valid
     if (this.profileForm.valid) {
-      // To implement service here
-      console.log('Form is valid, saving changes:', this.profileForm.value);
+      this.accountService
+        .updateProfile(this.profileForm.value)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.toggleEditMode();
+          },
+          error: (error) => {
+            console.error('Error updating profile:', error);
+          },
+        });
 
-      // After successful save, you might want to disable edit mode
       this.toggleEditMode();
+      this.profileForm.reset();
+      //Update User State After save?
     } else {
       console.log('Form is invalid, please fix the errors');
+      //Could add snackbar here
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
