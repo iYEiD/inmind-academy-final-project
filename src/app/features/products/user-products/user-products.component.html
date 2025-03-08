@@ -1,11 +1,22 @@
+<div class="mobile-filter-button" *ngIf="isMobile">
+  <button mat-raised-button color="primary" (click)="toggleSidenav()">
+    Filters
+  </button>
+</div>
+
 <mat-sidenav-container class="sidenav-container" autosize>
   <mat-sidenav
     #sidenav
-    mode="side"
-    opened
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
     class="sidenav"
     fixedInViewport="false"
   >
+    <div class="sidenav-header" *ngIf="isMobile">
+      <h2>Filters</h2>
+      <a (click)="closeSidenav()">X</a>
+    </div>
+
     <div class="categories-panel">
       <h3>Categories</h3>
       <div class="main-categories">

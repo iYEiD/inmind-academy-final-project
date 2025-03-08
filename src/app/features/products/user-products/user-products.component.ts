@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, inject, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ProductDTO, IProductFilters } from '../../../models/product.model';
 import { ProductsService } from '../services/products.service';
@@ -36,7 +43,13 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   skeletonCount = 8;
   skeletons = Array(this.skeletonCount).fill(null);
 
+  // Add a property to track if we're in mobile view
+  isMobile = false;
+
   ngOnInit(): void {
+    // Check initial screen size
+    this.checkScreenSize();
+
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
@@ -45,6 +58,29 @@ export class UserProductsComponent implements OnInit, OnDestroy {
         this.currentSort = params['sort'] || null;
         this.loadProducts();
       });
+  }
+
+  // Listen for window resize events
+  @HostListener('window:resize', ['$event']) //To Refactor
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  // Check if we're in mobile view
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth < 992; //Screen size for tablets and <
+  }
+
+  // Toggle sidenav
+  toggleSidenav(): void {
+    this.sidenav.toggle();
+  }
+
+  // Close sidenav
+  closeSidenav(): void {
+    if (this.isMobile) {
+      this.sidenav.close();
+    }
   }
 
   loadProducts(): void {
@@ -163,6 +199,9 @@ export class UserProductsComponent implements OnInit, OnDestroy {
           search: null,
         },
       });
+
+      // Close sidenav after selection on mobile
+      this.closeSidenav();
     }
   }
 
@@ -182,5 +221,8 @@ export class UserProductsComponent implements OnInit, OnDestroy {
         search: null,
       },
     });
+
+    // Close sidenav after selection on mobile
+    this.closeSidenav();
   }
 }
