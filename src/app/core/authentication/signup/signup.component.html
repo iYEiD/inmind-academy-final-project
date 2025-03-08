@@ -1,0 +1,101 @@
+<div class="signup-container">
+  <img src="../../../../assets/images/login-image.jpg" alt="signup-image" />
+  <div class="signup-form">
+    <h1>Create an Account</h1>
+    <p>Enter your details below</p>
+    <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            type="text"
+            id="username"
+            formControlName="username"
+            placeholder="Username"
+          />
+          <mat-error
+            *ngIf="
+              signupForm.get('username')?.hasError('required') &&
+              signupForm.get('username')?.touched
+            "
+          >
+            Username is required
+          </mat-error>
+          <mat-error
+            *ngIf="
+              signupForm.get('username')?.hasError('minlength') &&
+              signupForm.get('username')?.touched
+            "
+          >
+            Username must be at least 3 characters
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Email"
+          />
+          <mat-error
+            *ngIf="
+              signupForm.get('email')?.hasError('required') &&
+              signupForm.get('email')?.touched
+            "
+          >
+            Email is required
+          </mat-error>
+          <mat-error
+            *ngIf="
+              signupForm.get('email')?.hasError('email') &&
+              signupForm.get('email')?.touched
+            "
+          >
+            Please enter a valid email address
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Password"
+          />
+          <mat-error
+            *ngIf="
+              signupForm.get('password')?.hasError('required') &&
+              signupForm.get('password')?.touched
+            "
+          >
+            Password is required
+          </mat-error>
+          <mat-error
+            *ngIf="
+              signupForm.get('password')?.hasError('minlength') &&
+              signupForm.get('password')?.touched
+            "
+          >
+            Password must be at least 6 characters
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="signup-form-actions">
+        <button type="submit" class="signup-button">Create Account</button>
+        <button type="button" class="gmail-button">
+          <img
+            src="../../../../../assets/images/gmail-icon.png"
+            alt="gmail-icon"
+          />
+          Sign up with Gmail
+        </button>
+        <p>Already have an account? <a [routerLink]="['/login']">Log in</a></p>
+      </div>
+    </form>
+  </div>
+</div>

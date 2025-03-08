@@ -71,3 +71,31 @@ body {
   margin: 0;
   font-family: $default-font;
 }
+
+// Snackbar styles
+.success-snackbar {
+  border-left: 4px solid #4caf50 !important;
+}
+
+.error-snackbar {
+  border-left: 4px solid #f44336 !important;
+}
+
+// Override Material's default snackbar styles
+.mat-mdc-snack-bar-container {
+  &.success-snackbar,
+  &.error-snackbar {
+    .mdc-snackbar__surface {
+      background: $primary-color;
+      border-radius: 4px !important;
+      min-width: 200px !important;
+      max-width: 300px !important;
+      box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2),
+        0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+    }
+    .mat-mdc-snack-bar-label,
+    .mat-mdc-button.mat-mdc-snack-bar-action {
+      color: $secondary-color !important;
+    }
+  }
+}

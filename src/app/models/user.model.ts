@@ -2,6 +2,11 @@ export interface IUserLogin {
   username: string;
   password: string;
 }
+export interface ISignupRequest {
+  username: string;
+  email: string;
+  password: string;
+}
 
 export interface IUser {
   id: number;
