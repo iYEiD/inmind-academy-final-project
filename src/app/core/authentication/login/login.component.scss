@@ -1,5 +1,5 @@
-@import "../../../../../app/shared/styles/variables";
-@import "../../../../../app/shared/styles/mixins";
+@import "../../../../app/shared/styles/variables";
+@import "../../../../app/shared/styles/mixins";
 
 .login-container {
   display: flex;
@@ -21,7 +21,6 @@
 
   .login-form {
     flex: 1;
-    margin-block-end: $spacing-4xl;
     margin-inline-start: $spacing-xl;
     display: flex;
     flex-direction: column;
@@ -30,7 +29,6 @@
     @include respond-to(md) {
       margin-inline: auto; // Center the form on smaller screens
       align-items: center;
-      margin-block-end: $spacing-2xl;
     }
 
     h1 {
@@ -51,20 +49,8 @@
       margin-block-end: $spacing-md;
       width: 100%;
 
-      .input-field {
-        background-color: $primary-color;
-        border: none;
-        border-block-end: 0.0625rem solid $tertiary-color;
-        padding: 0 0 $spacing-xs 0;
+      mat-form-field {
         width: 100%;
-        height: $spacing-xl;
-        font-size: $font-size-sm;
-        color: $tertiary-color;
-
-        &:focus {
-          outline: none;
-          border-block-end: 0.125rem solid $secondary-color;
-        }
       }
     }
   }

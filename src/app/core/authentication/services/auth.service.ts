@@ -3,8 +3,11 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthApiService } from './auth-api.service';
 import { CookieService } from 'ngx-cookie-service';
-import { ILoginRequest, IAuthResponse } from '../../../models/auth.model';
-import { ISignupRequest } from '../../../models/user.model';
+import {
+  ILoginRequest,
+  IAuthResponse,
+  ISignupRequest,
+} from '../../../models/auth.model';
 @Injectable({
   providedIn: 'root',
 })
