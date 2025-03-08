@@ -1,0 +1,82 @@
+@import "../../../../shared/styles/_variables.scss";
+@import "../../../../shared/styles/_mixins.scss";
+
+.profile-container {
+  padding: $spacing-3xl;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .profile-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $secondary-color;
+    margin-block-end: $spacing-lg;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .form-row {
+      display: flex;
+      gap: $spacing-md;
+
+      @include respond-to(sm) {
+        flex-direction: column;
+        gap: $spacing-xs;
+      }
+
+      .form-field {
+        flex: 1;
+
+        .field-title {
+          font-weight: $font-weight-medium;
+          color: $secondary-color;
+          margin-block-end: $spacing-xs;
+        }
+
+        mat-form-field {
+          width: 100%;
+        }
+      }
+    }
+
+    .password-section {
+      margin-block-start: $spacing-lg;
+      border-block-start: 1px solid $tertiary-color-light;
+      padding-block-start: $spacing-md;
+
+      .form-title {
+        font-size: $font-size-xl;
+        font-weight: $font-weight-bold;
+        color: $secondary-color;
+        margin-block-end: $spacing-lg;
+      }
+
+      .form-field {
+        margin-block-end: $spacing-sm;
+
+        .field-title {
+          font-weight: $font-weight-medium;
+          color: $secondary-color;
+          margin-block-end: $spacing-xs;
+        }
+
+        mat-form-field {
+          width: 100%;
+        }
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-block-start: $spacing-md;
+
+      .save-btn {
+        @include brown-button;
+      }
+    }
+  }
+}
