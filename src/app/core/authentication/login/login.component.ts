@@ -1,18 +1,18 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ISignupRequest } from '../../../models/auth.model';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { ILoginRequest } from '../../../models/auth.model';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss',
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
 })
-export class SignupComponent implements OnDestroy {
-  signupForm: FormGroup;
+export class LoginComponent implements OnDestroy {
+  loginForm: FormGroup;
   authService = inject(AuthService);
   router = inject(Router);
   private fb = inject(FormBuilder);
@@ -20,32 +20,37 @@ export class SignupComponent implements OnDestroy {
   private $destroy = new Subject<void>();
 
   constructor() {
-    this.signupForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+    this.loginForm = this.fb.group({
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
 
-  onSignup(): void {
-    if (this.signupForm.valid) {
-      const userSignup: ISignupRequest = this.signupForm.value;
+  onLogin(): void {
+    if (this.loginForm.valid) {
+      const userLogin: ILoginRequest = this.loginForm.value;
       this.authService
-        .signup(userSignup)
+        .login(userLogin)
         .pipe(takeUntil(this.$destroy))
         .subscribe({
-          next: (username) => {
-            this.showSnackbar(`Welcome ${username}!`, 'success');
-            this.router.navigate(['/']);
+          next: (response) => {
+            this.showSnackbar(
+              `Welcome back, ${userLogin.username}!`,
+              'success'
+            );
+            this.router.navigate(['/admin/products']);
           },
           error: (error) => {
-            console.error('Signup failed:', error);
-            this.showSnackbar('Signup failed. Please try again.', 'error');
+            console.error('Login failed', error);
+            this.showSnackbar(
+              'Login failed. Please check your credentials.',
+              'error'
+            );
           },
         });
     } else {
       // Mark all fields as touched to trigger validation messages
-      this.signupForm.markAllAsTouched();
+      this.loginForm.markAllAsTouched();
       this.showSnackbar('Please fill all input fields', 'error');
     }
   }

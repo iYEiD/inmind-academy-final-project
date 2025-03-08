@@ -11,6 +11,12 @@ export interface IAuthResponse {
   user: IUser;
 }
 
+export interface ISignupRequest {
+  username: string;
+  email: string;
+  password: string;
+}
+
 export interface IRefreshTokenRequest {
   refreshToken: string;
 }

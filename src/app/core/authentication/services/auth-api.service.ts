@@ -9,7 +9,7 @@ import {
   IAuthResponse,
 } from '../../../models/auth.model';
 import { AuthMapper } from '../../../shared/mappers/auth.mapper';
-import { ISignupRequest } from '../../../models/user.model';
+import { ISignupRequest } from '../../../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
