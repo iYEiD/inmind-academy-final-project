@@ -1,16 +1,185 @@
 @import "../../../../app/shared/styles/variables";
 @import "../../../../app/shared/styles/mixins";
 
+// Mixins for common styles
+@mixin panel-heading {
+  color: $secondary-color;
+  margin-block-end: $spacing-lg;
+  font-size: $font-size-lg;
+  font-weight: 600;
+}
+
+// Mobile filter button
+.mobile-filter-button {
+  position: fixed;
+  bottom: $spacing-lg;
+  right: $spacing-lg;
+  z-index: 100;
+  display: none; // Hidden by default, shown only on mobile
+
+  button {
+    border-radius: 50px;
+    padding: $spacing-sm $spacing-lg;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Main container
+.sidenav-container {
+  background-color: $primary-color;
+  position: relative;
+  display: flex;
+}
+
+// Sidenav styles
+.sidenav {
+  background-color: $primary-color;
+  border-inline-end: 1px solid $primary-color-dark;
+  padding-block-start: $spacing-3xl;
+  position: relative;
+
+  // Sidenav header (mobile only)
+  .sidenav-header {
+    display: none; // Hidden by default, shown only on mobile
+    padding: $spacing-md $spacing-lg;
+    border-bottom: 1px solid $primary-color-dark;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+      margin: 0;
+      color: $secondary-color;
+    }
+  }
+
+  // Categories panel
+  .categories-panel {
+    padding-inline-start: $spacing-4xl;
+
+    h3 {
+      @include panel-heading;
+    }
+
+    .main-categories {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      .category-section {
+        .category-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: $spacing-sm;
+          cursor: pointer;
+          color: $secondary-color;
+          transition: all $transition-fast;
+
+          &:hover {
+            background-color: $primary-color-dark;
+            color: $secondary-color-light;
+          }
+
+          &.active {
+            color: $secondary-color;
+            background-color: $primary-color-darker;
+          }
+
+          img {
+            transition: transform $transition-fast;
+
+            &.rotated {
+              transform: rotate(180deg);
+            }
+          }
+        }
+
+        .subcategories {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height $transition-base;
+          background-color: $primary-color-dark;
+          cursor: context-menu;
+          &.open {
+            max-height: 500px;
+          }
+
+          .category-item {
+            display: block;
+            padding: $spacing-sm $spacing-md;
+            color: $secondary-color;
+            text-decoration: none;
+            transition: all $transition-fast;
+
+            &:hover {
+              background-color: $primary-color-darker;
+              color: $secondary-color-light;
+              transform: translateX(4px);
+            }
+
+            &.active {
+              background-color: $primary-color-darker;
+              color: $secondary-color-light;
+              font-weight: 600;
+              border-inline-start: 3px solid $secondary-color;
+              padding-inline-start: calc($spacing-md - 3px);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Sort panel
+  .sort-panel {
+    padding-inline-start: $spacing-4xl;
+    margin-block-start: $spacing-2xl;
+
+    h3 {
+      @include panel-heading;
+    }
+
+    .sort-options {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      .sort-button {
+        background-color: $primary-color-dark;
+        color: $secondary-color;
+        margin-inline-end: $spacing-sm;
+        margin-block-end: $spacing-sm;
+        justify-content: center;
+        padding: $spacing-sm $spacing-md;
+        border-radius: $border-radius-lg;
+        transition: all $transition-fast;
+
+        &:hover {
+          background-color: $primary-color-darker;
+          color: $secondary-color-light;
+        }
+      }
+    }
+  }
+}
+
+// Content area
+mat-sidenav-content {
+  flex: 1;
+  margin: 0 !important;
+}
+
+// Products grid
 .products-container {
-  padding: $spacing-4xl $spacing-3xl;
+  padding: $spacing-3xl $spacing-4xl $spacing-3xl $spacing-2xl;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   flex-wrap: wrap;
   gap: $spacing-lg;
-  min-height: 50vh;
 }
 
+// Empty state
 .no-products {
   width: 100%;
   text-align: center;
@@ -19,6 +188,7 @@
   color: $tertiary-color;
 }
 
+// Pagination
 .pagination-controls {
   display: flex;
   justify-content: center;
@@ -52,16 +222,64 @@
   }
 }
 
+// Responsive styles
 @include respond-to(md) {
+  .mobile-filter-button {
+    display: block;
+  }
+
+  .sidenav {
+    width: 280px;
+    padding: 0;
+
+    .sidenav-header {
+      padding: 1.5rem 2rem;
+      display: flex;
+      a {
+        padding-inline-end: 0.5rem;
+        cursor: pointer;
+      }
+    }
+
+    .categories-panel,
+    .sort-panel {
+      padding: $spacing-lg $spacing-xl;
+    }
+  }
+
   .products-container {
     padding: $spacing-3xl $spacing-xl;
     gap: $spacing-md;
+    justify-content: center;
   }
 }
 
 @include respond-to(sm) {
+  .mobile-filter-button {
+    display: block;
+    bottom: $spacing-md;
+    right: $spacing-md;
+  }
+
+  .sidenav {
+    width: 85%; // Take up most of the screen on mobile
+
+    .sidenav-header {
+      padding: 1.5rem 2rem;
+      a {
+        padding-inline-end: 0;
+      }
+    }
+
+    .categories-panel,
+    .sort-panel {
+      padding: $spacing-md $spacing-lg;
+    }
+  }
+
   .products-container {
     padding: $spacing-2xl $spacing-lg;
     gap: $spacing-sm;
+    justify-content: center;
   }
 }

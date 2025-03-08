@@ -52,4 +52,14 @@ export class ProductsApiService {
       }))
     );
   }
+
+  getSortedProducts(
+    field: string,
+    direction: 'asc' | 'desc',
+    limit: number,
+    skip: number
+  ): Observable<{ products: ProductDTO[]; total: number }> {
+    const url = `${this.apiUrl}?limit=${limit}&skip=${skip}&sortBy=${field}&order=${direction}`;
+    return this.http.get<{ products: ProductDTO[]; total: number }>(url);
+  }
 }

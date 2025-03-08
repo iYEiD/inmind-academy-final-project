@@ -1,15 +1,81 @@
-<section class="product-details" *ngIf="product$ | async as product">
+<section class="product-details" *ngIf="isLoading">
+  <div class="current-product-path skeleton-path">
+    <div class="skeleton-text"></div>
+    <div class="skeleton-arrow"></div>
+    <div class="skeleton-text"></div>
+  </div>
+
+  <div class="product-details-container">
+    <!-- Skeleton for product image -->
+    <div class="product-details-image skeleton-image">
+      <div class="image-loading-skeleton"></div>
+    </div>
+
+    <!-- Skeleton for product info -->
+    <div class="product-details-info">
+      <div class="main-content">
+        <div class="skeleton-title"></div>
+        <div class="skeleton-rating"></div>
+        <div class="skeleton-price"></div>
+      </div>
+
+      <div class="about-product">
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-text-block"></div>
+      </div>
+
+      <div class="product-details-actions">
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-actions"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skeleton for thumbnails -->
+  <div class="images-container">
+    <div class="thumbnail-item" *ngFor="let _ of [1, 2, 3, 4]">
+      <div class="thumbnail-loading-skeleton"></div>
+    </div>
+  </div>
+
+  <!-- Skeleton for related products -->
+  <div class="related-products">
+    <div class="skeleton-title"></div>
+    <div class="related-products-container">
+      <app-product-card
+        *ngFor="let _ of [1, 2, 3, 4]"
+        [isLoading]="true"
+      ></app-product-card>
+    </div>
+  </div>
+</section>
+
+<section class="product-details" *ngIf="!isLoading && product">
   <div class="current-product-path">
-    <p>Our Products</p>
+    <a [routerLink]="['/products']" class="path-link">Our Products</a>
     <img
       src="../../../../assets/images/path-arrow-icon.png"
       alt="Path Arrow Icon"
     />
-    <p>{{ product.category | capitalizeFirst }}</p>
+    <a
+      [routerLink]="['/products']"
+      [queryParams]="{ category: product.category, page: 1 }"
+      class="path-link"
+    >
+      {{ product.category | capitalizeFirst }}
+    </a>
   </div>
   <div class="product-details-container">
     <div class="product-details-image">
-      <img [src]="product.images[selectedImageIndex]" alt="Product Image" />
+      <div class="image-loading-skeleton" *ngIf="imageLoading"></div>
+
+      <img
+        [src]="product.images[selectedImageIndex]"
+        alt="Product Image"
+        [class.hidden]="imageLoading"
+        (load)="imageLoading = false"
+        (error)="imageLoading = false"
+      />
     </div>
     <div class="product-details-info">
       <div class="main-content">
@@ -45,14 +111,25 @@
       [class.active]="selectedImageIndex === i"
       (click)="selectImage(i)"
     >
-      <img [src]="img" alt="Thumbnail {{ i + 1 }}" />
+      <div
+        class="thumbnail-loading-skeleton"
+        *ngIf="thumbnailsLoading[i]"
+      ></div>
+
+      <img
+        [src]="img"
+        alt="Thumbnail {{ i + 1 }}"
+        [class.hidden]="thumbnailsLoading[i]"
+        (load)="thumbnailsLoading[i] = false"
+        (error)="thumbnailsLoading[i] = false"
+      />
     </div>
   </div>
   <div class="related-products">
     <h1>Browse Related Products</h1>
     <div class="related-products-container">
       <app-product-card
-        *ngFor="let product of relatedProducts$ | async"
+        *ngFor="let product of relatedProducts"
         [product]="product"
       ></app-product-card>
     </div>

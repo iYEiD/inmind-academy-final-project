@@ -83,3 +83,17 @@ export interface IReview {
   reviewerName: string;
   reviewerEmail: string;
 }
+
+// New interfaces for product filtering and sorting
+export interface IProductFilters {
+  category?: string | null;
+  search?: string | null;
+  sort?: string | null;
+  page: number;
+  itemsPerPage: number;
+}
+
+export interface IFilterConflictResult {
+  hasConflict: boolean;
+  resolvedFilters?: IProductFilters;
+}

@@ -1,9 +1,9 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductsService } from '../products/services/products.service';
 import { ProductDTO } from '../../models/product.model';
 import { Subject } from 'rxjs';
-import { takeUntil, finalize } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { ProductMapper } from '../../shared/mappers/product.mapper';
 
@@ -12,8 +12,16 @@ import { ProductMapper } from '../../shared/mappers/product.mapper';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+
+  // Define the number of skeletons to show
+  topRatedSkeletonCount = 4;
+  exploreSkeletonCount = 8;
+
+  // Arrays to hold skeleton placeholders
+  topRatedSkeletons = Array(this.topRatedSkeletonCount).fill(null);
+  exploreSkeletons = Array(this.exploreSkeletonCount).fill(null);
 
   categories = [
     {
@@ -66,21 +74,36 @@ export class HomeComponent implements OnDestroy {
       queryParamsHandling: 'merge',
     });
   }
+
+  // Data state
   topRatedProducts: ProductDTO[] = [];
   exploreProducts: ProductDTO[] = [];
-  isLoading = true;
+
+  // Loading states
+  topRatedLoading = true;
+  exploreLoading = true;
+
   productService = inject(ProductsService);
 
-  products$ = this.productService.getProducts(12, 0).pipe(
-    map((response) => {
-      const homeView = ProductMapper.toHomeView(response.products);
-      this.topRatedProducts = homeView.topRated;
-      this.exploreProducts = homeView.exploreProducts;
-      return homeView;
-    }),
-    finalize(() => (this.isLoading = false)),
-    takeUntil(this.destroy$)
-  );
+  ngOnInit(): void {
+    // Fetch products
+    this.productService
+      .getProducts(12, 0)
+      .pipe(
+        map((response) => {
+          const homeView = ProductMapper.toHomeView(response.products);
+          this.topRatedProducts = homeView.topRated;
+          this.exploreProducts = homeView.exploreProducts;
+          return homeView;
+        }),
+        tap(() => {
+          this.topRatedLoading = false;
+          this.exploreLoading = false;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

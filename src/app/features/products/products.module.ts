@@ -9,6 +9,10 @@ import { AgGridModule } from 'ag-grid-angular';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,11 @@ import { RouterModule } from '@angular/router';
     SharedModule,
     AgGridModule,
     FormsModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
     RouterModule.forChild([{ path: '', component: AdminProductsComponent }]),
+    MatMenuModule,
   ],
   exports: [
     UserProductsComponent,
