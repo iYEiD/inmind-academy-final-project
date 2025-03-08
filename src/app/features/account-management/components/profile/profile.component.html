@@ -155,7 +155,16 @@
     </div>
 
     <div class="actions">
-      <button class="save-btn" [disabled]="profileForm.invalid">
+      <button type="button" class="edit-btn" (click)="toggleEditMode()">
+        {{ isEditMode ? "Cancel" : "Edit" }}
+      </button>
+      <button
+        type="button"
+        class="save-btn"
+        [disabled]="!isEditMode"
+        [ngClass]="{ 'disabled-btn': !isEditMode }"
+        (click)="saveChanges()"
+      >
         Save Changes
       </button>
     </div>

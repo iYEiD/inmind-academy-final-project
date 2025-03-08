@@ -73,9 +73,21 @@
       display: flex;
       justify-content: flex-end;
       margin-block-start: $spacing-md;
+      gap: $spacing-md;
+
+      .edit-btn {
+        @include white-button;
+        min-width: 100px;
+        border: 1px solid $secondary-color;
+      }
 
       .save-btn {
         @include brown-button;
+
+        &.disabled-btn {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
       }
     }
   }
