@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountManagementComponent } from './components/shell/account-management.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { authGuard } from '../../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -10,17 +11,14 @@ const routes: Routes = [
     component: AccountManagementComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'profile',
-        pathMatch: 'full',
-      },
-      {
         path: 'profile',
         component: ProfileComponent,
+        canActivate: [authGuard],
       },
       {
         path: 'payment',
         component: PaymentComponent,
+        canActivate: [authGuard],
       },
     ],
   },

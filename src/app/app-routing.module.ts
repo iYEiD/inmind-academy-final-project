@@ -6,11 +6,12 @@ import { adminAuthGuard } from './guards/admin-auth.guard';
 import { HomeComponent } from './features/home/home.component';
 import { ProductDetailsComponent } from './features/products/product-details/product-details.component';
 import { SignupComponent } from './core/authentication/signup/signup.component';
-
+import { userGuard } from './guards/user.guard';
+import { authGuard } from './guards/auth.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent, canActivate: [userGuard] },
+  { path: 'signup', component: SignupComponent, canActivate: [userGuard] },
   { path: 'products', component: UserProductsComponent },
   {
     path: 'shopping-cart',
@@ -26,6 +27,7 @@ const routes: Routes = [
       import('./features/account-management/account-management.module').then(
         (m) => m.AccountManagementModule
       ),
+    canActivate: [authGuard],
   },
   {
     path: 'admin/products',
