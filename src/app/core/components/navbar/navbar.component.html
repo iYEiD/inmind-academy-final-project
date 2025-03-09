@@ -73,7 +73,11 @@
         }}</span>
       </a>
       <a routerLink="/profile">
+        <div *ngIf="isLoggedIn && userImage" class="user-avatar">
+          <img [src]="userImage" alt="User profile" />
+        </div>
         <img
+          *ngIf="!isLoggedIn || !userImage"
           src="./assets/images/user-profile-icon.png"
           alt="user-profile-icon"
         />
@@ -152,7 +156,11 @@
           }}</span>
         </a>
         <a routerLink="/profile" (click)="closeMobileMenu()">
+          <div *ngIf="isLoggedIn && userImage" class="user-avatar">
+            <img [src]="userImage" alt="User profile" />
+          </div>
           <img
+            *ngIf="!isLoggedIn || !userImage"
             src="./assets/images/user-profile-icon.png"
             alt="user-profile-icon"
           />

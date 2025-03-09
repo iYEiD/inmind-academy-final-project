@@ -6,8 +6,7 @@ import { selectCartItemsCount } from '../../../shared/states/shopping-cart/cart.
 import { takeUntil } from 'rxjs/operators';
 import { NAV_ITEMS } from '../../../models/category.model';
 import { AuthService } from '../../../core/authentication/services/auth.service';
-import { selectIsAdmin } from '../../../shared/states/user/user.selectors';
-
+import { selectUserProfile } from '../../../shared/states/user/user.selectors';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -25,6 +24,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   router = inject(Router);
   store = inject(Store);
   authService = inject(AuthService);
+
+  isLoggedIn = false;
+  userImage: string | null = null;
 
   private updateNavigation() {
     // Check admin status and update navigation
@@ -112,6 +114,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((count) => {
         this.cartItemsCount = count;
+      });
+
+    // Get user information
+    this.store
+      .select(selectUserProfile)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user) => {
+        this.isLoggedIn = !!user;
+        this.userImage = user?.image || null;
       });
 
     // Initial navigation setup
