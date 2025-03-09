@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
@@ -6,18 +6,22 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { PasswordValidators } from '../validators/password-validator';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { AccountFacade } from '../../../../core/authentication/facades/account.facade';
+import { UserProfileDTO } from '../../../../models/user.model';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnDestroy {
+export class ProfileComponent implements OnInit, OnDestroy {
   profileForm: FormGroup;
   isEditMode = false;
   private accountService = inject(AccountService);
+  private accountFacade = inject(AccountFacade);
   private destroy$ = new Subject<void>();
   private snackBar = inject(MatSnackBar);
+  private userProfile: UserProfileDTO | null = null;
 
   constructor(private fb: FormBuilder) {
     this.profileForm = this.fb.group(
@@ -37,6 +41,24 @@ export class ProfileComponent implements OnDestroy {
     );
   }
 
+  ngOnInit(): void {
+    // Subscribe to user profile data and populate form
+    this.accountFacade.userProfile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((profile) => {
+        if (profile) {
+          this.userProfile = profile;
+          this.profileForm.patchValue({
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            email: profile.email,
+            address: profile.address.address,
+            // Password fields remain empty
+          });
+        }
+      });
+  }
+
   toggleEditMode(): void {
     this.isEditMode = !this.isEditMode;
 
@@ -44,9 +66,19 @@ export class ProfileComponent implements OnDestroy {
       this.profileForm.enable();
     } else {
       this.profileForm.disable();
-      // Optionally reset form to original values if canceling
-      // this.profileForm.reset(this.originalValues);
-      // Will fill with current user data from state management later
+
+      // Reset form to original values from state when canceling edit
+      if (this.userProfile) {
+        this.profileForm.patchValue({
+          firstName: this.userProfile.firstName,
+          lastName: this.userProfile.lastName,
+          email: this.userProfile.email,
+          address: this.userProfile.address.address,
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+      }
     }
   }
 
@@ -83,9 +115,14 @@ export class ProfileComponent implements OnDestroy {
     }
 
     // Only proceed with save if the form is valid
-    if (this.profileForm.valid) {
+    if (this.profileForm.valid && this.userProfile) {
+      const updatedProfile = {
+        ...this.profileForm.value,
+        id: this.userProfile.id, // Include the user ID from state
+      };
+
       this.accountService
-        .updateProfile(this.profileForm.value)
+        .updateProfile(updatedProfile)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {

@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const routes: Routes = [{ path: '', component: ShoppingCartComponent }];
 
@@ -29,6 +30,7 @@ const routes: Routes = [{ path: '', component: ShoppingCartComponent }];
     MatIconModule,
     MatSortModule,
     MatPaginatorModule,
+    MatSnackBarModule,
   ],
 })
 export class ShoppingCartModule {}

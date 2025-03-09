@@ -7,6 +7,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ShoppingCartFacade } from '../facades/shopping-cart.facade';
 import { ShoppingCartService } from '../services/shopping-cart.service';
+import { AccountFacade } from '../../../core/authentication/facades/account.facade';
+import { UserProfileDTO } from '../../../models/user.model';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -18,6 +21,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   billingForm: FormGroup;
   paymentMethod: 'card' | 'cash' = 'card';
   private destroy$ = new Subject<void>();
+  private userProfile: UserProfileDTO | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -31,7 +35,9 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   private cartFacade = inject(ShoppingCartFacade);
   private cartService = inject(ShoppingCartService);
+  private accountFacade = inject(AccountFacade);
   private fb = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
 
   constructor() {
     this.billingForm = this.fb.group({
@@ -51,6 +57,24 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((items) => {
         this.dataSource.data = items;
+      });
+
+    // Subscribe to user profile and pre-fill billing form
+    this.accountFacade.userProfile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((profile) => {
+        if (profile && profile.id !== -1) {
+          this.userProfile = profile;
+
+          // Pre-fill billing form with user data
+          this.billingForm.patchValue({
+            fullName: `${profile.firstName} ${profile.lastName}`,
+            email: profile.email,
+            contactNumber: profile.phone,
+            streetAddress: profile.address.address,
+            cityCountry: `${profile.address.city}, ${profile.address.country}`,
+          });
+        }
       });
   }
 
@@ -100,11 +124,42 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
         this.total
       );
 
-      this.cartService.placeOrder(orderDetails);
-      this.cartFacade.clearCart();
-      this.billingForm.reset();
+      // Add user ID to order if available
+      if (this.userProfile) {
+        orderDetails.userId = this.userProfile.id;
+      }
+
+      // Call the service but we don't need to handle complex logic
+      this.cartService.placeOrder(orderDetails).subscribe(() => {
+        this.showSnackbar('Order successfully placed!', 'success');
+        this.cartFacade.clearCart();
+        this.billingForm.reset();
+
+        // Re-populate form with user data after reset if needed
+        if (this.userProfile) {
+          this.billingForm.patchValue({
+            fullName: `${this.userProfile.firstName} ${this.userProfile.lastName}`,
+            email: this.userProfile.email,
+            contactNumber: this.userProfile.phone,
+            streetAddress: this.userProfile.address.address,
+            cityCountry: `${this.userProfile.address.city}, ${this.userProfile.address.country}`,
+          });
+        }
+      });
     } else {
       this.billingForm.markAllAsTouched();
+      this.showSnackbar('Please fill in all required fields', 'error');
     }
+  }
+
+  private showSnackbar(message: string, type: 'success' | 'error'): void {
+    const config: MatSnackBarConfig = {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass:
+        type === 'success' ? ['success-snackbar'] : ['error-snackbar'],
+    };
+    this.snackBar.open(message, 'X', config);
   }
 }
