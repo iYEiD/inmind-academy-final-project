@@ -1,7 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { loadUserProfile } from '../../../shared/states/user/user.actions';
+import {
+  loadUserProfile,
+  updateUserProfile,
+} from '../../../shared/states/user/user.actions';
 import {
   selectUserProfile,
   selectUserAddress,
@@ -22,5 +25,9 @@ export class AccountFacade {
   // Actions
   loadUserProfile(): void {
     this.store.dispatch(loadUserProfile());
+  }
+
+  updateUserProfile(profile: UserProfileDTO): void {
+    this.store.dispatch(updateUserProfile({ profile }));
   }
 }

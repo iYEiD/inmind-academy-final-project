@@ -116,9 +116,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     // Only proceed with save if the form is valid
     if (this.profileForm.valid && this.userProfile) {
+      // Create a proper address object that preserves all address fields
+      const updatedAddress = {
+        ...this.userProfile.address, // Keep existing address properties
+        address: this.profileForm.get('address')?.value, // Update only the address string
+      };
+
       const updatedProfile = {
         ...this.profileForm.value,
         id: this.userProfile.id, // Include the user ID from state
+        address: updatedAddress, // Use the complete address object
       };
 
       this.accountService
@@ -126,6 +133,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
+            // Create a state-safe profile object without password fields
+            const stateProfile = {
+              ...updatedProfile,
+              // Exclude password fields from state
+              currentPassword: undefined,
+              newPassword: undefined,
+              confirmPassword: undefined,
+            };
+
+            // Dispatch action to update user profile in the store
+            this.accountFacade.updateUserProfile(stateProfile);
             this.showSnackbar('Profile updated successfully', 'success');
             this.toggleEditMode();
           },
