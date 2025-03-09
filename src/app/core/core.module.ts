@@ -10,7 +10,7 @@ import { SignupComponent } from './authentication/signup/signup.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 @NgModule({
   declarations: [
     NavbarComponent,
@@ -27,7 +27,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatSnackBarModule,
   ],
   exports: [NavbarComponent, FooterComponent, LoginComponent, SignupComponent],
 })

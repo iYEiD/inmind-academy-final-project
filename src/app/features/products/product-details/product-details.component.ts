@@ -7,6 +7,7 @@ import { takeUntil, take } from 'rxjs/operators';
 import { switchMap, map, of, tap, shareReplay } from 'rxjs';
 import { ShoppingCartFacade } from '../../../features/shopping-cart/facades/shopping-cart.facade';
 import { CartMapper } from '../../../shared/mappers/cart.mapper';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-product-details',
@@ -32,6 +33,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   productsService = inject(ProductsService);
   private destroy$ = new Subject<void>();
   private router = inject(Router);
+  private notificationService = inject(NotificationService);
 
   product$ = this.route.paramMap.pipe(
     takeUntil(this.destroy$),
@@ -146,6 +148,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.quantity
     );
     this.cartFacade.addToCart(cartItem);
+    this.notificationService.showNotification(`Added to cart`, 'success');
   }
 
   trackByImage(index: number, item: string): number {
