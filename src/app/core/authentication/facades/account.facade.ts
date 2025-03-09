@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   loadUserProfile,
   updateUserProfile,
+  clearUserProfile,
 } from '../../../shared/states/user/user.actions';
 import {
   selectUserProfile,
@@ -29,5 +30,9 @@ export class AccountFacade {
 
   updateUserProfile(profile: UserProfileDTO): void {
     this.store.dispatch(updateUserProfile({ profile }));
+  }
+
+  logout(): void {
+    this.store.dispatch(clearUserProfile());
   }
 }

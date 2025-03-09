@@ -87,8 +87,4 @@ export const NAV_ITEMS: INavItem[] = [
     name: 'Shop Now',
     link: '/products',
   },
-  {
-    name: 'Contact',
-    link: '/contact',
-  },
 ];

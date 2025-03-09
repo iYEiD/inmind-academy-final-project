@@ -41,7 +41,9 @@
     <!-- Middle Side -->
     <div class="nav-logo">
       <a routerLink="/">
-        <h1><em>Otters</em></h1>
+        <h1>
+          <em>{{ isAdmin ? "Otters+" : "Otters" }}</em>
+        </h1>
       </a>
     </div>
 
@@ -69,12 +71,34 @@
           cartItemsCount
         }}</span>
       </a>
-      <a routerLink="/profile">
-        <img
-          src="./assets/images/user-profile-icon.png"
-          alt="user-profile-icon"
-        />
-      </a>
+      <div class="user-dropdown">
+        <div class="user-icon" (click)="toggleUserDropdown()">
+          <div *ngIf="isLoggedIn && userImage" class="user-avatar">
+            <img [src]="userImage" alt="User profile" />
+          </div>
+          <img
+            *ngIf="!isLoggedIn || !userImage"
+            src="./assets/images/user-profile-icon.png"
+            alt="user-profile-icon"
+          />
+        </div>
+        <div class="user-dropdown-content" [class.show]="isUserDropdownOpen">
+          <div class="dropdown-header">
+            <span class="header-title">Account</span>
+            <span class="close-dropdown" (click)="closeUserDropdown()">✕</span>
+          </div>
+          <ng-container *ngIf="isLoggedIn; else notLoggedIn">
+            <a routerLink="/profile" (click)="closeUserDropdown()"
+              >Edit Profile</a
+            >
+            <a (click)="logout(); closeUserDropdown()">Logout</a>
+          </ng-container>
+          <ng-template #notLoggedIn>
+            <a routerLink="/signup" (click)="closeUserDropdown()">Sign Up</a>
+            <a routerLink="/login" (click)="closeUserDropdown()">Login</a>
+          </ng-template>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
@@ -148,12 +172,35 @@
             cartItemsCount
           }}</span>
         </a>
-        <a routerLink="/profile" (click)="closeMobileMenu()">
-          <img
-            src="./assets/images/user-profile-icon.png"
-            alt="user-profile-icon"
-          />
-        </a>
+
+        <ng-container *ngIf="isLoggedIn; else mobileNotLoggedIn">
+          <a
+            routerLink="/profile"
+            (click)="closeMobileMenu()"
+            class="mobile-user-link"
+          >
+            <span>Edit Profile</span>
+          </a>
+          <a (click)="logout(); closeMobileMenu()" class="mobile-user-link">
+            <span>Logout</span>
+          </a>
+        </ng-container>
+        <ng-template #mobileNotLoggedIn>
+          <a
+            routerLink="/signup"
+            (click)="closeMobileMenu()"
+            class="mobile-user-link"
+          >
+            <span>Sign Up</span>
+          </a>
+          <a
+            routerLink="/login"
+            (click)="closeMobileMenu()"
+            class="mobile-user-link"
+          >
+            <span>Login</span>
+          </a>
+        </ng-template>
       </div>
     </div>
   </div>
