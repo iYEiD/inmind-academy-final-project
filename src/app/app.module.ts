@@ -11,7 +11,9 @@ import { StoreModule } from '@ngrx/store';
 import { cartReducer } from './shared/states/shopping-cart/cart.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { userReducer } from './shared/states/user/user.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { UserEffects } from './shared/states/user/user.effects';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -21,10 +23,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoreModule,
     FeaturesModule,
     HttpClientModule,
-    StoreModule.forRoot({ cart: cartReducer }),
+    StoreModule.forRoot({ cart: cartReducer, user: userReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),
+    EffectsModule.forRoot([UserEffects]),
   ],
   providers: [
     CookieService,
