@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NAV_ITEMS } from '../../../models/category.model';
 import { AuthService } from '../../../core/authentication/services/auth.service';
 import { selectUserProfile } from '../../../shared/states/user/user.selectors';
+import { NotificationService } from '../../../shared/services/notification.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -18,12 +19,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   searchTerm: string = '';
   isMobileMenuOpen: boolean = false;
+  isUserDropdownOpen: boolean = false;
   cartItemsCount: number = 0;
   private destroy$ = new Subject<void>();
 
   router = inject(Router);
   store = inject(Store);
   authService = inject(AuthService);
+  notificationService = inject(NotificationService);
 
   isLoggedIn = false;
   userImage: string | null = null;
@@ -101,9 +104,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleUserDropdown(): void {
+    this.isUserDropdownOpen = !this.isUserDropdownOpen;
+  }
+
+  closeUserDropdown(): void {
+    this.isUserDropdownOpen = false;
+  }
+
   logout() {
     this.authService.logout();
     this.updateNavigation();
+    this.notificationService.showNotification(
+      'Logged out successfully',
+      'success'
+    );
     this.router.navigate(['/login']);
   }
 
@@ -121,7 +136,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .select(selectUserProfile)
       .pipe(takeUntil(this.destroy$))
       .subscribe((user) => {
-        this.isLoggedIn = !!user;
+        this.isLoggedIn = !!(user && user.id !== -1);
         this.userImage = user?.image || null;
       });
 
