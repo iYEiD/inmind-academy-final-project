@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ILoginRequest } from '../../../models/auth.model';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subject, takeUntil } from 'rxjs';
+import { AccountFacade } from '../facades/account.facade';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
   private $destroy = new Subject<void>();
+  private accountFacade = inject(AccountFacade);
 
   constructor() {
     this.loginForm = this.fb.group({
@@ -34,6 +36,8 @@ export class LoginComponent implements OnDestroy {
         .pipe(takeUntil(this.$destroy))
         .subscribe({
           next: (response) => {
+            this.accountFacade.loadUserProfile();
+
             this.showSnackbar(
               `Welcome back, ${userLogin.username}!`,
               'success'

@@ -28,7 +28,6 @@ export class AuthService {
           secure: true,
           sameSite: 'Strict',
         });
-        localStorage.setItem('user', JSON.stringify(response.user));
       })
     );
   }
@@ -36,7 +35,6 @@ export class AuthService {
   logout(): void {
     this.cookieService.delete('accessToken', '/');
     this.cookieService.delete('refreshToken', '/');
-    localStorage.removeItem('user');
   }
 
   isAuthenticated(): boolean {

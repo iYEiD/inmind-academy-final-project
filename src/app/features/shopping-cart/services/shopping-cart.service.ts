@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ICartItem } from '../../../models/shopping-cart.model';
+import { Observable, of } from 'rxjs';
 
 export interface OrderDetails {
   billingDetails: any;
@@ -9,6 +10,7 @@ export interface OrderDetails {
   subtotal: number;
   vat: number;
   total: number;
+  userId?: number;
 }
 
 @Injectable({
@@ -37,8 +39,8 @@ export class ShoppingCartService {
     };
   }
 
-  placeOrder(orderDetails: OrderDetails): void {
-    // Usually handled by the backend
-    console.log('Order placed', orderDetails);
+  placeOrder(orderDetails: OrderDetails): Observable<boolean> {
+    // Simulate successful order placement
+    return of(true);
   }
 }
