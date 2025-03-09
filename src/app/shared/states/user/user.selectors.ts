@@ -12,3 +12,8 @@ export const selectUserAddress = createSelector(
   selectUserState,
   (state) => state.address
 );
+
+export const selectIsAdmin = createSelector(
+  selectUserProfile,
+  (profile) => profile?.role === 'admin'
+);

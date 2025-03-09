@@ -36,12 +36,15 @@
           </div>
         </ng-container>
       </ng-container>
+      <a (click)="logout()">logout</a>
     </div>
 
     <!-- Middle Side -->
     <div class="nav-logo">
       <a routerLink="/">
-        <h1><em>Otters</em></h1>
+        <h1>
+          <em>{{ isAdmin ? "Otters+" : "Otters" }}</em>
+        </h1>
       </a>
     </div>
 
