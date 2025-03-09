@@ -8,6 +8,7 @@ import { PasswordValidators } from '../validators/password-validator';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AccountFacade } from '../../../../core/authentication/facades/account.facade';
 import { UserProfileDTO } from '../../../../models/user.model';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,8 +21,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private accountService = inject(AccountService);
   private accountFacade = inject(AccountFacade);
   private destroy$ = new Subject<void>();
-  private snackBar = inject(MatSnackBar);
   private userProfile: UserProfileDTO | null = null;
+  private notificationService = inject(NotificationService);
 
   constructor(private fb: FormBuilder) {
     this.profileForm = this.fb.group(
@@ -84,48 +85,45 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   saveChanges(): void {
     if (!this.isEditMode) {
-      return; // Don't do anything if not in edit mode
+      return;
     }
 
-    // Mark all fields as touched to trigger validation messages
     Object.keys(this.profileForm.controls).forEach((key) => {
       const control = this.profileForm.get(key);
       control?.markAsTouched();
     });
 
-    // Check if any required fields are empty
     if (
       this.profileForm.hasError('required', ['email']) ||
       this.profileForm.hasError('required', ['currentPassword']) ||
-      // Only check confirmPassword if newPassword has a value
       (this.profileForm.get('newPassword')?.value &&
         !this.profileForm.get('confirmPassword')?.value)
     ) {
-      this.showSnackbar(
+      this.notificationService.showNotification(
         'Please confirm your new password and other fields',
         'error'
       );
       return;
     }
 
-    // Check for password validation errors
     if (this.profileForm.hasError('passwordMismatch')) {
-      this.showSnackbar('Passwords do not match', 'error');
+      this.notificationService.showNotification(
+        'Passwords do not match',
+        'error'
+      );
       return;
     }
 
-    // Only proceed with save if the form is valid
     if (this.profileForm.valid && this.userProfile) {
-      // Create a proper address object that preserves all address fields
       const updatedAddress = {
-        ...this.userProfile.address, // Keep existing address properties
-        address: this.profileForm.get('address')?.value, // Update only the address string
+        ...this.userProfile.address,
+        address: this.profileForm.get('address')?.value,
       };
 
       const updatedProfile = {
         ...this.profileForm.value,
-        id: this.userProfile.id, // Include the user ID from state
-        address: updatedAddress, // Use the complete address object
+        id: this.userProfile.id,
+        address: updatedAddress,
       };
 
       this.accountService
@@ -133,45 +131,34 @@ export class ProfileComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            // Create a state-safe profile object without password fields
             const stateProfile = {
               ...updatedProfile,
-              // Exclude password fields from state
               currentPassword: undefined,
               newPassword: undefined,
               confirmPassword: undefined,
             };
 
-            // Dispatch action to update user profile in the store
             this.accountFacade.updateUserProfile(stateProfile);
-            this.showSnackbar('Profile updated successfully', 'success');
+            this.notificationService.showNotification(
+              'Profile updated successfully',
+              'success'
+            );
             this.toggleEditMode();
           },
           error: (error) => {
             console.error('Error updating profile:', error);
-            this.showSnackbar(
+            this.notificationService.showNotification(
               'Error updating profile. Please try again.',
               'error'
             );
           },
         });
     } else {
-      this.showSnackbar(
+      this.notificationService.showNotification(
         'Old password cannot be the same as new password',
         'error'
       );
     }
-  }
-
-  private showSnackbar(message: string, type: 'success' | 'error'): void {
-    const config: MatSnackBarConfig = {
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass:
-        type === 'success' ? ['success-snackbar'] : ['error-snackbar'],
-    };
-    this.snackBar.open(message, 'X', config);
   }
 
   ngOnDestroy(): void {

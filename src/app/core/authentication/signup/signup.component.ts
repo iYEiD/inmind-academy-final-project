@@ -4,7 +4,7 @@ import { ISignupRequest } from '../../../models/auth.model';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-signup',
@@ -16,8 +16,8 @@ export class SignupComponent implements OnDestroy {
   authService = inject(AuthService);
   router = inject(Router);
   private fb = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
   private $destroy = new Subject<void>();
+  private notificationService = inject(NotificationService);
 
   constructor() {
     this.signupForm = this.fb.group({
@@ -35,30 +35,28 @@ export class SignupComponent implements OnDestroy {
         .pipe(takeUntil(this.$destroy))
         .subscribe({
           next: (username) => {
-            this.showSnackbar(`Welcome ${username}!`, 'success');
+            this.notificationService.showNotification(
+              `Welcome ${username}!`,
+              'success'
+            );
             this.router.navigate(['/']);
           },
           error: (error) => {
             console.error('Signup failed:', error);
-            this.showSnackbar('Signup failed. Please try again.', 'error');
+            this.notificationService.showNotification(
+              'Signup failed. Please try again.',
+              'error'
+            );
           },
         });
     } else {
       // Mark all fields as touched to trigger validation messages
       this.signupForm.markAllAsTouched();
-      this.showSnackbar('Please fill all input fields', 'error');
+      this.notificationService.showNotification(
+        'Please fill all input fields',
+        'error'
+      );
     }
-  }
-
-  private showSnackbar(message: string, type: 'success' | 'error'): void {
-    const config: MatSnackBarConfig = {
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass:
-        type === 'success' ? ['success-snackbar'] : ['error-snackbar'],
-    };
-    this.snackBar.open(message, 'X', config);
   }
 
   ngOnDestroy(): void {
