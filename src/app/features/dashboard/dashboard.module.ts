@@ -8,6 +8,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing';
 import { AgGridModule } from 'ag-grid-angular';
 import { AgChartsModule } from 'ag-charts-angular';
+import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [AdminShellComponent, DashboardComponent],
@@ -19,6 +21,8 @@ import { AgChartsModule } from 'ag-charts-angular';
     DashboardRoutingModule,
     AgGridModule,
     AgChartsModule,
+    MatTableModule,
+    MatChipsModule,
   ],
   exports: [AdminShellComponent, DashboardComponent],
 })

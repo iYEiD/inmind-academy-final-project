@@ -1,4 +1,9 @@
-export function getOrders() {
+export interface Order {
+  date: Date;
+  orders: number;
+}
+
+export function getOrders(): Order[] {
   return [
     { date: new Date('2024-01-01'), orders: 12 },
     { date: new Date('2024-01-02'), orders: 24 },

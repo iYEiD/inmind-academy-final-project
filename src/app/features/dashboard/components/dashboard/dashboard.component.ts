@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import * as AgCharts from 'ag-charts-community';
 import { getOrders } from '../../dummy-data/orders';
+import { getTransactions, Transaction } from '../../dummy-data/transactions';
+import { getTopProducts, Product } from '../../dummy-data/products';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,4 +39,12 @@ export class DashboardComponent {
       },
     ],
   };
+
+  // Table data
+  transactions: Transaction[] = getTransactions();
+  products: Product[] = getTopProducts();
+
+  // Table columns
+  transactionColumns: string[] = ['name', 'date', 'amount', 'status'];
+  productColumns: string[] = ['image', 'name', 'price', 'unitsSold'];
 }
