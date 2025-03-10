@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing';
+import { AgGridModule } from 'ag-grid-angular';
+import { AgChartsModule } from 'ag-charts-angular';
 
 @NgModule({
   declarations: [AdminShellComponent, DashboardComponent],
@@ -15,6 +17,8 @@ import { DashboardRoutingModule } from './dashboard-routing';
     MatButtonModule,
     RouterModule,
     DashboardRoutingModule,
+    AgGridModule,
+    AgChartsModule,
   ],
   exports: [AdminShellComponent, DashboardComponent],
 })
