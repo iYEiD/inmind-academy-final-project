@@ -1,0 +1,148 @@
+@import "../../../../shared/styles/variables";
+@import "../../../../shared/styles/mixins";
+
+// To refactor with common styling with other sidenavs (Products Page, Admin SideNav)
+// Mobile filter button
+.mobile-filter-button {
+  position: fixed;
+  bottom: $spacing-lg;
+  right: $spacing-lg;
+  z-index: 100;
+  display: none; // Hidden by default, shown only on mobile
+
+  button {
+    border-radius: 50px;
+    box-shadow: $shadow-md;
+    background-color: $secondary-color;
+
+    &:hover {
+      background-color: $secondary-color-light;
+    }
+  }
+}
+
+// Main container
+.sidenav-container {
+  background-color: $primary-color;
+  min-height: calc(100vh - 64px);
+  position: relative;
+  z-index: 1; // Add z-index to establish stacking context
+  display: flex;
+}
+
+// Sidenav styles
+.sidenav {
+  background-color: $primary-color;
+  border-inline-end: 1px solid $primary-color-dark;
+
+  z-index: 2; // Higher z-index than container
+  position: relative;
+
+  // Sidenav header (mobile only)
+  .sidenav-header {
+    display: none; // Hidden by default, shown only on mobile
+    padding: $spacing-md $spacing-lg;
+    border-bottom: 1px solid $primary-color-dark;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+      margin: 0;
+      color: $secondary-color;
+      font-size: $font-size-lg;
+    }
+
+    a {
+      cursor: pointer;
+      color: $secondary-color;
+      font-size: $font-size-lg;
+      padding: $spacing-xs;
+
+      &:hover {
+        color: $secondary-color-light;
+      }
+    }
+  }
+
+  .sidenav-content {
+    padding: $spacing-3xl $spacing-md $spacing-3xl $spacing-4xl;
+
+    h2 {
+      color: $secondary-color;
+      margin-block-end: $spacing-lg;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+    }
+
+    .nav-items {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+
+      a {
+        display: block;
+        padding: $spacing-sm;
+        color: $secondary-color;
+        text-decoration: none;
+        transition: all $transition-fast;
+        border-radius: $border-radius-sm;
+
+        &:hover {
+          background-color: $primary-color-dark;
+          color: $secondary-color-light;
+          transform: translateX(4px);
+        }
+
+        &.active {
+          background-color: $primary-color-darker;
+          color: $secondary-color;
+          font-weight: $font-weight-semibold;
+          border-inline-start: 3px solid $secondary-color;
+          padding-inline-start: calc($spacing-sm - 3px);
+        }
+      }
+    }
+  }
+}
+
+mat-sidenav-content {
+  flex: 1;
+  margin: 0 !important;
+  position: relative; // Add position relative
+  z-index: 1; // Same or lower z-index than container
+}
+
+// Responsive styles
+@include respond-to(md) {
+  .mobile-filter-button {
+    display: block;
+  }
+
+  .sidenav {
+    width: 280px;
+    padding: 0;
+
+    .sidenav-header {
+      display: flex;
+    }
+
+    .sidenav-content {
+      padding: $spacing-lg $spacing-xl;
+    }
+  }
+}
+
+@include respond-to(sm) {
+  .mobile-filter-button {
+    bottom: $spacing-md;
+    right: $spacing-md;
+  }
+
+  .sidenav {
+    width: 85%; // Take up most of the screen on mobile
+
+    .sidenav-content {
+      padding: $spacing-md $spacing-lg;
+    }
+  }
+}

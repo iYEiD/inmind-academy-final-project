@@ -11,12 +11,12 @@ const routes: Routes = [
     component: AccountManagementComponent,
     children: [
       {
-        path: 'profile',
+        path: 'account-management/profile',
         component: ProfileComponent,
         canActivate: [authGuard],
       },
       {
-        path: 'payment',
+        path: 'account-management/payment',
         component: PaymentComponent,
         canActivate: [authGuard],
       },

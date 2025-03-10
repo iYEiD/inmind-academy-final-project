@@ -30,14 +30,14 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'admin/products',
+    path: 'admin',
     loadChildren: () =>
-      import('./features/products/products.module').then(
-        (m) => m.ProductsModule
+      import('./features/dashboard/dashboard.module').then(
+        (m) => m.DashboardModule
       ),
     canActivate: [adminAuthGuard],
   },
-  { path: '', redirectTo: '/products', pathMatch: 'full' }, // Default route
+  { path: '', redirectTo: '/', pathMatch: 'full' },
 ];
 
 @NgModule({

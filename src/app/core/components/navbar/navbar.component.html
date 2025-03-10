@@ -88,7 +88,9 @@
             <span class="close-dropdown" (click)="closeUserDropdown()">✕</span>
           </div>
           <ng-container *ngIf="isLoggedIn; else notLoggedIn">
-            <a routerLink="/profile" (click)="closeUserDropdown()"
+            <a
+              routerLink="/account-management/profile"
+              (click)="closeUserDropdown()"
               >Edit Profile</a
             >
             <a (click)="logout(); closeUserDropdown()">Logout</a>
@@ -175,7 +177,7 @@
 
         <ng-container *ngIf="isLoggedIn; else mobileNotLoggedIn">
           <a
-            routerLink="/profile"
+            routerLink="account-management/profile"
             (click)="closeMobileMenu()"
             class="mobile-user-link"
           >

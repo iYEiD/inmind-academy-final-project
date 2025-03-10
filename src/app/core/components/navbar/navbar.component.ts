@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           if (!this.navItems.some((item) => item.name === 'Dashboard')) {
             this.navItems.push({
               name: 'Dashboard',
-              link: '/admin/products',
+              link: '/admin/dashboard',
             });
           }
         } else {
