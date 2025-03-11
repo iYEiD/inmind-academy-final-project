@@ -1,0 +1,217 @@
+@import "../../../../shared/styles/_variables.scss";
+@import "../../../../shared/styles/_mixins.scss";
+
+.dashboard-container {
+  padding-block: $spacing-3xl;
+  padding-inline: $spacing-4xl;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px);
+
+  h1 {
+    margin-block-end: $spacing-lg;
+  }
+  .section-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+
+    margin-block-end: $spacing-lg;
+  }
+
+  .metrics-row {
+    display: flex;
+    gap: $spacing-lg;
+    margin-block-end: $spacing-2xl;
+
+    @include respond-to(md) {
+      flex-direction: column;
+      gap: $spacing-md;
+    }
+  }
+
+  .metric-card {
+    flex: 1;
+    background-color: white;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+    padding: $spacing-lg;
+    margin-block-end: $spacing-md;
+
+    .metric-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .metric-info {
+      .metric-value {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-semibold;
+
+        margin: 0;
+      }
+
+      .metric-label {
+        color: $tertiary-color;
+        margin: $spacing-xs 0 0 0;
+        font-size: $font-size-sm;
+      }
+    }
+
+    .icon-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: rgba(39, 84, 218, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .dashboard-title {
+    font-weight: $font-weight-semibold;
+
+    margin-block-end: $spacing-lg;
+  }
+
+  .chart-container {
+    height: 500px;
+    background-color: white;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+    padding: $spacing-lg;
+    margin-block-end: $spacing-2xl;
+
+    ag-charts {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+
+  // Tables styling
+  .tables-container {
+    display: flex;
+    gap: $spacing-lg;
+    margin-block-end: $spacing-2xl;
+
+    @include respond-to(md) {
+      flex-direction: column;
+    }
+
+    .table-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .table-card {
+      background-color: white;
+      border-radius: $border-radius-md;
+      box-shadow: $shadow-sm;
+      overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    table {
+      width: 100%;
+      height: 100%;
+
+      .mat-mdc-table-sticky-border-elem-right {
+        border-left: none;
+      }
+
+      th {
+        color: $tertiary-color;
+        font-weight: $font-weight-medium;
+        font-size: $font-size-sm;
+        padding: $spacing-md;
+      }
+
+      td {
+        padding: $spacing-md;
+        font-size: $font-size-sm;
+      }
+
+      .status-chip {
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-medium;
+
+        &.paid {
+          background-color: rgba(75, 192, 128, 0.15);
+          color: #4bc080;
+        }
+
+        &.pending {
+          background-color: rgba(108, 117, 202, 0.15);
+          color: #6c75ca;
+        }
+      }
+
+      .product-image-cell {
+        width: 48px;
+        padding: $spacing-xs !important;
+      }
+
+      .product-image {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: $border-radius-sm;
+      }
+    }
+  }
+}
+
+// Responsive styles
+@include respond-to(md) {
+  .dashboard-container {
+    padding: $spacing-lg $spacing-xl;
+
+    .metrics-row {
+      gap: $spacing-md;
+    }
+
+    .chart-container {
+      height: 400px;
+    }
+
+    .tables-container {
+      gap: $spacing-xl;
+    }
+  }
+}
+
+@include respond-to(sm) {
+  .dashboard-container {
+    padding: $spacing-md $spacing-lg;
+
+    .section-title,
+    .dashboard-title {
+      font-size: $font-size-lg;
+      margin-block-end: $spacing-md;
+    }
+
+    .metrics-row {
+      gap: $spacing-md;
+    }
+
+    .chart-container {
+      height: 350px;
+    }
+
+    .tables-container {
+      gap: $spacing-lg;
+    }
+  }
+}
