@@ -172,11 +172,22 @@ mat-sidenav-content {
 // Products grid
 .products-container {
   padding: $spacing-3xl $spacing-4xl $spacing-3xl $spacing-2xl;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  gap: $spacing-lg;
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .product-item {
+    width: 100%;
+    height: 100%;
+
+    max-width: 300px;
+    justify-self: center;
+  }
 }
 
 // Empty state
@@ -249,8 +260,30 @@ mat-sidenav-content {
 
   .products-container {
     padding: $spacing-3xl $spacing-xl;
-    gap: $spacing-md;
-    justify-content: center;
+
+    .grid-container {
+      grid-template-columns: repeat(2, minmax(0, 1fr)); // 2 columns for tablets
+      gap: 16px;
+
+      @supports (grid-template-columns: subgrid) {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 250px));
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1350px) {
+  .products-container .grid-container {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    ); // Force 2 columns in this range
+  }
+}
+
+@media (min-width: 900px) and (max-width: 991px) {
+  .products-container .grid-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); // 2 columns in this range
   }
 }
 
@@ -262,7 +295,7 @@ mat-sidenav-content {
   }
 
   .sidenav {
-    width: 85%; // Take up most of the screen on mobile
+    width: 85%;
 
     .sidenav-header {
       padding: 1.5rem 2rem;
@@ -279,7 +312,22 @@ mat-sidenav-content {
 
   .products-container {
     padding: $spacing-2xl $spacing-lg;
-    gap: $spacing-sm;
-    justify-content: center;
+
+    .grid-container {
+      grid-template-columns: repeat(1, 1fr); // 1 column for mobile
+      gap: 12px;
+    }
+  }
+}
+
+@media (min-width: 1600px) {
+  .products-container .grid-container {
+    grid-template-columns: repeat(4, 1fr); // 4 columns for large screens
+  }
+}
+
+@media (min-width: 2000px) {
+  .products-container .grid-container {
+    grid-template-columns: repeat(5, 1fr); // 5 columns for extra large screens
   }
 }

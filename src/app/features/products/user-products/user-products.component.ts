@@ -61,7 +61,7 @@ export class UserProductsComponent implements OnInit, OnDestroy {
   }
 
   // Listen for window resize events
-  @HostListener('window:resize', ['$event']) //To Refactor
+  @HostListener('window:resize', ['$event'])
   onResize() {
     this.checkScreenSize();
   }
