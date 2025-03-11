@@ -1,4 +1,9 @@
-<div class="product-card" [class.skeleton]="isLoading">
+<div
+  class="product-card"
+  [class.skeleton]="isLoading"
+  [class.large]="size === 'large'"
+  [class.extra-large]="size === 'extra-large'"
+>
   <ng-container *ngIf="!isLoading && product; else loadingSkeleton">
     <div class="product-card-image" (click)="navigateToDetails()">
       <!-- Image loading skeleton -->

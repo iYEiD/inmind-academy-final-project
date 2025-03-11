@@ -160,8 +160,8 @@
       grid-template-columns: repeat(4, 1fr);
       gap: $spacing-lg;
 
-      @media screen and (max-width: 1100px) and (min-width: 1020px) {
-        grid-template-columns: repeat(2, 1fr);
+      @media screen and (max-width: 1400px) and (min-width: 1020px) {
+        grid-template-columns: repeat(3, 1fr);
       }
 
       @include respond-to(md) {
@@ -172,8 +172,14 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      @media screen and (max-width: 650px) {
+        grid-template-columns: repeat(1, 1fr);
+        margin-inline: 3rem;
+      }
+
       @include respond-to(xs) {
         grid-template-columns: repeat(1, 1fr);
+        margin-inline: 0;
       }
 
       .category-card {
@@ -209,6 +215,27 @@
         }
       }
     }
+  }
+}
+
+.best-sellers-section,
+.explore-section {
+  --product-card-width: 19rem;
+  --product-card-height: 25rem;
+
+  @include respond-to(md) {
+    --product-card-width: 100%;
+    --product-card-height: 28rem;
+  }
+
+  @include respond-to(sm) {
+    --product-card-width: 100%;
+    --product-card-height: 30rem;
+  }
+
+  @include respond-to(xs) {
+    --product-card-width: 100%;
+    --product-card-height: 32rem;
   }
 }
 
@@ -286,21 +313,30 @@
   }
 
   .cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: $spacing-lg;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+
+    @media screen and (max-width: 1400px) and (min-width: 1020px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
 
     @include respond-to(md) {
-      justify-content: space-around;
+      grid-template-columns: repeat(2, 1fr);
     }
 
     @include respond-to(sm) {
-      justify-content: center;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 650px) {
+      grid-template-columns: repeat(1, 1fr);
+      margin-inline: 3rem;
     }
 
     @include respond-to(xs) {
-      justify-content: center;
+      grid-template-columns: repeat(1, 1fr);
+      margin-inline: 0;
     }
   }
 }
@@ -409,23 +445,31 @@
   }
 
   .cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: $spacing-lg;
     margin-block-end: $spacing-lg;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    grid-template-columns: repeat(4, minmax(15.625rem, 1fr));
+
+    @media screen and (max-width: 1400px) and (min-width: 1020px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
 
     @include respond-to(md) {
-      justify-content: space-around;
+      grid-template-columns: repeat(2, 1fr);
     }
 
     @include respond-to(sm) {
-      justify-content: center;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 650px) {
+      grid-template-columns: repeat(1, 1fr);
+      margin-inline: 3rem;
     }
 
     @include respond-to(xs) {
-      justify-content: center;
+      grid-template-columns: repeat(1, 1fr);
+      margin-inline: 0;
     }
   }
 

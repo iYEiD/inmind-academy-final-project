@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 export class ProductCardComponent implements OnInit, OnDestroy {
   @Input() product?: ProductDTO;
   @Input() isLoading: boolean = false;
+  @Input() size: 'default' | 'large' | 'extra-large' = 'default';
 
   imageLoading: boolean = true;
   quantity: number = 0;
