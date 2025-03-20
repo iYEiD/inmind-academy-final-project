@@ -40,6 +40,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     switchMap((params) => {
       const productName = params.get('productName');
       this.isLoading = true; // Set loading to true when fetching
+      this.quantity = 1; // Reset quantity when navigating to a new product
       return productName
         ? this.productsService.searchProductsByName(productName, 1, 0)
         : of(null);
