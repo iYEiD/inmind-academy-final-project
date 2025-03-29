@@ -1,4 +1,4 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +16,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './shared/states/user/user.effects';
 import { AccountFacade } from './core/authentication/facades/account.facade';
 import { AuthService } from './core/authentication/services/auth.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 // Factory function for APP_INITIALIZER
 function initializeUserState(
@@ -44,6 +45,12 @@ function initializeUserState(
       maxAge: 25,
     }),
     EffectsModule.forRoot([UserEffects]),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [
     CookieService,
