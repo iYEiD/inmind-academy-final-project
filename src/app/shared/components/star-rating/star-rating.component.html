@@ -1,0 +1,8 @@
+<div class="stars-container">
+  <fa-icon
+    *ngFor="let star of stars"
+    [icon]="faStar"
+    [ngClass]="{ 'golden-star': star <= rating, 'gray-star': star > rating }"
+  ></fa-icon>
+  <p class="rating-count">({{ rating }})</p>
+</div>

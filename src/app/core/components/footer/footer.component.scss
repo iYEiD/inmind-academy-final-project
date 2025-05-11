@@ -1,0 +1,115 @@
+@import "../../../../app/shared/styles/variables";
+@import "../../../../app/shared/styles/mixins";
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  padding: $spacing-xl $spacing-4xl;
+  background-color: $secondary-color;
+  color: $primary-color;
+
+  @include respond-to(md) {
+    padding: $spacing-lg $spacing-xl;
+  }
+
+  @include respond-to(sm) {
+    padding: $spacing-md $spacing-lg;
+  }
+
+  .row {
+    margin-block-start: $spacing-2xl;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+
+    @include respond-to(md) {
+      gap: $spacing-xl;
+    }
+
+    @include respond-to(sm) {
+      flex-direction: column;
+      gap: $spacing-lg;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 200px;
+      margin-inline-end: $spacing-lg;
+
+      @include respond-to(sm) {
+        margin-inline-end: 0;
+        margin-block-end: $spacing-lg;
+      }
+
+      h2 {
+        @include heading-2;
+        margin-block-end: $spacing-md;
+        color: $primary-color;
+      }
+
+      h3 {
+        @include heading-3;
+        margin-block-end: $spacing-md;
+        color: $primary-color;
+      }
+
+      p {
+        @include body-text;
+        margin: $spacing-xs 0;
+        color: $primary-color;
+        transition: color $transition-fast;
+
+        &:hover {
+          color: $primary-color-dark;
+          cursor: pointer;
+        }
+      }
+
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        transition: color $transition-fast;
+        &:hover {
+          color: $primary-color-dark;
+        }
+      }
+
+      &.newsletter {
+        flex: 2;
+
+        @include respond-to(md) {
+          flex: 1 0 100%;
+        }
+
+        input {
+          @include input-field;
+        }
+
+        p {
+          margin-block-end: $spacing-md;
+          font-size: $font-size-sm;
+          a {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: center;
+    margin-block-start: $spacing-2xl;
+    margin-block-end: $spacing-lg;
+
+    p {
+      color: $primary-color;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .subscribe-button {
+    @include white-button;
+  }
+}

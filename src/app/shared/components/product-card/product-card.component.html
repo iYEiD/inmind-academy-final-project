@@ -1,0 +1,50 @@
+<div class="product-card" [class.skeleton]="isLoading">
+  <ng-container *ngIf="!isLoading && product; else loadingSkeleton">
+    <div class="product-card-image" (click)="navigateToDetails()">
+      <!-- Image loading skeleton -->
+      <div class="image-loading-skeleton" *ngIf="imageLoading"></div>
+
+      <!-- Actual image with loading handling -->
+      <img
+        [src]="product.thumbnail"
+        alt="Product Image"
+        [class.hidden]="imageLoading"
+        (load)="imageLoading = false"
+        (error)="imageLoading = false"
+      />
+
+      <div class="image-overlay" [class.hidden]="imageLoading">
+        <span class="view-details">View Details</span>
+      </div>
+    </div>
+
+    <h3 class="product-card-title">{{ product.title }}</h3>
+    <div class="product-card-content">
+      <p class="product-card-price">${{ product.price }}</p>
+      <div class="product-card-actions">
+        <app-star-rating [rating]="product.rating"></app-star-rating>
+
+        <!-- Quantity control -->
+        <div class="quantity-control" [class.expanded]="quantity > 0">
+          <button
+            *ngIf="quantity > 0"
+            class="quantity-btn remove-btn"
+            (click)="removeFromCart()"
+          >
+            <span>-</span>
+          </button>
+          <span *ngIf="quantity > 0" class="quantity-value">{{
+            quantity
+          }}</span>
+          <button class="quantity-btn add-btn" (click)="addToCart()">
+            <span>+</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingSkeleton>
+    <div class="skeleton-content"></div>
+  </ng-template>
+</div>

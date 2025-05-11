@@ -1,0 +1,124 @@
+<div class="mobile-filter-button" *ngIf="isMobile">
+  <button mat-raised-button color="primary" (click)="toggleSidenav()">
+    Filters
+  </button>
+</div>
+
+<mat-sidenav-container class="sidenav-container" autosize>
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
+    class="sidenav"
+    fixedInViewport="false"
+  >
+    <div class="sidenav-header" *ngIf="isMobile">
+      <h2>Filters</h2>
+      <a (click)="closeSidenav()">X</a>
+    </div>
+
+    <div class="categories-panel">
+      <h3>Categories</h3>
+      <div class="main-categories">
+        <div *ngFor="let section of categorySections" class="category-section">
+          <div
+            class="category-header"
+            (click)="toggleCategory(section.title)"
+            [class.active]="section.isOpen"
+          >
+            <span>{{ section.title }}</span>
+            <img
+              src="assets/images/dropdown-icon.png"
+              alt="dropdown"
+              [class.rotated]="section.isOpen"
+            />
+          </div>
+          <div class="subcategories" [class.open]="section.isOpen">
+            <a
+              *ngFor="let category of section.categories"
+              (click)="onCategoryClick(category.link)"
+              class="category-item"
+              [class.active]="activeCategory === category.link.split('/').pop()"
+            >
+              {{ category.name }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sort-panel">
+      <h3>Sort By</h3>
+      <div class="sort-options">
+        <button mat-button [matMenuTriggerFor]="priceMenu" class="sort-button">
+          Sort By Price
+        </button>
+        <button mat-button [matMenuTriggerFor]="nameMenu" class="sort-button">
+          Sort By Name
+        </button>
+        <button mat-button [matMenuTriggerFor]="ratingMenu" class="sort-button">
+          Sort By Rating
+        </button>
+      </div>
+
+      <mat-menu #priceMenu="matMenu">
+        <button mat-menu-item (click)="applySorting('price', 'asc')">
+          Price: Low to High
+        </button>
+        <button mat-menu-item (click)="applySorting('price', 'desc')">
+          Price: High to Low
+        </button>
+      </mat-menu>
+      <mat-menu #nameMenu="matMenu">
+        <button mat-menu-item (click)="applySorting('title', 'asc')">
+          Name: A to Z
+        </button>
+        <button mat-menu-item (click)="applySorting('title', 'desc')">
+          Name: Z to A
+        </button>
+      </mat-menu>
+      <mat-menu #ratingMenu="matMenu">
+        <button mat-menu-item (click)="applySorting('rating', 'asc')">
+          Rating: Low to High
+        </button>
+        <button mat-menu-item (click)="applySorting('rating', 'desc')">
+          Rating: High to Low
+        </button>
+      </mat-menu>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="products-container">
+      <ng-container *ngIf="!isLoading">
+        <app-product-card
+          *ngFor="let product of products; trackBy: trackByProductId"
+          [product]="product"
+        ></app-product-card>
+
+        <div *ngIf="products.length === 0" class="no-products">
+          No products found
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isLoading">
+        <app-product-card
+          *ngFor="let _ of skeletons"
+          [isLoading]="true"
+        ></app-product-card>
+      </ng-container>
+    </div>
+
+    <div class="pagination-controls" *ngIf="totalProducts > 0">
+      <button (click)="previousPage()" [disabled]="currentPage === 1">
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button
+        (click)="nextPage()"
+        [disabled]="currentPage * itemsPerPage >= totalProducts"
+      >
+        Next
+      </button>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

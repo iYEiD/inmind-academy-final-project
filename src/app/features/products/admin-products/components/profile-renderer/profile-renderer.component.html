@@ -1,0 +1,11 @@
+<div class="product-cell">
+  <img
+    [src]="params.data.thumbnail"
+    [alt]="params.data.title"
+    class="product-thumbnail"
+  />
+  <div class="product-info">
+    <p class="product-title">{{ params.data.title }}</p>
+    <p class="product-category">{{ formattedCategory }}</p>
+  </div>
+</div>

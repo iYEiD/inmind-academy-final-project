@@ -1,0 +1,227 @@
+@import "../../../shared/styles/_variables.scss";
+@import "../../../shared/styles/_mixins.scss";
+
+.shopping-cart-container {
+  display: flex;
+  gap: $spacing-lg;
+  padding-block: $spacing-3xl;
+  margin-inline: $spacing-4xl;
+
+  @include respond-to(md) {
+    flex-direction: column;
+    margin-inline: $spacing-md;
+  }
+
+  @include respond-to(sm) {
+    margin-inline: $spacing-xs;
+  }
+
+  @include respond-to(xs) {
+    margin-inline: 0;
+    padding-inline: $spacing-sm;
+  }
+}
+
+// Billing Details Section
+.billing-details {
+  flex: 1;
+  border-inline-end: 1px solid $tertiary-color-light;
+  padding-inline-end: $spacing-md;
+
+  h2 {
+    font-size: $font-size-lg;
+    margin-block-end: $spacing-sm;
+    color: $secondary-color;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    mat-form-field {
+      width: 95%;
+    }
+  }
+}
+
+// Cart Details Section
+.cart-details {
+  flex: 1;
+
+  h2 {
+    font-size: $font-size-lg;
+    margin-block-end: $spacing-sm;
+    color: $secondary-color;
+  }
+
+  .cart-table {
+    background-color: $primary-color-light;
+    border-radius: $border-radius-md;
+    padding: $spacing-sm;
+    box-shadow: $shadow-md;
+    overflow: hidden;
+
+    table {
+      width: 100%;
+    }
+
+    .mat-mdc-header-cell {
+      font-weight: $font-weight-semibold;
+      color: $secondary-color;
+      padding: $spacing-sm;
+      text-align: left;
+
+      &:nth-child(2),
+      &:nth-child(4),
+      &:nth-child(5) {
+        text-align: right;
+      }
+
+      &:nth-child(3) {
+        text-align: center;
+      }
+    }
+
+    .mat-mdc-cell {
+      padding: $spacing-sm;
+      text-align: left;
+
+      &:nth-child(2),
+      &:nth-child(3),
+      &:nth-child(4),
+      &:nth-child(5) {
+        text-align: right;
+      }
+    }
+
+    .item-details {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+
+      img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: $border-radius-sm;
+        box-shadow: $shadow-sm;
+      }
+
+      span {
+        font-weight: $font-weight-medium;
+      }
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+      justify-content: flex-end;
+
+      input {
+        width: 40px;
+        height: 30px;
+        text-align: center;
+        border: 1px solid $secondary-color;
+        border-radius: $border-radius-sm;
+      }
+    }
+  }
+
+  .empty-cart-message {
+    padding-block: $spacing-lg;
+    text-align: center;
+    color: $tertiary-color-dark;
+
+    a {
+      color: $secondary-color;
+      text-decoration: underline;
+      font-weight: $font-weight-medium;
+
+      &:hover {
+        color: darken($secondary-color-darker, 10%);
+      }
+    }
+  }
+
+  .cart-summary {
+    margin-block-start: $spacing-sm;
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding-block: $spacing-xs;
+      border-bottom: 1px solid $tertiary-color-light;
+
+      &.total {
+        font-weight: $font-weight-bold;
+        font-size: $font-size-md;
+        border-bottom: none;
+        margin-block-start: $spacing-sm;
+        color: $secondary-color;
+      }
+    }
+  }
+
+  .payment-methods {
+    margin-block: $spacing-sm;
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      margin-block-end: $spacing-sm;
+
+      .card-icons {
+        display: flex;
+        margin-inline-start: $spacing-sm;
+
+        img {
+          width: 40px;
+          height: 25px;
+          object-fit: contain;
+          margin-inline-end: $spacing-sm;
+        }
+      }
+    }
+  }
+
+  .place-order-button {
+    width: 100%;
+    margin-block-start: $spacing-sm;
+  }
+}
+
+// Responsive adjustments
+@include respond-to(md) {
+  .shopping-cart-container {
+    padding: $spacing-sm;
+  }
+
+  .billing-details {
+    border-inline-end: none;
+    padding-inline-end: 0;
+
+    form mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+@include respond-to(sm) {
+  .cart-details {
+    .cart-table {
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding: $spacing-xs;
+      }
+
+      .item-details {
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@import "../../../../../shared/styles/variables";
+.product-cell {
+  height: 100%;
+  display: flex;
+  img {
+    width: 50px !important;
+    height: 50px !important;
+    margin-right: 16px;
+  }
+  .product-info {
+    p {
+      margin: 0;
+      height: 20px;
+    }
+    .product-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .product-category {
+      font-size: 14px;
+      color: $tertiary-color;
+    }
+  }
+}

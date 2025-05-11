@@ -1,0 +1,30 @@
+<div class="mobile-filter-button" *ngIf="isMobile">
+  <button mat-raised-button color="primary" (click)="toggleSidenav()">
+    Menu
+  </button>
+</div>
+<mat-sidenav-container class="sidenav-container" autosize>
+  <mat-sidenav
+    #sidenav
+    [mode]="'side'"
+    [opened]="true"
+    class="sidenav"
+    fixedInViewport="false"
+  >
+    <div class="sidenav-content">
+      <h2>Admin Panel</h2>
+      <div class="nav-items">
+        <a routerLink="./admin/dashboard" routerLinkActive="active">
+          Dashboard
+        </a>
+        <a routerLink="./admin/products" routerLinkActive="active">
+          Products
+        </a>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

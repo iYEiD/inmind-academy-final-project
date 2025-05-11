@@ -1,0 +1,211 @@
+@import "../../styles/mixins";
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 19rem;
+  height: 25rem;
+  box-shadow: $shadow-md;
+  transition: box-shadow $transition-base;
+  border: 1px solid $secondary-color;
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    scale: 1.02;
+  }
+
+  &.skeleton {
+    background: #f0f0f0;
+    border: none;
+    animation: pulse 1.5s infinite;
+
+    &:hover {
+      box-shadow: $shadow-md;
+      scale: 1;
+    }
+
+    .skeleton-content {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  h3 {
+    margin-block-start: $spacing-md;
+    margin-block-end: auto;
+    padding-inline: $spacing-md;
+  }
+
+  .product-card-image {
+    width: 100%;
+    height: 15.625rem;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-bottom: 0.5px solid $secondary-color;
+
+    // Image loading skeleton
+    .image-loading-skeleton {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading-shimmer 1.5s infinite;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    @keyframes loading-shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+
+      &.hidden {
+        opacity: 0;
+      }
+    }
+
+    .image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+
+      &.hidden {
+        display: none;
+      }
+
+      .view-details {
+        color: $primary-color;
+        font-weight: bold;
+        padding: 8px 16px;
+        border: 2px solid $primary-color;
+        border-radius: 4px;
+      }
+    }
+
+    &:hover {
+      .image-overlay:not(.hidden) {
+        opacity: 1;
+      }
+
+      img:not(.hidden) {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .product-card-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 $spacing-md $spacing-md $spacing-md;
+    width: 90%;
+
+    p {
+      margin-block-start: 0;
+    }
+
+    .product-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      // Quantity control styles
+      .quantity-control {
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+
+        &.expanded {
+          background-color: $secondary-color-lighter;
+          border-radius: 20px;
+          padding: 2px;
+        }
+
+        .quantity-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &.add-btn {
+            background-color: $secondary-color;
+            color: $primary-color;
+            font-size: 1.2rem;
+            font-weight: bold;
+
+            &:hover {
+              background-color: $secondary-color-dark;
+              transform: scale(1.05);
+            }
+          }
+
+          &.remove-btn {
+            background-color: $secondary-color-lighter;
+            color: $primary-color;
+            font-size: 1.2rem;
+            font-weight: bold;
+
+            &:hover {
+              background-color: $secondary-color-dark;
+            }
+          }
+
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+
+        .quantity-value {
+          margin: 0 8px;
+          font-weight: bold;
+          color: $primary-color;
+          min-width: 20px;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.hidden {
+  opacity: 0;
+}

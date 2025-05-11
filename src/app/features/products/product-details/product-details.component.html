@@ -1,0 +1,137 @@
+<section class="product-details" *ngIf="isLoading">
+  <div class="current-product-path skeleton-path">
+    <div class="skeleton-text"></div>
+    <div class="skeleton-arrow"></div>
+    <div class="skeleton-text"></div>
+  </div>
+
+  <div class="product-details-container">
+    <!-- Skeleton for product image -->
+    <div class="product-details-image skeleton-image">
+      <div class="image-loading-skeleton"></div>
+    </div>
+
+    <!-- Skeleton for product info -->
+    <div class="product-details-info">
+      <div class="main-content">
+        <div class="skeleton-title"></div>
+        <div class="skeleton-rating"></div>
+        <div class="skeleton-price"></div>
+      </div>
+
+      <div class="about-product">
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-text-block"></div>
+      </div>
+
+      <div class="product-details-actions">
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-actions"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skeleton for thumbnails -->
+  <div class="images-container">
+    <div class="thumbnail-item" *ngFor="let _ of [1, 2, 3, 4]">
+      <div class="thumbnail-loading-skeleton"></div>
+    </div>
+  </div>
+
+  <!-- Skeleton for related products -->
+  <div class="related-products">
+    <div class="skeleton-title"></div>
+    <div class="related-products-container">
+      <app-product-card
+        *ngFor="let _ of [1, 2, 3, 4]"
+        [isLoading]="true"
+      ></app-product-card>
+    </div>
+  </div>
+</section>
+
+<section class="product-details" *ngIf="!isLoading && product">
+  <div class="current-product-path">
+    <a [routerLink]="['/products']" class="path-link">Our Products</a>
+    <img
+      src="../../../../assets/images/path-arrow-icon.png"
+      alt="Path Arrow Icon"
+    />
+    <a
+      [routerLink]="['/products']"
+      [queryParams]="{ category: product.category, page: 1 }"
+      class="path-link"
+    >
+      {{ product.category | capitalizeFirst }}
+    </a>
+  </div>
+  <div class="product-details-container">
+    <div class="product-details-image">
+      <div class="image-loading-skeleton" *ngIf="imageLoading"></div>
+
+      <img
+        [src]="product.images[selectedImageIndex]"
+        alt="Product Image"
+        [class.hidden]="imageLoading"
+        (load)="imageLoading = false"
+        (error)="imageLoading = false"
+      />
+    </div>
+    <div class="product-details-info">
+      <div class="main-content">
+        <h1>{{ product.title }}</h1>
+        <app-star-rating [rating]="product.rating"></app-star-rating>
+        <h2>{{ product.price | currency }}</h2>
+      </div>
+      <div class="about-product">
+        <h3>About this product</h3>
+        <p>{{ product.description }}</p>
+      </div>
+
+      <div class="product-details-actions">
+        <h3>Add to cart</h3>
+        <div class="quantity-selector">
+          <button (click)="decrementQuantity()">-</button>
+          <input [(ngModel)]="quantity" min="1" (change)="onQuantityChange()" />
+          <button (click)="incrementQuantity()">+</button>
+          <button class="add-to-cart-button" (click)="addToCart(product)">
+            Add to Cart
+          </button>
+        </div>
+        <p style="font-size: 14px; margin-block-start: 5px">
+          VAT & delivery fees are applied at checkout
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="images-container">
+    <div
+      *ngFor="let img of product.images; let i = index; trackBy: trackByImage"
+      class="thumbnail-item"
+      [class.active]="selectedImageIndex === i"
+      (click)="selectImage(i)"
+    >
+      <div
+        class="thumbnail-loading-skeleton"
+        *ngIf="thumbnailsLoading[i]"
+      ></div>
+
+      <img
+        [src]="img"
+        alt="Thumbnail {{ i + 1 }}"
+        [class.hidden]="thumbnailsLoading[i]"
+        (load)="thumbnailsLoading[i] = false"
+        (error)="thumbnailsLoading[i] = false"
+      />
+    </div>
+  </div>
+  <div class="related-products">
+    <h1>Browse Related Products</h1>
+    <div class="related-products-container">
+      <app-product-card
+        *ngFor="let product of relatedProducts"
+        [product]="product"
+      ></app-product-card>
+    </div>
+  </div>
+</section>
